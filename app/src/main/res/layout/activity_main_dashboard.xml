@@ -4,30 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Dashboard.MainDashboard">
 
     <Button
-        android:id="@+id/buttonDashboard"
+        android:id="@+id/buttonDisDoses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dashboard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></Button>
+
+        android:layout_marginTop="4dp"
+
+        android:text="Distrubated/Administrated doses"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonUserLogin"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Login"
+        android:text="Doses per age/product"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonDashboard">
-
-    </Button>
+        app:layout_constraintTop_toBottomOf="@id/button_deathsandCases" />
     <Button
-        android:text="My Page"
+        android:id="@+id/button_deathsandCases"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonMyPage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonUserLogin"></Button>
+        android:text="Deaths/Cases"
+        app:layout_constraintTop_toBottomOf="@id/buttonDisDoses"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

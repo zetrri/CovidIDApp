@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Dashboard.ActivityDeathsAndCases">
+
+    <EditText
+        android:id="@+id/edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search here"
+
+        android:minHeight="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <TextView
+        android:id="@+id/textViewAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:text="Age: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext"></TextView>
+
+    <Spinner
+        android:id="@+id/spinnerAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/textViewAge"
+        app:layout_constraintTop_toBottomOf="@+id/edittext"></Spinner>
+
+    <TextView
+        android:layout_marginTop="10sp"
+        android:id="@+id/textViewCounty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="County: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toEndOf="@+id/spinnerAge"
+        app:layout_constraintTop_toBottomOf="@+id/edittext"></TextView>
+
+    <Spinner
+        android:id="@+id/SpinnerCounty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/textViewCounty"
+        app:layout_constraintTop_toBottomOf="@+id/edittext"></Spinner>
+
+    <TextView
+        android:id="@+id/textViewType"
+        android:layout_marginTop="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAge"></TextView>
+
+    <Spinner
+        android:id="@+id/SpinnerDoses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/textviewDoses"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCounty"></Spinner>
+
+    <TextView
+        android:id="@+id/textviewDoses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:text="Doses: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toEndOf="@id/Spinnermode"
+        app:layout_constraintTop_toBottomOf="@id/textViewCounty"></TextView>
+
+    <Spinner
+        android:id="@+id/Spinnermode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/textViewType"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAge"></Spinner>
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/edittext"
+        android:layout_marginTop="659dp"
+
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerAge" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

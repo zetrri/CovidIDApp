@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".Dashboard.ActivityDeathsAndCases"
+            android:exported="true" />
+        <activity
+            android:name=".Dashboard.ActivityDistrubatedDoses"
+            android:exported="true" />
+        <activity
+            android:name=".Dashboard.MainDashboard"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
