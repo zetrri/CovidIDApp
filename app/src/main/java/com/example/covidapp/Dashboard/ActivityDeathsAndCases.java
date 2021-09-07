@@ -25,7 +25,7 @@ public class ActivityDeathsAndCases extends AppCompatActivity {
         String[] Counties = new String[]{"All","Örebro","Värmland","Stockholm"};
         String[] Doses = new String[]{"None","1","2"};
         String[] mode = new String[]{"Both","Cases","Deaths"};
-
+        //hello
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
