@@ -18,7 +18,7 @@ import com.example.covidapp.faq.Faq_main;
 public class MainActivity extends AppCompatActivity {
 
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp;
-
+    //Test
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
