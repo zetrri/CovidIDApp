@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".HealthAdmin.QuestionnaireResponseActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UserReg.MainUserRegActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Passport.PassportMainActivity"
+            android:exported="true" />
+        <activity
             android:name=".Booking.BookingPopWindow"
             android:exported="true" />
         <activity

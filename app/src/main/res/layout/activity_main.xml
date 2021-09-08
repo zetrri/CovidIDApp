@@ -52,5 +52,26 @@
         android:text="My appointments"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMyPage"></Button>
+    <Button
+        android:id="@+id/buttonPassport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Passport"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMyAppointments"></Button>
+    <Button
+        android:id="@+id/buttonUserReg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Reg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPassport"></Button>
+    <Button
+        android:id="@+id/buttonQuestRes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hii"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonUserReg"></Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
