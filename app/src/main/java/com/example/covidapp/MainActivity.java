@@ -11,11 +11,13 @@ import com.example.covidapp.Booking.BookingMainActivity;
 import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.LogIn.MainLogInActivity;
 import com.example.covidapp.MyPage.MainMyPage;
+import com.example.covidapp.Passport.PassportMainActivity;
+import com.example.covidapp.UserReg.MainUserRegActivity;
 import com.example.covidapp.faq.Faq_main;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments;
+    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         buttonMainscreen2= findViewById(R.id.buttonMainscreen2);
         buttonMyPage = findViewById(R.id.buttonMyPage);
         buttonMyAppointments = findViewById(R.id.buttonMyAppointments);
+        buttonpassport = findViewById(R.id.buttonPassport);
+        buttonuserreg = findViewById(R.id.buttonUserReg);
+        buttonquestresp = findViewById(R.id.buttonQuestRes);
 
         buttonDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +78,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        buttonpassport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), PassportMainActivity.class);
+                startActivity(intent);
+            }
+        });
+        buttonuserreg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), MainUserRegActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }
