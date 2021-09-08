@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.covidapp.Booking.BookingMainActivity;
 import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.LogIn.MainLogInActivity;
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.faq.Faq_main;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2;
+    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         buttonfaq = findViewById(R.id.buttonFaq);
         buttonUserLogin = findViewById(R.id.buttonUserLogin);
         buttonMainscreen2= findViewById(R.id.buttonMainscreen2);
+        buttonMyPage = findViewById(R.id.buttonMyPage);
+        buttonMyAppointments = findViewById(R.id.buttonMyAppointments);
 
         buttonDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +57,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
 
             }
+
         });
+        buttonMyPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), MainMyPage.class);
+                startActivity(intent);
+            }
+        });
+        buttonMyAppointments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), BookingMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }

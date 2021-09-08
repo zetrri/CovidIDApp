@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".Booking.BookingPopWindow"
+            android:exported="true" />
+        <activity
+            android:name=".Booking.BookingMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MyPage.MainMyPage"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity2"
             android:exported="true" />
         <activity
