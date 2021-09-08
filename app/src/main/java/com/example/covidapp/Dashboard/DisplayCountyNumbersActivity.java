@@ -24,8 +24,9 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_county_numbers);
-        Intent intent = getIntent();
 
+        //get intent data and assign to the right fields
+        Intent intent = getIntent();
         Data DistData = (Data) intent.getSerializableExtra("list");
         TextView textView_countyname = findViewById(R.id.textView);
         TextView textView_countyID = findViewById(R.id.textView2);
@@ -39,8 +40,11 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
         textView_CountyNumber.setText("number "+DistData.getNumber());
 
         //set inital view for listview
+        //mode =0 --> Week
+        //mode = 1 --> Month
         setViewForList(DistData,0);
 
+        //Buttons to change view to month or week
         buttonweek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +68,7 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
         ArrayList<Monthly> monthlist = data.getMonthly();
         ListView listView = findViewById(R.id.listview_Week);
         listView.setAdapter(null);
+        //set listview to week
         if (mode==0){
             arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, weeklist){
                 @Override
@@ -80,6 +85,7 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
 
             listView.setAdapter(arrayAdapter);
         }
+        //set listview to month
         else{
             arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, monthlist){
                 @Override

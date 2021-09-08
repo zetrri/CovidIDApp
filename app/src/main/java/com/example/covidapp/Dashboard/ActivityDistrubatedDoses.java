@@ -3,6 +3,7 @@ package com.example.covidapp.Dashboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,8 +24,9 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distrubated_doses);
+
+        //Declaration
         ListView listView;
-        ArrayList<Data> datalist = new ArrayList<>();
         ArrayList<String> conties;
         ArrayList<String> months;
         ArrayAdapter<Data> arrayAdapter;
@@ -32,36 +34,24 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
         listView =  findViewById(R.id.listview);
         etSearch = findViewById(R.id.edittext);
 
-
+        //assign arrays to demo data
         conties = createdummydatacounties();
         months = createdummydatamonths();
 
+        //user classes that contain weekly and monthly dose information
+        ArrayList<Weekly> weeklist ;
+        ArrayList<Monthly> Monthlist ;
 
+        //filling the list with demo data
+        Monthlist = createMonths(months,null,1);
+        weeklist = createWeeks(null,null,1);
+        final ArrayList<Data>datalist = createData(Monthlist, weeklist, conties);
 
-
-        ArrayList<Weekly> weeklist = new ArrayList<>();
-        ArrayList<Monthly> Monthlist = new ArrayList<>();
-
-
-        for (int i=0;i<months.size();i++){
-            Monthly monthly = new Monthly(months.get(i),600);
-            Monthlist.add(monthly);
-        }
-        //System.out.println("Amoint in months"+Integer.toString(months.size()));
-        for (int i=1;i<=52;i++){
-            Weekly weekly = new Weekly(i,150);
-            weeklist.add(weekly);
-        }
-        //ListView listview_week = findViewById(R.id.listview_Week);
-
-        for(int i=0;i<conties.size();i++){
-            Data data = new Data(conties.get(i),i,1,weeklist,Monthlist);
-            datalist.add(data);
-        }
-
-
+        //setting up the listview to show conties
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, datalist);
         listView.setAdapter(arrayAdapter);
+
+        //for the search to work
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -78,6 +68,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
 
             }
         });
+        //when clicking on item in list, that countys data get sent to the intent
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -95,6 +86,58 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
         });
 
     }
+
+    //making the final dataclass for alla conties
+    public ArrayList<Data> createData(ArrayList<Monthly> monthly,ArrayList<Weekly> weekly,ArrayList<String> conties){
+        ArrayList<Data> listofData = new ArrayList<>();
+        for(int i=0;i<conties.size();i++){
+            Data data = new Data(conties.get(i),i,1,weekly,monthly);
+            listofData.add(data);
+        }
+
+    return listofData;
+    }
+    //Reciving a list of weeks and a list of the amount on that week and create the userclass Weekly
+    //mode 1 == demo mode
+    public ArrayList<Weekly> createWeeks(ArrayList<Integer> weeks, ArrayList<Integer> amount, int mode){
+        ArrayList<Weekly> listDone = new ArrayList<>();
+        if (mode==1){
+            for (int i=1;i<=52;i++){
+                Weekly weekly = new Weekly(i,150);
+                listDone.add(weekly);
+            }
+        }
+        else{
+            for (int i=0;i<weeks.size();i++){
+                Weekly weekly = new Weekly(weeks.get(i),amount.get(i));
+                listDone.add(weekly);
+            }
+        }
+
+
+        return listDone;
+    }
+    //Reciving a list of months and a list of the amount on that month and create the userclass Monthly
+    //mode 1 == demo mode
+    public ArrayList<Monthly> createMonths(ArrayList<String> months, ArrayList<Integer> amount, int mode){
+        ArrayList<Monthly> listdone = new ArrayList<>();
+        if(mode==1){
+            for (int i=0;i<months.size();i++){
+                Monthly monthly = new Monthly(months.get(i),600);
+                listdone.add(monthly);
+            }
+        }
+        else{
+            for (int i=0;i<months.size();i++){
+                Monthly monthly = new Monthly(months.get(i),amount.get(i));
+                listdone.add(monthly);
+            }
+
+        }
+        return listdone;
+    }
+
+    //creating dummy months
     private ArrayList<String> createdummydatamonths() {
         ArrayList<String> months= new ArrayList<>();
         months.add("January");
@@ -111,6 +154,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
         return months;
     }
 
+    //creating dummy counties
     private ArrayList<String> createdummydatacounties(){
         ArrayList<String> conties = new ArrayList<>();
         conties.add("Blekinge län");
