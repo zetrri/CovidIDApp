@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".MainActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".LogIn.MainLogInActivity"
+            android:exported="true" />
+        <activity
             android:name=".faq.Faq_main"
             android:exported="true" />
         <activity

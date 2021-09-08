@@ -24,10 +24,18 @@
 
     </Button>
     <Button
-        android:text="My Page"
+        android:text="Faq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonMyPage"
+        android:id="@+id/buttonFaq"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonUserLogin"></Button>
+
+    <Button
+        android:id="@+id/buttonMainscreen2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Another main screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFaq"></Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
