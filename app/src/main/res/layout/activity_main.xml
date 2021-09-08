@@ -24,10 +24,33 @@
 
     </Button>
     <Button
-        android:text="My Page"
+        android:text="Faq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonMyPage"
+        android:id="@+id/buttonFaq"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonUserLogin"></Button>
+
+    <Button
+        android:id="@+id/buttonMainscreen2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Another main screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFaq"></Button>
+    <Button
+        android:id="@+id/buttonMyPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My page"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMainscreen2"></Button>
+    <Button
+        android:id="@+id/buttonMyAppointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My appointments"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMyPage"></Button>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

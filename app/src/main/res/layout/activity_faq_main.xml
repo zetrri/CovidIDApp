@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+
+    // en knapp enbart för att vara distans från toppen, kan tas bort eller bytas ut mot
+    // en banner av något slag för att ge grafisk design
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="placeholder">
+    </Button>
+
+
+
+
+
+    // Textview med lite styling mest bara för att få den centrerad
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Om Covid - 19 - Coronavirus"
+        android:textAlignment="center">
+    </TextView>
+
+
+
+
+
+    // linear layout för att få knapparna vertical
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+
+        // Button har id som är baserat på texten
+        <Button
+            android:id="@+id/ButtonVaccin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="Om vaccin mot covid-19"></Button>
+
+        <TextView
+            android:id="@+id/TextVaccin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonResor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Covid 19 : Resor och covidbevis"></Button>
+
+        <TextView
+            android:id="@+id/TextResor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonRisken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Minska risken att du och andra får covid-19"></Button>
+
+        <TextView
+            android:id="@+id/TextRisken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonCovid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Covid-19"></Button>
+
+        <TextView
+            android:id="@+id/TextCovid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonMunskydd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Så använder du munskydd"></Button>
+
+        <TextView
+            android:id="@+id/TextMunskydd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonGöraSjälv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Vad kan jag göra själv om jag får covid-19?"></Button>
+
+        <TextView
+            android:id="@+id/TextGöraSjälv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonMåBättre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="Så kan jag må bättre efter covid-19"></Button>
+
+        <TextView
+            android:id="@+id/TextMåBättre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+        <Button
+            android:id="@+id/ButtonBarn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2mm"
+            android:layout_gravity="center"
+            android:text="För barn: Om corona och covid-19"></Button>
+
+        <TextView
+            android:id="@+id/TextBarn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2mm"
+            android:paddingRight="2mm"
+            android:text=""></TextView>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
+
+
+
+

@@ -10,6 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".Booking.BookingPopWindow"
+            android:exported="true" />
+        <activity
+            android:name=".Booking.BookingMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MyPage.MainMyPage"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".LogIn.MainLogInActivity"
+            android:exported="true" />
+        <activity
+            android:name=".faq.Faq_main"
+            android:exported="true" />
+        <activity
+            android:name=".Dashboard.DisplayCountyNumbersActivity"
+            android:exported="true" />
+        <activity
             android:name=".Dashboard.ActivityDeathsAndCases"
             android:exported="true" />
         <activity
