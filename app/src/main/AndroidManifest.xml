@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".Dashboard.DisplayCountyNumbersActivity"
+            android:exported="true" />
+        <activity
             android:name=".Dashboard.ActivityDeathsAndCases"
             android:exported="true" />
         <activity
