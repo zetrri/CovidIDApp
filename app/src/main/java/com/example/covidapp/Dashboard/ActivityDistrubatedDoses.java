@@ -3,7 +3,6 @@ package com.example.covidapp.Dashboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,7 +22,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_distrubated_doses);
+        setContentView(R.layout.dashboard_activity_distrubated_doses);
 
         //Declaration
         ListView listView;

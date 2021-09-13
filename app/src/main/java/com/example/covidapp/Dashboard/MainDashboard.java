@@ -14,7 +14,7 @@ public class MainDashboard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_dashboard);
+        setContentView(R.layout.dashboard_main_activity);
         Button button,button_deathsandcases;
         button_deathsandcases = findViewById(R.id.button_deathsandCases);
         button = findViewById(R.id.buttonDisDoses);
