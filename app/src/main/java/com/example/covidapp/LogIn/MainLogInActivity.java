@@ -12,23 +12,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 
-public class MainLogInActivity extends AppCompatActivity {
+public class MainLogInActivity extends AppCompatActivity
+{
     private EditText eEmail;
     private EditText ePassword;
     private Button eLogin;
     private TextView eAttemptsInfo;
-
+    //Dummmy admin login
     private final String Username = "Admin@gmail.com";
     private final String Password = "Admin";
-
+    //Dummy user login
+    private final String Username1 = "User@gmail.com";
+    private final String Password1 = "User";
+    //used for checking input email and pass
     boolean isValid = false;
+    boolean isValid1 = false;
+
     private int counter = 5;
     CountDownTimer cTimer = null;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_log_in);
@@ -59,9 +65,32 @@ public class MainLogInActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    //Methods to check if email and pass matches our dummy admin & user accounts
                     isValid = validate(inputEmail, inputPassword);
-                    if(!isValid)
+                    isValid1 = validate1(inputEmail, inputPassword);
+                    if(isValid) // right credentials for Admin Login
                     {
+                        Log.i("Success", "User Login Successful!"); //logging
+
+                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
+
+                        //add code to go to new activity
+                        Intent intent = new Intent(getBaseContext(), AdminMenu.class);
+                        startActivity(intent);
+                    }
+                    else if (isValid1) //right credentials for User Login
+                    {
+                        Log.i("Success", "User Login Successful!"); //logging
+
+                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
+
+                        //add code to go to new activity
+                        Intent intent = new Intent(getBaseContext(), MainDashboard.class);
+                        startActivity(intent);
+                    }
+                    else //wrong credentials
+                    {
+
                         counter--;
 
                         Log.i("Error", "Incorrect credentials from user!"); //logging
@@ -76,24 +105,14 @@ public class MainLogInActivity extends AppCompatActivity {
                             CDTimer();
                         }
                     }
-                    else //right credentials
-                    {
-                        Log.i("Success", "Login Successful!"); //logging
-
-                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
-
-                        //add code to go to new activity
-                        Intent intent = new Intent(getBaseContext(), MainActivity.class); //insert which activity to intent
-                        startActivity(intent);
-                    }
                 }
             }
         });
     }
     private void CDTimer()
     {
-        //creating timer with 60 seconds
-        cTimer = new CountDownTimer(10000, 1000)
+        //creating timer with 5 seconds for testing(should be set to a minute+ otherwise)
+        cTimer = new CountDownTimer(5000, 1000) 
         {
             public void onTick(long millisUntilFinished)
             {
@@ -109,7 +128,7 @@ public class MainLogInActivity extends AppCompatActivity {
         cTimer.start();
     }
 
-    private boolean validate(String name, String password) //method for checking if user & password matches
+    private boolean validate(String name, String password) //Admin method for checking if user & password matches
     {
         if(name.equals(Username) && password.equals(Password))
         {
@@ -117,8 +136,18 @@ public class MainLogInActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private boolean validate1(String name, String password) //User method for checking if user & password matches
+    {
+        if(name.equals(Username1) && password.equals(Password1))
+        {
+            return true;
+        }
+        return false;
+    }
+
     private boolean isEmailValid(CharSequence email)
     {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    }
+}
