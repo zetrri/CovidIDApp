@@ -7,6 +7,7 @@
     tools:context=".Dashboard.MainDashboard">
 
     <Button
+        android:layout_marginHorizontal="10sp"
         android:id="@+id/buttonDisDoses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:layout_marginHorizontal="10sp"
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,10 +27,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_deathsandCases" />
     <Button
+        android:layout_marginHorizontal="10sp"
         android:id="@+id/button_deathsandCases"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Deaths/Cases"
         app:layout_constraintTop_toBottomOf="@id/buttonDisDoses"
+        />
+
+    <Button
+        android:layout_marginHorizontal="10sp"
+        android:id="@+id/button_cumelative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cumelative uptake"
+        app:layout_constraintTop_toBottomOf="@id/button"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

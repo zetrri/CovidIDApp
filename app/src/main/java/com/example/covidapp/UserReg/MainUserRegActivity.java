@@ -21,6 +21,8 @@ public class MainUserRegActivity extends AppCompatActivity {
         Spinner countySpinner = findViewById(R.id.countySpinner);
         Spinner stadSpinner = findViewById(R.id.stadSpinner);
 
+
+
         /* Temp Förbereder  */
         String[] counties = new String[] {"Värmland län", "Örebro län", "Västra Götaland"};
 

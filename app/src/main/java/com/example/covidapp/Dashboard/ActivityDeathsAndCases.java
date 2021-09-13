@@ -2,7 +2,6 @@ package com.example.covidapp.Dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 
 public class ActivityDeathsAndCases extends AppCompatActivity {
@@ -18,7 +16,7 @@ public class ActivityDeathsAndCases extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deaths_and_cases);
+        setContentView(R.layout.dashboard_activity_deaths_and_cases);
         //Declaration of spinners
         Spinner spinner = findViewById(R.id.spinnerAge);
         Spinner spinnerDoses = findViewById(R.id.SpinnerDoses);
