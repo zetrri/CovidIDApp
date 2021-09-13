@@ -48,6 +48,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         ></Button>
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distrubated"
+        android:id="@+id/buttonSwitchDistAdm"
+        app:layout_constraintEnd_toStartOf="@+id/buttonmonth"
+        app:layout_constraintStart_toEndOf="@+id/buttonweek"
+        app:layout_constraintTop_toTopOf="@+id/buttonweek"></Button>
     <Button
         android:id="@+id/buttonmonth"
         android:layout_marginRight="10sp"

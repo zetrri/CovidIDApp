@@ -19,6 +19,8 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
 
     Button buttonweek;
     Button buttonMonth;
+    Button buttonSwitch;
+    Boolean aBooleanDistAdmSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +33,15 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
         TextView textView_countyname = findViewById(R.id.textView);
         TextView textView_countyID = findViewById(R.id.textView2);
         TextView textView_CountyNumber = findViewById(R.id.textView3);
+        aBooleanDistAdmSwitch = intent.getExtras().getBoolean("mode");
         buttonweek = findViewById(R.id.buttonweek);
         buttonMonth = findViewById(R.id.buttonmonth);
-
+        buttonSwitch = findViewById(R.id.buttonSwitchDistAdm);
+        if ( aBooleanDistAdmSwitch){
+            buttonSwitch.setVisibility(View.INVISIBLE);
+        }
+        else buttonSwitch.setVisibility(View.VISIBLE);
+        //buttonSwitch.setVisibility(View.INVISIBLE);
         //set textviews to the names according to the selected county
         textView_countyname.setText("County "+DistData.getName());
         textView_countyID.setText("ID "+DistData.getId());

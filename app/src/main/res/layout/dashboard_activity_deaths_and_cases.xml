@@ -53,15 +53,7 @@
         app:layout_constraintStart_toEndOf="@+id/textViewCounty"
         app:layout_constraintTop_toBottomOf="@+id/edittext"></Spinner>
 
-    <TextView
-        android:id="@+id/textViewType"
-        android:layout_marginTop="10sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type: "
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAge"></TextView>
+
 
     <Spinner
         android:id="@+id/SpinnerDoses"
@@ -78,16 +70,10 @@
         android:layout_marginTop="10sp"
         android:text="Doses: "
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toEndOf="@id/Spinnermode"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewCounty"></TextView>
 
-    <Spinner
-        android:id="@+id/Spinnermode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        app:layout_constraintStart_toEndOf="@+id/textViewType"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAge"></Spinner>
+
 
 
     <ListView

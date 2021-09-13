@@ -19,10 +19,17 @@ import java.util.ArrayList;
 
 public class ActivityDistrubatedDoses extends AppCompatActivity {
 
+        Boolean buttonSwitchBool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity_distrubated_doses);
+
+        Intent intentExtras = getIntent();
+        buttonSwitchBool = intentExtras.getExtras().getBoolean("mode");
+
+
+
 
         //Declaration
         ListView listView;
@@ -78,6 +85,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
                 intent.putExtra("id",Integer.toString(datalist.get(i).getId()));
                 intent.putExtra("number",Integer.toString(datalist.get(i).getNumber()));
                 intent.putExtra("list",datalist.get(i));
+                if ( buttonSwitchBool) intent.putExtra("mode",true);
 
 
                 startActivity(intent);
@@ -156,6 +164,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
     //creating dummy counties
     private ArrayList<String> createdummydatacounties(){
         ArrayList<String> conties = new ArrayList<>();
+        conties.add("Sverige Total");
         conties.add("Blekinge län");
         conties.add("Dalarnas län");
         conties.add("Gotlands län");
