@@ -72,7 +72,7 @@ public class MainLogInActivity extends AppCompatActivity {
 
                         if(counter == 0) //0 attempts left
                         {
-                            eLogin.setEnabled(false);
+                            eLogin.setEnabled(false); //hej
                             CDTimer();
                         }
                     }
