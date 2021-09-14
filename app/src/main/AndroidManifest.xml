@@ -19,9 +19,6 @@
             android:name=".Passport.PassportMainActivity"
             android:exported="true" />
         <activity
-            android:name=".Booking.BookingPopWindow"
-            android:exported="true" />
-        <activity
             android:name=".Booking.BookingMainActivity"
             android:exported="true" />
         <activity

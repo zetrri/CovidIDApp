@@ -12,11 +12,13 @@
         android:orientation="vertical"
         android:padding="20sp"
         >
+        <!-- Top menu-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/passport"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
@@ -27,7 +29,7 @@
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_passport_svgrepo_com__2_" />
 
@@ -39,6 +41,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/bookappointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
@@ -49,7 +52,7 @@
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_date_svgrepo_com" />
@@ -63,6 +66,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/notifications"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
@@ -73,7 +77,7 @@
                 <ImageView
                     android:id="@+id/imageView7"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_email_notification_alert_svgrepo_com" />
 
@@ -95,7 +99,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -109,59 +112,13 @@
                     android:layout_height="wrap_content"
                     android:text="Mina bokade tider" />
 
-                <androidx.cardview.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/card_view"
-                    android:layout_gravity="center"
+                <LinearLayout
+                    android:id="@+id/containerbookings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="4dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/purple_500"
-                            android:textColor="@color/white"
-                            android:textSize="20dp"
-                            android:text=" 8/2-2021 kl 15:30"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:text="Mottagning: Gripen Karlstad"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:text="Vaccin: Phizer"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            >
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Avboka"/>
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text="Omboka"/>
+                    android:orientation="vertical">
 
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-
-
-                </androidx.cardview.widget.CardView>
-
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
