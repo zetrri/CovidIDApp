@@ -86,7 +86,7 @@ public class DisplayCountyNumbersActivity extends AppCompatActivity {
                     TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
                     text1.setText("Vecka "+Integer.toString(weeklist.get(position).getWeek()));
-                    text2.setText(Integer.toString(weeklist.get(position).getAmount()));
+                    text2.setText(Integer.toString(weeklist.get(position).getAmountDist()));
                     return view;
                 }
             };

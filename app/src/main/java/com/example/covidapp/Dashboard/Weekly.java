@@ -4,11 +4,31 @@ import java.io.Serializable;
 
 public class Weekly implements Serializable {
     int Week;
-    int amount;
+    int amountDist;
+    int amountAdm;
+    Double amountPercent;
 
-    public Weekly(int week, int amount) {
+    public Weekly(int week, int amountDist, int amountAdm, Double amountPercent) {
         this.Week = week;
-        this.amount = amount;
+        this.amountDist = amountDist;
+        this.amountAdm = amountAdm;
+        this.amountPercent = amountPercent;
+    }
+
+    public int getAmountAdm() {
+        return amountAdm;
+    }
+
+    public void setAmountAdm(int amountAdm) {
+        this.amountAdm = amountAdm;
+    }
+
+    public Double getAmountPercent() {
+        return amountPercent;
+    }
+
+    public void setAmountPercent(Double amountPercent) {
+        this.amountPercent = amountPercent;
     }
 
     public int getWeek() {
@@ -19,12 +39,12 @@ public class Weekly implements Serializable {
         this.Week = week;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getAmountDist() {
+        return amountDist;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmountDist(int amountDist) {
+        this.amountDist = amountDist;
     }
     @Override
     public String toString(){

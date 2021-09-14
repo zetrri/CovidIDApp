@@ -20,8 +20,11 @@ import java.util.ArrayList;
 public class ActivityDistrubatedDoses extends AppCompatActivity {
 
         Boolean buttonSwitchBool;
+        ArrayList<Data> datalist;
+        Boolean booleanReady;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        booleanReady =false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity_distrubated_doses);
 
@@ -50,8 +53,8 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
 
         //filling the list with demo data
         Monthlist = createMonths(months,null,1);
-        weeklist = createWeeks(null,null,1);
-        final ArrayList<Data>datalist = createData(Monthlist, weeklist, conties);
+        weeklist = createWeeks(null,null,null,null,1);
+        datalist = createData(Monthlist, weeklist, conties);
 
         //setting up the listview to show conties
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, datalist);
@@ -85,7 +88,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
                 intent.putExtra("id",Integer.toString(datalist.get(i).getId()));
                 intent.putExtra("number",Integer.toString(datalist.get(i).getNumber()));
                 intent.putExtra("list",datalist.get(i));
-                if ( buttonSwitchBool) intent.putExtra("mode",true);
+                if ( !buttonSwitchBool) intent.putExtra("mode",true);
 
 
                 startActivity(intent);
@@ -94,7 +97,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
 
     }
 
-    //making the final dataclass for alla conties
+    //making the final dataclass for all conties
     public ArrayList<Data> createData(ArrayList<Monthly> monthly,ArrayList<Weekly> weekly,ArrayList<String> conties){
         ArrayList<Data> listofData = new ArrayList<>();
         for(int i=0;i<conties.size();i++){
@@ -106,17 +109,17 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
     }
     //Reciving a list of weeks and a list of the amount on that week and create the userclass Weekly
     //mode 1 == demo mode
-    public ArrayList<Weekly> createWeeks(ArrayList<Integer> weeks, ArrayList<Integer> amount, int mode){
+    public ArrayList<Weekly> createWeeks(ArrayList<Integer> weeks, ArrayList<Integer> amountDist,ArrayList<Integer> amountAdm,ArrayList<Double> perc, int mode){
         ArrayList<Weekly> listDone = new ArrayList<>();
         if (mode==1){
             for (int i=1;i<=52;i++){
-                Weekly weekly = new Weekly(i,150);
+                Weekly weekly = new Weekly(i,150, 200,0.56);
                 listDone.add(weekly);
             }
         }
         else{
             for (int i=0;i<weeks.size();i++){
-                Weekly weekly = new Weekly(weeks.get(i),amount.get(i));
+                Weekly weekly = new Weekly(weeks.get(i),amountDist.get(i),amountAdm.get(i),perc.get(i));
                 listDone.add(weekly);
             }
         }
@@ -147,6 +150,7 @@ public class ActivityDistrubatedDoses extends AppCompatActivity {
     //creating dummy months
     private ArrayList<String> createdummydatamonths() {
         ArrayList<String> months= new ArrayList<>();
+        months.add("Year");
         months.add("January");
         months.add("February");
         months.add("March");
