@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.covidapp.Booking.BookingMainActivity;
 import com.example.covidapp.Dashboard.MainDashboard;
+import com.example.covidapp.HealthAdmin.QuestionnaireResponseActivity;
 import com.example.covidapp.LogIn.MainLogInActivity;
 import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.Passport.PassportMainActivity;
@@ -93,7 +94,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        buttonquestresp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), QuestionnaireResponseActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
