@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 
 import java.util.ArrayList;
@@ -26,16 +28,9 @@ import java.util.List;
 public class BookingMainActivity extends AppCompatActivity {
 
     BookingMainActivity this_obj = this;
+    private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
     private String[] cities;
     private String[] clinics;
-    private String county;
-    private String city;
-    private String clinic;
-    private String date;
-    private String vaccine;
-    private String allergies;
-    private String medicines;
-    private String comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +38,7 @@ public class BookingMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking_main);
         // Kod för dom olika dropdown menyerna över län, stad och klinik
         Spinner county_dropdown = findViewById(R.id.dropdown_county);
-        String[] counties = new String[] {"Värmland", "Västra Götaland"}; // kommer hämtas från databas
+        String[] counties = new String[] {"Värmland", "Västra Götaland"}; // TODO kommer hämtas från databas
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, counties);
         county_dropdown.setAdapter(adapter1);
 
@@ -52,35 +47,35 @@ public class BookingMainActivity extends AppCompatActivity {
         county_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                county = (String) adapterView.getItemAtPosition(position); // sparar län
-                //TODO jämför med databas
-                if(county == "Västra Götaland"){
+                booking.county = (String) adapterView.getItemAtPosition(position); // sparar län
+                //TODO jämför med databas och hämta rätt städer
+                if(booking.county == "Västra Götaland"){
                     cities =  new String[] {"Göteborg", "Alingsås"};
                 }else{
                     cities = new String[] {"Karlstad"};
                 }
                 Spinner city_dropdown = findViewById(R.id.dropdown_city);
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, cities);
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, cities);
                 city_dropdown.setAdapter(adapter2);
 
                 city_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                        city = (String) adapterView.getItemAtPosition(position); // sparar stad
+                        booking.city = (String) adapterView.getItemAtPosition(position); // sparar stad
                         //TODO jämför med databas
-                        if(city == "Karlstad"){
+                        if(booking.city.equals("Karlstad")){
                             clinics =  new String[] {"Gripen", "Kronoparken", "Rud"};
                         }else{
                             clinics = new String[] {"Sollebrunn", "Nolhaga"};
                         }
                         Spinner clinic_dropdown = findViewById(R.id.dropdown_clinic);
-                        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, clinics);
+                        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, clinics);
                         clinic_dropdown.setAdapter(adapter3);
 
                         clinic_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                                clinic = (String) adapterView.getItemAtPosition(position); // sparar klinik
+                                booking.clinic = (String) adapterView.getItemAtPosition(position); // sparar klinik
                             }
 
                             @Override
@@ -109,7 +104,7 @@ public class BookingMainActivity extends AppCompatActivity {
         vaccine_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                vaccine = vaccine_dropdown.getItemAtPosition(position).toString(); // sparar vaccinet valt
+                booking.vaccine = vaccine_dropdown.getItemAtPosition(position).toString(); // sparar vaccinet valt
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -125,18 +120,18 @@ public class BookingMainActivity extends AppCompatActivity {
         Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                date = day + "/" + month + "-" + year; // valt datum
+                booking.date = day + "/" + month + "-" + year; // valt datum
                 String curDate = String.valueOf(day);
-                List<String> freetimes = new ArrayList<String>();
+                List<String> freetimes = new ArrayList<>();
 
                 // exempel på att hitta rätt tider för rätt dag, kommer ändras när databaser implementeras
-                if(curDate.equals("2")) {
+                if(curDate.equals("1")) {
                     radioGroup.removeAllViews();
                     String[] dates = new String[]{"11:00", "11:15", "12:30", "13:00", "13:45", "14:15"}; //TODO hämta från databas
                     Collections.addAll(freetimes, dates);
 
                 }
-                else if(curDate.equals("3")){
+                else if(curDate.equals("2")){
                     radioGroup.removeAllViews();
                     String[] dates= new String[]{"11:30", "13:15", "14:00"}; //TODO hämta från databas
                     Collections.addAll(freetimes, dates);
@@ -152,7 +147,6 @@ public class BookingMainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -173,25 +167,26 @@ public class BookingMainActivity extends AppCompatActivity {
                 if(radioButton==null){ //försöker boka utan någon tid vald
                     error.setVisibility(View.VISIBLE);
                     Log.i("FEL", "Ingen tid vald");
-
                     return;
                 }
 
-                String time = (String) radioButton.getText(); //tiden som är vald
+                booking.time = (String) radioButton.getText(); //tiden som är vald
                 EditText text_allergies = (EditText) findViewById(R.id.editText_allergies);
                 EditText text_medicines = (EditText) findViewById(R.id.editText_medicine);
                 EditText text_comments = (EditText) findViewById(R.id.editText_comments);
-                allergies = text_allergies.getText().toString(); //sträng med allergier
-                medicines = text_medicines.getText().toString(); // sträng med mediciner
-                comments = text_comments.getText().toString(); // sträng med kommentarer
+                booking.allergy = text_allergies.getText().toString(); //sträng med allergier
+                booking.meds = text_medicines.getText().toString(); // sträng med mediciner
+                booking.message = text_comments.getText().toString(); // sträng med kommentarer
 
-                String information = "Datum: " + date + "\nTid: " + time + "\nVaccin: " + vaccine + "\nKlinik: " + clinic;
+                String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
 
                 new AlertDialog.Builder(this_obj)
                         .setTitle("Din bokning")
                         .setMessage(information+"\n\nVill du bekräfta?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getBaseContext(), MainMyPage.class);
+                                startActivity(intent);
                                 // TODO spara informationen i en databas och gå till min sida
                             }
                         })

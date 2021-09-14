@@ -13,6 +13,9 @@
             android:name=".Dashboard.ActivityDosesAgeProduct"
             android:exported="true" />
         <activity
+            android:name=".LogIn.AdminMenu"
+            android:exported="true" />
+        <activity
             android:name=".HealthAdmin.QuestionnaireResponseActivity"
             android:exported="true" />
         <activity
@@ -20,9 +23,6 @@
             android:exported="true" />
         <activity
             android:name=".Passport.PassportMainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Booking.BookingPopWindow"
             android:exported="true" />
         <activity
             android:name=".Booking.BookingMainActivity"
