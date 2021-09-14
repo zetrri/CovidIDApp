@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".LogIn.AdminMenu"
+            android:exported="true" />
+        <activity
             android:name=".HealthAdmin.QuestionnaireResponseActivity"
             android:exported="true" />
         <activity
