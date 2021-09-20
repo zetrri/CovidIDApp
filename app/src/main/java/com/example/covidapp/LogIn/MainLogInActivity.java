@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.Dashboard.MainDashboard;
-import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 
 public class MainLogInActivity extends AppCompatActivity
