@@ -17,6 +17,8 @@ import com.example.covidapp.HealthAdmin.AdminMenu;
 import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.MainUserRegActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainLogInActivity extends AppCompatActivity
 {
@@ -50,6 +52,15 @@ public class MainLogInActivity extends AppCompatActivity
         eAttemptsInfo = findViewById(R.id.AttemptsInfo);
         eForgot = findViewById(R.id.btnForgot);
         eSignup = findViewById(R.id.btnSignup);
+
+
+        //Testklass ta bort
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World!");
+
+        //
 
         //listeners
         //user reg
