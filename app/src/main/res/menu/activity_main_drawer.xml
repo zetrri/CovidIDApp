@@ -5,31 +5,31 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_MyPage"
+            android:id="@+id/nav_my_page"
             android:icon="@drawable/user"
             android:title="@string/menu_mypage" />
         <item
-            android:id="@+id/nav_Dashboard"
+            android:id="@+id/nav_dashboard"
             android:icon="@drawable/dashboard2"
             android:title="@string/menu_dashboard" />
+<!--        <item-->
+<!--            android:id="@+id/nav_booking"-->
+<!--            android:icon="@drawable/book"-->
+<!--            android:title="@string/menu_booking" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_passport"-->
+<!--            android:icon="@drawable/passport"-->
+<!--            android:title="@string/menu_passport" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_notifikationer"-->
+<!--            android:icon="@drawable/mail"-->
+<!--            android:title="@string/menu_Notifikationer" />-->
         <item
-            android:id="@+id/nav_Booking"
-            android:icon="@drawable/book"
-            android:title="@string/menu_booking" />
-        <item
-            android:id="@+id/nav_Passport"
-            android:icon="@drawable/passport"
-            android:title="@string/menu_passport" />
-        <item
-            android:id="@+id/nav_Notifikationer"
-            android:icon="@drawable/mail"
-            android:title="@string/menu_Notifikationer" />
-        <item
-            android:id="@+id/nav_FAQ"
+            android:id="@+id/nav_faq"
             android:icon="@drawable/question"
             android:title="@string/menu_faq" />
         <item
-            android:id="@+id/nav_Login"
+            android:id="@+id/nav_login"
             android:icon="@drawable/lock"
             android:title="@string/menu_login" />
 

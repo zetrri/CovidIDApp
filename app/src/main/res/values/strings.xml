@@ -22,4 +22,17 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_page">My Page</string>
+    <string name="booking">Booking</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="deaths_and_cases">Deaths and Cases</string>
+    <string name="doses_age_product">Doses Age Product</string>
+    <string name="distributed_doses">Distributed Doses</string>
+    <string name="county_numbers">County Numbers</string>
+    <string name="faq">FAQ</string>
+    <string name="admin_menu">Admin Menu</string>
+    <string name="questionnaire_response">Questionnaire Response</string>
+    <string name="login">Login</string>
+    <string name="passport">Passport</string>
+    <string name="user_reg">User Registration</string>
 </resources>
