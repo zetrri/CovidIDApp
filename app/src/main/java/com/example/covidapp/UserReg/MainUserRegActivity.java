@@ -1,6 +1,9 @@
 package com.example.covidapp.UserReg;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -9,11 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.covidapp.LogIn.MainLogInActivity;
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainUserRegActivity extends AppCompatActivity {
     String [] account = new String[9];
+    //firebase authentication
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +34,7 @@ public class MainUserRegActivity extends AppCompatActivity {
         Spinner countySpinner = findViewById(R.id.countySpinner);
         Spinner stadSpinner = findViewById(R.id.stadSpinner);
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         /* Temp Förbereder  */
@@ -40,9 +54,10 @@ public class MainUserRegActivity extends AppCompatActivity {
                 errorMessageText.setText("");
 
                 /* Kollar fel */
-                if(!checkPersonNummer(errorMessageText) || !checkPassword(errorMessageText) || !checkName(errorMessageText) || !checkEmail(errorMessageText) ||
-                        !checkMobileNumber(errorMessageText) || !checkStreetAddress(errorMessageText) ){
-                    return;
+                if(!checkEmail(errorMessageText)  /*|| !checkPassword(errorMessageText) || !checkPersonNummer(errorMessageText) || !checkName(errorMessageText) ||
+                        !checkMobileNumber(errorMessageText) || !checkStreetAddress(errorMessageText)*/)
+                {
+                    return ;
                 }
                 else{
                     //TEMP SET ACCOUNT
@@ -73,6 +88,23 @@ public class MainUserRegActivity extends AppCompatActivity {
                     //Gata
                     input = findViewById(R.id.editTextTextPersonGata);
                     account[8] = input.getText().toString();
+
+                    //sending to database
+                    firebaseAuth.createUserWithEmailAndPassword(account[0],account[1]).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful())
+                            {
+                                Toast.makeText(getBaseContext(), "Registration completed!", Toast.LENGTH_SHORT).show(); //print
+                                Intent intent = new Intent(getBaseContext(), MainLogInActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show(); //print
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -85,11 +117,17 @@ public class MainUserRegActivity extends AppCompatActivity {
         EditText input = findViewById(R.id.editTextDate);
         String input_value = input.getText().toString();
 
+        if(input_value.length() < 12){
+            Log.i("FEL", "Person nummer format");
+            input.requestFocus();
+            errorMessageText.setText("Fel format för person nummer! (12 siffror)");
+            return false;
+        }
+
         // 4, 6 = Månad. 6, 8 = Dag. 0, 4 = Årtal
         int year = Integer.parseInt(input_value.substring(0, 4));
         int month = Integer.parseInt(input_value.substring(4, 6));
         int day = Integer.parseInt(input_value.substring(6, 8));
-
 
         if(!input_value.matches("[0-9]+") || input_value.length() != 12 || month > 12 || month < 1 || day < 1 || day > 31 || year < 1900) {
             Log.i("FEL", "Person nummer format");
