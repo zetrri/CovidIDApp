@@ -13,7 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.Dashboard.MainDashboard;
+import com.example.covidapp.HealthAdmin.AdminMenu;
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.MainUserRegActivity;
 
 public class MainLogInActivity extends AppCompatActivity
 {
@@ -21,6 +24,9 @@ public class MainLogInActivity extends AppCompatActivity
     private EditText ePassword;
     private Button eLogin;
     private TextView eAttemptsInfo;
+    private Button eForgot;
+    private Button eSignup;
+
     //Dummmy admin login
     private final String Username = "Admin@gmail.com";
     private final String Password = "Admin";
@@ -42,8 +48,27 @@ public class MainLogInActivity extends AppCompatActivity
         ePassword = findViewById(R.id.etPassword);
         eLogin = findViewById(R.id.btnLogin);
         eAttemptsInfo = findViewById(R.id.AttemptsInfo);
+        eForgot = findViewById(R.id.btnForgot);
+        eSignup = findViewById(R.id.btnSignup);
 
-        //listener
+        //listeners
+        //user reg
+        eSignup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), MainUserRegActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        /* Forgot password (not implemented yet)
+        eForgot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), RepalceWithActivity.class);
+                startActivity(intent);
+            }
+        });*/
+
+        //login
         eLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -84,7 +109,7 @@ public class MainLogInActivity extends AppCompatActivity
                         Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
 
                         //add code to go to new activity
-                        Intent intent = new Intent(getBaseContext(), MainDashboard.class);
+                        Intent intent = new Intent(getBaseContext(), MainMyPage.class);
                         startActivity(intent);
                     }
                     else //wrong credentials
@@ -107,6 +132,8 @@ public class MainLogInActivity extends AppCompatActivity
                 }
             }
         });
+
+
     }
     private void CDTimer()
     {
