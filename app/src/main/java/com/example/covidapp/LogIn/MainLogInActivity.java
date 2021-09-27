@@ -13,7 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.Dashboard.MainDashboard;
-import com.example.covidapp.MainActivity;
+import com.example.covidapp.HealthAdmin.AdminMenu;
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 
 public class MainLogInActivity extends AppCompatActivity
@@ -85,7 +86,7 @@ public class MainLogInActivity extends AppCompatActivity
                         Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
 
                         //add code to go to new activity
-                        Intent intent = new Intent(getBaseContext(), MainDashboard.class);
+                        Intent intent = new Intent(getBaseContext(), MainMyPage.class);
                         startActivity(intent);
                     }
                     else //wrong credentials
