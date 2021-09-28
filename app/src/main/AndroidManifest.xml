@@ -13,6 +13,9 @@
             android:name=".LogIn.PasswordActivity"
             android:exported="true" />
         <activity
+            android:name=".HealthAdmin.AdminAddAvailableTimes"
+            android:exported="true" />
+        <activity
             android:name=".Dashboard.ActivityDosesAgeProduct"
             android:exported="true" />
         <activity
