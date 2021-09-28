@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,10 +47,12 @@ public class DashboardFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static DashboardFragment newInstance(String param1, String param2) {
         DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+        bundle.putBoolean("mode", true);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -90,24 +93,31 @@ public class DashboardFragment extends Fragment {
         buttonAgeProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDosesAgeProduct.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDosesAgeProduct.class);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_doses_age_product);
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDistrubatedDoses.class);
-
-                intent.putExtra("mode",true);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDistrubatedDoses.class);
+//
+//                intent.putExtra("mode",true);
+//                startActivity(intent);
+//                DistributedDosesFragment fragment = new DistributedDosesFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putBoolean("mode", true);
+//                fragment.setArguments(bundle);
+                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_distributed_doses);
             }
         });
         button_deathsandcases.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(),ActivityDeathsAndCases.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getBaseContext(),ActivityDeathsAndCases.class);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_deaths_and_cases);
             }
         });
     }

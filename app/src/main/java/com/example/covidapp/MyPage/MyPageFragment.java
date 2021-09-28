@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -98,15 +99,17 @@ public class MyPageFragment extends Fragment {
         passport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), PassportMainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getBaseContext(), PassportMainActivity.class);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
             }
         });
         bookappointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), BookingMainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getBaseContext(), BookingMainActivity.class);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
             }
         });
         notifications.setOnClickListener(new View.OnClickListener() {

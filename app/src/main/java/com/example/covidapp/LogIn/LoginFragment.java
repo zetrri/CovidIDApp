@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -135,8 +136,9 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getActivity().getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
 
                         //add code to go to new activity
-                        Intent intent = new Intent(getActivity().getBaseContext(), AdminMenu.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(getActivity().getBaseContext(), AdminMenu.class);
+//                        startActivity(intent);
+                        Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_admin_menu);
                     }
                     else if (isValid1) //right credentials for User Login
                     {
@@ -145,8 +147,9 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getActivity().getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
 
                         //add code to go to new activity
-                        Intent intent = new Intent(getActivity().getBaseContext(), MainDashboard.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(getActivity().getBaseContext(), MainDashboard.class);
+//                        startActivity(intent);
+                        Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
                     }
                     else //wrong credentials
                     {
@@ -166,6 +169,12 @@ public class LoginFragment extends Fragment {
                         }
                     }
                 }
+            }
+        });
+        binding.btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
             }
         });
     }

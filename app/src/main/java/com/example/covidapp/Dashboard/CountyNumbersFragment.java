@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class CountyNumbersFragment extends Fragment {
     Button buttonMonth;
     Button buttonSwitch;
     Boolean aBooleanDistAdmSwitch;
+//    Data DistData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,6 +71,11 @@ public class CountyNumbersFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+//        Bundle bundle = this.getArguments();
+//        if(bundle != null) {
+//            aBooleanDistAdmSwitch = bundle.getBoolean("mode");
+//            DistData = (Data) bundle.getSerializable("list");
+//        }
     }
 
     @Override
@@ -84,42 +91,55 @@ public class CountyNumbersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //get intent data and assign to the right fields
-        Intent intent = getActivity().getIntent();
-        Data DistData = (Data) intent.getSerializableExtra("list");
+//        Intent intent = getActivity().getIntent();
+//        Data DistData = (Data) intent.getSerializableExtra("list");
+//        Data DistData = null;
         TextView textView_countyname = binding.textView;
         TextView textView_countyID = binding.textView2;
         TextView textView_CountyNumber = binding.textView3;
-        aBooleanDistAdmSwitch = intent.getExtras().getBoolean("mode");
+//        aBooleanDistAdmSwitch = intent.getExtras().getBoolean("mode");
+        //get bundle data and assign to the right fields
+//        Bundle bundle = this.getArguments();
+//        if(bundle != null) {
+//            aBooleanDistAdmSwitch = bundle.getBoolean("mode");
+//            DistData = (Data) bundle.getSerializable("list");
+//        }
+//        else {
+//            aBooleanDistAdmSwitch = false;
+//            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+//        }
         buttonweek = binding.buttonweek;
         buttonMonth = binding.buttonmonth;
         buttonSwitch = binding.buttonSwitchDistAdm;
-        if ( aBooleanDistAdmSwitch){
-            buttonSwitch.setVisibility(View.INVISIBLE);
-        }
-        else buttonSwitch.setVisibility(View.VISIBLE);
+//        if ( aBooleanDistAdmSwitch){
+//            buttonSwitch.setVisibility(View.INVISIBLE);
+//        }
+//        else buttonSwitch.setVisibility(View.VISIBLE);
         //buttonSwitch.setVisibility(View.INVISIBLE);
         //set textviews to the names according to the selected county
-        textView_countyname.setText("County "+DistData.getName());
-        textView_countyID.setText("ID "+DistData.getId());
-        textView_CountyNumber.setText("number "+DistData.getNumber());
+//        if(DistData != null) {
+//            textView_countyname.setText("County "+DistData.getName());
+//            textView_countyID.setText("ID "+DistData.getId());
+//            textView_CountyNumber.setText("number "+DistData.getNumber());
+//        }
 
         //set inital view for listview
         //mode =0 --> Week
         //mode = 1 --> Month
-        setViewForList(DistData,0);
+//        setViewForList(DistData,0);
 
         //Buttons to change view to month or week
         buttonweek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setViewForList(DistData,0);
+//                setViewForList(DistData,0);
 
             }
         });
         buttonMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setViewForList(DistData,1);
+//                setViewForList(DistData,1);
             }
         });
     }

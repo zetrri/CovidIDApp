@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -69,8 +70,22 @@ public class DistributedDosesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+            System.out.println("WTFFFFF");
+        }
+//        buttonSwitchBool = getArguments().getBoolean("mode");
+//        if(buttonSwitchBool) System.out.println("BOOLEAN IS TRUE");
+//        else System.out.println("BOOLEAN IS FUCKEN FALSE AGEN");
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            buttonSwitchBool = bundle.getBoolean("mode");
+//            System.out.println("THIS AINT NULL YALL");
+        }
+        else {
+            buttonSwitchBool = false;
+//            Navigation.findNavController(view).navigate(R.id.action_nav_distributed_doses_to_nav_dashboard);
+//            System.out.println("BUNDLE IS NULL");
         }
     }
 
@@ -88,8 +103,19 @@ public class DistributedDosesFragment extends Fragment {
 
         booleanReady =false;
 
-        Intent intentExtras = getActivity().getIntent();
-        buttonSwitchBool = intentExtras.getExtras().getBoolean("mode");
+//        Bundle bundle = getArguments();
+//        if(bundle != null) {
+//            buttonSwitchBool = bundle.getBoolean("mode");
+//            System.out.println("THIS AINT NULL YALL");
+//        }
+//        else {
+//            buttonSwitchBool = false;
+////            Navigation.findNavController(view).navigate(R.id.action_nav_distributed_doses_to_nav_dashboard);
+//            System.out.println("BUNDLE IS NULL");
+//        }
+
+//        Intent intentExtras = getActivity().getIntent();
+//        buttonSwitchBool = intentExtras.getExtras().getBoolean("mode");
 
 
 
@@ -142,16 +168,28 @@ public class DistributedDosesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity().getApplicationContext(),datalist.get(i).getName(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity().getBaseContext(), DisplayCountyNumbersActivity.class);
+//                Intent intent = new Intent(getActivity().getBaseContext(), DisplayCountyNumbersActivity.class);
 
-                intent.putExtra("name", datalist.get(i).getName());
-                intent.putExtra("id",Integer.toString(datalist.get(i).getId()));
-                intent.putExtra("number",Integer.toString(datalist.get(i).getNumber()));
-                intent.putExtra("list",datalist.get(i));
-                if ( !buttonSwitchBool) intent.putExtra("mode",true);
+                Fragment fragment = new Fragment();
+                Bundle bundle = new Bundle();
+
+                bundle.putString("name", datalist.get(i).getName());
+                bundle.putString("id",Integer.toString(datalist.get(i).getId()));
+                bundle.putString("number", Integer.toString(datalist.get(i).getNumber()));
+                bundle.putSerializable("list", datalist.get(i));
+                if(!buttonSwitchBool) bundle.putBoolean("mode", true);
+
+                fragment.setArguments(bundle);
+
+//                intent.putExtra("name", datalist.get(i).getName());
+//                intent.putExtra("id",Integer.toString(datalist.get(i).getId()));
+//                intent.putExtra("number",Integer.toString(datalist.get(i).getNumber()));
+//                intent.putExtra("list",datalist.get(i));
+//                if ( !buttonSwitchBool) intent.putExtra("mode",true);
 
 
-                startActivity(intent);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_distributed_doses_to_nav_county_numbers);
             }
         });
     }
