@@ -13,6 +13,8 @@ import android.widget.TimePicker;
 
 import com.example.covidapp.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +27,10 @@ public class AdminAddAvailableTimes extends AppCompatActivity {
     ListView listView;
     int day,month,year,minute,hour;
     Calendar date;
+    DateFormat dateFormat;
+    String pattern = "MM/dd/yyyy HH:mm";
     ArrayList<Calendar> calendars;
+    ArrayList<String> calendarsInString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +40,12 @@ public class AdminAddAvailableTimes extends AppCompatActivity {
         datePicker = findViewById(R.id.calendarViewChooseDate);
         listView = findViewById(R.id.listviewAdminAddedTimes);
         calendars = new ArrayList<>();
-        ArrayAdapter<Calendar> calendarArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, calendars);
+        calendarsInString = new ArrayList<>();
+        date = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat(pattern);
+        ArrayAdapter<String> calendarArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, calendarsInString);
         listView.setAdapter(calendarArrayAdapter);
+        timePicker.setIs24HourView(true);
 
         buttonAddTimes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,9 +55,12 @@ public class AdminAddAvailableTimes extends AppCompatActivity {
                 year = datePicker.getYear();
                 minute = timePicker.getMinute();
                 hour = timePicker.getHour();
-                date = Calendar.getInstance();
+
                 date.set(year,month,day,hour,minute);
                 calendars.add(date);
+                calendarsInString.add(dateFormat.format(date.getTime()));
+
+                listView.setAdapter(calendarArrayAdapter);
 
             }
         });
