@@ -4,21 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.covidapp.Booking.BookingMainActivity;
 import com.example.covidapp.Dashboard.MainDashboard;
+import com.example.covidapp.HealthAdmin.AdminMenu;
 import com.example.covidapp.HealthAdmin.QuestionnaireResponseActivity;
 import com.example.covidapp.LogIn.MainLogInActivity;
 import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.Passport.PassportMainActivity;
 import com.example.covidapp.UserReg.MainUserRegActivity;
 import com.example.covidapp.faq.Faq_main;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp;
+    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         buttonpassport = findViewById(R.id.buttonPassport);
         buttonuserreg = findViewById(R.id.buttonUserReg);
         buttonquestresp = findViewById(R.id.buttonQuestRes);
+        //logout
+        logout = findViewById(R.id.btnLogout);
 
         buttonDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         buttonMainscreen2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainActivity2.class);
+                Intent intent = new Intent(getBaseContext(), AdminMenu.class);
                 startActivity(intent);
 
             }
@@ -99,6 +106,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), QuestionnaireResponseActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //test logout
+        firebaseAuth = FirebaseAuth.getInstance();
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseAuth.signOut();
+               // startActivity(new Intent(MainActivity.this, MainActivity.class));
+                Log.i("Error", "User successfully logged out!"); //logging
+                Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
             }
         });
 

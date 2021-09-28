@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".LogIn.PasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".Dashboard.ActivityDosesAgeProduct"
             android:exported="true" />
         <activity

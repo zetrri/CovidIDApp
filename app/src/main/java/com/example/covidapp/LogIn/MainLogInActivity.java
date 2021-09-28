@@ -1,7 +1,9 @@
 package com.example.covidapp.LogIn;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,9 +16,15 @@ import android.widget.Toast;
 
 import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.HealthAdmin.AdminMenu;
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.MainUserRegActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,12 +37,18 @@ public class MainLogInActivity extends AppCompatActivity
     private Button eForgot;
     private Button eSignup;
 
+    //used to show progress while logging in
+    private android.app.ProgressDialog ProgressDialog;
+
+    private FirebaseAuth firebaseAuth;
+
     //Dummmy admin login
     private final String Username = "Admin@gmail.com";
     private final String Password = "Admin";
     //Dummy user login
     private final String Username1 = "User@gmail.com";
     private final String Password1 = "User";
+
     //used for checking input email and pass
     boolean isValid = false;
     boolean isValid1 = false;
@@ -53,14 +67,26 @@ public class MainLogInActivity extends AppCompatActivity
         eForgot = findViewById(R.id.btnForgot);
         eSignup = findViewById(R.id.btnSignup);
 
+        //progress dialog(shows a loading wheel)
+        ProgressDialog = new ProgressDialog(this);
 
-        //Testklass ta bort
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!");
-
-        //
+        //check if user is already logged in.
+        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null){
+                    //do this if the user is logged in already.
+                    Toast.makeText(getBaseContext(), "You are logged in!!", Toast.LENGTH_SHORT).show();
+                    Log.i("Error", "User already logged in!"); //logging
+                    finish();
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.addAuthStateListener(authStateListener);
 
         //listeners
         //user reg
@@ -71,13 +97,12 @@ public class MainLogInActivity extends AppCompatActivity
             }
         });
 
-        /* Forgot password (not implemented yet)
         eForgot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), RepalceWithActivity.class);
+                Intent intent = new Intent(getBaseContext(), PasswordActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
         //login
         eLogin.setOnClickListener(new View.OnClickListener() {
@@ -101,19 +126,10 @@ public class MainLogInActivity extends AppCompatActivity
                 else
                 {
                     //Methods to check if email and pass matches our dummy admin & user accounts
-                    isValid = validate(inputEmail, inputPassword);
-                    isValid1 = validate1(inputEmail, inputPassword);
-                    if(isValid) // right credentials for Admin Login
-                    {
-                        Log.i("Success", "User Login Successful!"); //logging
-
-                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
-
-                        //add code to go to new activity
-                        Intent intent = new Intent(getBaseContext(), AdminMenu.class);
-                        startActivity(intent);
-                    }
-                    else if (isValid1) //right credentials for User Login
+                    //isValid = validate(inputEmail, inputPassword);
+                    //isValid1 = validate1(inputEmail, inputPassword);
+                    validate(inputEmail, inputPassword);
+                    /*else if (isValid1) //right credentials for User Login
                     {
                         Log.i("Success", "User Login Successful!"); //logging
 
@@ -122,26 +138,9 @@ public class MainLogInActivity extends AppCompatActivity
                         //add code to go to new activity
                         Intent intent = new Intent(getBaseContext(), MainMyPage.class);
                         startActivity(intent);
-                    }
-                    else //wrong credentials
-                    {
-
-                        counter--;
-
-                        Log.i("Error", "Incorrect credentials from user!"); //logging
-
-                        Toast.makeText(getBaseContext(), "Incorrect credentials entered!", Toast.LENGTH_SHORT).show();
-
-                        eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
-
-                        if(counter == 0) //0 attempts left
-                        {
-                            eLogin.setEnabled(false); //hej
-                            CDTimer();
-                        }
+                    }*/
                     }
                 }
-            }
         });
 
 
@@ -167,6 +166,35 @@ public class MainLogInActivity extends AppCompatActivity
 
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
     {
+        ProgressDialog.setMessage("Verification in progress . . . ");
+        ProgressDialog.show();
+        firebaseAuth.signInWithEmailAndPassword(name, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //direct to activity if login successful
+                if (task.isSuccessful())
+                {
+                    Log.i("Success", "User Login Successful!"); //logging
+                    ProgressDialog.dismiss();;
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                //wrong credentials
+                else
+                {
+                    Toast.makeText(getBaseContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                    eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
+                    ProgressDialog.dismiss();
+                    if(counter == 0)
+                    {
+                        CDTimer();
+                        eLogin.setEnabled(false);
+                    }
+                }
+            }
+        });
+
         if(name.equals(Username) && password.equals(Password))
         {
             return true;
@@ -187,4 +215,6 @@ public class MainLogInActivity extends AppCompatActivity
     {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
 }
+
