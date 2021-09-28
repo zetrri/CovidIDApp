@@ -1,6 +1,9 @@
 package com.example.covidapp.UserReg;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -9,11 +12,26 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.covidapp.LogIn.MainLogInActivity;
+import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainUserRegActivity extends AppCompatActivity {
     String [] account = new String[9];
+    //firebase authentication
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +39,7 @@ public class MainUserRegActivity extends AppCompatActivity {
         Spinner countySpinner = findViewById(R.id.countySpinner);
         Spinner stadSpinner = findViewById(R.id.stadSpinner);
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         /* Temp Förbereder  */
@@ -40,9 +59,10 @@ public class MainUserRegActivity extends AppCompatActivity {
                 errorMessageText.setText("");
 
                 /* Kollar fel */
-                if(!checkPersonNummer(errorMessageText) || !checkPassword(errorMessageText) || !checkName(errorMessageText) || !checkEmail(errorMessageText) ||
-                        !checkMobileNumber(errorMessageText) || !checkStreetAddress(errorMessageText) ){
-                    return;
+                if(!checkEmail(errorMessageText)  /*|| !checkPassword(errorMessageText) || !checkPersonNummer(errorMessageText) || !checkName(errorMessageText) ||
+                        !checkMobileNumber(errorMessageText) || !checkStreetAddress(errorMessageText)*/)
+                {
+                    return ;
                 }
                 else{
                     //TEMP SET ACCOUNT
@@ -73,9 +93,85 @@ public class MainUserRegActivity extends AppCompatActivity {
                     //Gata
                     input = findViewById(R.id.editTextTextPersonGata);
                     account[8] = input.getText().toString();
+
+                    //sending to database
+                    makeUser(account);
                 }
             }
         });
+    }
+
+    //Exempel på hur man hämtar uppgifter från databasen
+    //
+    //
+    private void getUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+
+        DatabaseReference ref = database.getReference("User").child("43254325");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                RegClass regClass = dataSnapshot.getValue(RegClass.class);
+                System.out.println(regClass.Firstname);
+                System.out.println(regClass.getLastname());
+                System.out.println(regClass.Persnr);
+                System.out.println(regClass.Adress);
+                System.out.println(regClass.Mail);
+                System.out.println(regClass.UserID);
+                System.out.println(regClass.Phonenr);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+    }
+    private void makeUser(String[] accounttoadd){
+        //Testklass ta bort
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        String username = accounttoadd[0];
+        String PerNR = accounttoadd[2];
+        String password = accounttoadd[1];
+        String name = accounttoadd[3];
+        String lastname =accounttoadd[4];
+        String phonenr =accounttoadd[5];
+        String County =accounttoadd[6];
+        String city =accounttoadd[7];
+        String street = accounttoadd[8];
+
+        DatabaseReference myRef = database.getReference("User").child(PerNR);
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+
+        //
+        mAuth.createUserWithEmailAndPassword(accounttoadd[0], accounttoadd[1])
+                .addOnCompleteListener(this, (OnCompleteListener<AuthResult>) task -> {
+                    String TAG = "Registartion";
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        RegClass regClass = new RegClass();
+                        regClass.setAdress(County+", "+city+", "+street);
+                        regClass.setMail(username);
+                        regClass.setPersnr(PerNR);
+                        regClass.setPhonenr(phonenr);
+                        regClass.setFirstname(name);
+                        regClass.setLastname(lastname);
+                        regClass.setUserID(user.getUid());
+
+                        myRef.setValue(regClass);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getBaseContext(),task.getException().toString(),Toast.LENGTH_LONG).show();
+
+                    }
+
+                });
     }
     /* Kollar fel i person nummer
      *  Pre: TextView där error ska visas
@@ -85,11 +181,17 @@ public class MainUserRegActivity extends AppCompatActivity {
         EditText input = findViewById(R.id.editTextDate);
         String input_value = input.getText().toString();
 
+        if(input_value.length() < 12){
+            Log.i("FEL", "Person nummer format");
+            input.requestFocus();
+            errorMessageText.setText("Fel format för person nummer! (12 siffror)");
+            return false;
+        }
+
         // 4, 6 = Månad. 6, 8 = Dag. 0, 4 = Årtal
         int year = Integer.parseInt(input_value.substring(0, 4));
         int month = Integer.parseInt(input_value.substring(4, 6));
         int day = Integer.parseInt(input_value.substring(6, 8));
-
 
         if(!input_value.matches("[0-9]+") || input_value.length() != 12 || month > 12 || month < 1 || day < 1 || day > 31 || year < 1900) {
             Log.i("FEL", "Person nummer format");

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "894633020906",
+    "firebase_url": "https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "covidid-14222",
+    "storage_bucket": "covidid-14222.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894633020906:android:cc258d87cdf03716f5f693",
+        "android_client_info": {
+          "package_name": "com.example.covidapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894633020906-i1clsb50ido26cffd03td4l5pf7qt82n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBxRHdrvmzJ63V71jtnBzroPnzf91zGoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894633020906-i1clsb50ido26cffd03td4l5pf7qt82n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
