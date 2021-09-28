@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.covidapp.Booking.BookingMainActivity;
 import com.example.covidapp.Dashboard.MainDashboard;
+import com.example.covidapp.HealthAdmin.AdminAddAvailableTimes;
 import com.example.covidapp.HealthAdmin.AdminMenu;
 import com.example.covidapp.HealthAdmin.QuestionnaireResponseActivity;
 import com.example.covidapp.LogIn.MainLogInActivity;
@@ -22,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout;
+    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         buttonpassport = findViewById(R.id.buttonPassport);
         buttonuserreg = findViewById(R.id.buttonUserReg);
         buttonquestresp = findViewById(R.id.buttonQuestRes);
+        buttonadminaddtimes = findViewById(R.id.buttonAddMoreTimesTest);
+
         //logout
         logout = findViewById(R.id.btnLogout);
 
@@ -118,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
                // startActivity(new Intent(MainActivity.this, MainActivity.class));
                 Log.i("Error", "User successfully logged out!"); //logging
                 Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
+            }
+        });
+        buttonadminaddtimes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AdminAddAvailableTimes.class);
+                startActivity(intent);
             }
         });
 
