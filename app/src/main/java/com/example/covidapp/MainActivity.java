@@ -1,106 +1,93 @@
 package com.example.covidapp;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Menu;
+
+import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
+import com.example.covidapp.HealthAdmin.AdminAddAvailableTimes;
+import com.example.covidapp.HealthAdmin.AdminMenu;
+import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-
-import com.example.covidapp.Booking.BookingMainActivity;
-import com.example.covidapp.Dashboard.MainDashboard;
-import com.example.covidapp.HealthAdmin.QuestionnaireResponseActivity;
-import com.example.covidapp.LogIn.MainLogInActivity;
-import com.example.covidapp.MyPage.MainMyPage;
-import com.example.covidapp.Passport.PassportMainActivity;
-import com.example.covidapp.UserReg.MainUserRegActivity;
-import com.example.covidapp.faq.Faq_main;
+import com.example.covidapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp;
+    Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
+    private FirebaseAuth firebaseAuth;
+
+    private AppBarConfiguration mAppBarConfiguration;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        buttonDashboard = findViewById(R.id.buttonDashboard);
-        buttonfaq = findViewById(R.id.buttonFaq);
-        buttonUserLogin = findViewById(R.id.buttonUserLogin);
-        buttonMainscreen2= findViewById(R.id.buttonMainscreen2);
-        buttonMyPage = findViewById(R.id.buttonMyPage);
-        buttonMyAppointments = findViewById(R.id.buttonMyAppointments);
-        buttonpassport = findViewById(R.id.buttonPassport);
-        buttonuserreg = findViewById(R.id.buttonUserReg);
-        buttonquestresp = findViewById(R.id.buttonQuestRes);
 
-        buttonDashboard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainDashboard.class);
-                startActivity(intent);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-            }
-        });
-        buttonfaq.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(binding.appBarMain.toolbar);
+        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), Faq_main.class);
-                startActivity(intent);
-            }
-        });
-        buttonUserLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainLogInActivity.class);
-                startActivity(intent);
-            }
-        });
-        buttonMainscreen2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainActivity2.class);
-                startActivity(intent);
-
-            }
-
-        });
-        buttonMyPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainMyPage.class);
-                startActivity(intent);
-            }
-        });
-        buttonMyAppointments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), BookingMainActivity.class);
-                startActivity(intent);
-            }
-        });
-        buttonpassport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), PassportMainActivity.class);
-                startActivity(intent);
-            }
-        });
-        buttonuserreg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainUserRegActivity.class);
-                startActivity(intent);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
-        buttonquestresp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), QuestionnaireResponseActivity.class);
-                startActivity(intent);
-            }
-        });
 
+        binding.appBarMain.fab.hide();
+        DrawerLayout drawer = binding.drawerLayout;
+        NavigationView navigationView = binding.navView;
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_my_page, R.id.nav_dashboard, R.id.nav_faq, R.id.nav_login)
+                .setOpenableLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+//        //test logout
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        drawer.get.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                firebaseAuth.signOut();
+//                // startActivity(new Intent(MainActivity.this, MainActivity.class));
+//                Log.i("Error", "User successfully logged out!"); //logging
+//                Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
+//            }
+//        });
+    }
+
+
+
+        @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_activity3, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }

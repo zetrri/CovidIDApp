@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_my_page">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.covidapp.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_my_page"
+        android:name="com.example.covidapp.MyPage.MyPageFragment"
+        android:label="@string/my_page"
+        tools:layout="@layout/fragment_my_page">
+
+        <action
+            android:id="@+id/action_nav_my_page_to_nav_passport"
+            app:destination="@id/nav_passport" />
+        <action
+            android:id="@+id/action_nav_my_page_to_nav_booking"
+            app:destination="@id/nav_booking" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_booking"
+        android:name="com.example.covidapp.Booking.BookingFragment"
+        android:label="@string/booking"
+        tools:layout="@layout/fragment_booking" >
+
+        <action
+            android:id="@+id/action_nav_booking_to_nav_my_page"
+            app:destination="@id/nav_my_page" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.example.covidapp.Dashboard.DashboardFragment"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_distributed_doses"
+            app:destination="@id/nav_distributed_doses" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_deaths_and_cases"
+            app:destination="@id/nav_deaths_and_cases" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_doses_age_product"
+            app:destination="@id/nav_doses_age_product" />
+
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_deaths_and_cases"
+        android:name="com.example.covidapp.Dashboard.DeathsAndCasesFragment"
+        android:label="@string/deaths_and_cases"
+        tools:layout="@layout/fragment_deaths_and_cases" >
+
+        <action
+            android:id="@+id/action_nav_deaths_and_cases_to_nav_dashboard"
+            app:destination="@id/nav_dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_doses_age_product"
+        android:name="com.example.covidapp.Dashboard.DosesAgeProductFragment"
+        android:label="@string/doses_age_product"
+        tools:layout="@layout/fragment_doses_age_product" >
+
+        <action
+            android:id="@+id/action_nav_doses_age_product_to_nav_dashboard"
+            app:destination="@id/nav_dashboard" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_distributed_doses"
+        android:name="com.example.covidapp.Dashboard.DistributedDosesFragment"
+        android:label="@string/distributed_doses"
+        tools:layout="@layout/fragment_distributed_doses" >
+
+        <action
+            android:id="@+id/action_nav_distributed_doses_to_nav_dashboard"
+            app:destination="@id/nav_dashboard" />
+        <action
+            android:id="@+id/action_nav_distributed_doses_to_nav_county_numbers"
+            app:destination="@id/nav_county_numbers" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_county_numbers"
+        android:name="com.example.covidapp.Dashboard.CountyNumbersFragment"
+        android:label="@string/county_numbers"
+        tools:layout="@layout/fragment_county_numbers" />
+
+    <fragment
+        android:id="@+id/nav_faq"
+        android:name="com.example.covidapp.faq.FaqFragment"
+        android:label="@string/faq"
+        tools:layout="@layout/fragment_faq" />
+
+    <fragment
+        android:id="@+id/nav_admin_menu"
+        android:name="com.example.covidapp.HealthAdmin.AdminMenuFragment"
+        android:label="@string/admin_menu"
+        tools:layout="@layout/fragment_admin_menu" />
+
+    <fragment
+        android:id="@+id/nav_admin_add_available_times"
+        android:name="com.example.covidapp.HealthAdmin.AdminAddAvailableTimesFragment"
+        android:label="@string/admin_add_available_times"
+        tools:layout="@layout/fragment_admin_add_available_times" />
+
+    <fragment
+        android:id="@+id/nav_questionnaire_response"
+        android:name="com.example.covidapp.HealthAdmin.QuestionnaireResponseFragment"
+        android:label="@string/questionnaire_response"
+        tools:layout="@layout/fragment_questionnaire_response" />
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.covidapp.LogIn.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login" >
+
+        <action
+            android:id="@+id/action_nav_login_to_nav_my_page"
+            app:destination="@id/nav_my_page" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_user_reg"
+            app:destination="@id/nav_user_reg" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_password"
+            app:destination="@id/nav_password" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_admin_menu"
+            app:destination="@id/nav_admin_menu" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_admin_add_available_times"
+            app:destination="@id/nav_admin_add_available_times" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_password"
+        android:name="com.example.covidapp.LogIn.PasswordFragment"
+        android:label="@string/Password"
+        tools:layout="@layout/fragment_password" />
+
+
+
+    <fragment
+        android:id="@+id/nav_passport"
+        android:name="com.example.covidapp.Passport.PassportFragment"
+        android:label="@string/passport"
+        tools:layout="@layout/fragment_passport" >
+
+        <action
+            android:id="@+id/action_nav_passport_to_nav_my_page"
+            app:destination="@id/nav_my_page" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_user_reg"
+        android:name="com.example.covidapp.UserReg.UserRegFragment"
+        android:label="@string/user_reg"
+        tools:layout="@layout/fragment_user_reg" >
+
+        <action
+            android:id="@+id/action_nav_user_reg_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.covidapp.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.covidapp.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+</navigation>

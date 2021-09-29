@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">CovidApp</string>
+    <string name="title_activity_main3">MainActivity3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">John Doe</string>
+    <string name="nav_header_subtitle">john.doe@tester.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--         side menu values         -->
+    <string name="menu_home">Hem</string>
+    <string name="menu_mypage">Min Sida</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_booking">Bokningar</string>
+    <string name="menu_passport">Pass</string>
+    <string name="menu_Notifikationer">Notifikationer</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_login">Logga In</string>
+
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_page">My Page</string>
+    <string name="booking">Booking</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="deaths_and_cases">Deaths and Cases</string>
+    <string name="doses_age_product">Doses Age Product</string>
+    <string name="distributed_doses">Distributed Doses</string>
+    <string name="county_numbers">County Numbers</string>
+    <string name="faq">FAQ</string>
+    <string name="admin_menu">Admin Menu</string>
+    <string name="questionnaire_response">Questionnaire Response</string>
+    <string name="login">Login</string>
+    <string name="passport">Passport</string>
+    <string name="user_reg">User Registration</string>
+    <string name="Password">Password</string>
+    <string name="admin_add_available_times">Admin Add Available Times</string>
+    <string name="menu_logout">Logout</string>
 </resources>

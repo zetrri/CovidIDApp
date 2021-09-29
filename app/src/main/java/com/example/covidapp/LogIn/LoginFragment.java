@@ -1,14 +1,18 @@
 package com.example.covidapp.LogIn;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,7 +21,6 @@ import android.widget.Toast;
 import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.HealthAdmin.AdminMenu;
 import com.example.covidapp.MainActivity;
-import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.MainUserRegActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,9 +30,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.example.covidapp.databinding.FragmentLoginBinding;
 
-public class MainLogInActivity extends AppCompatActivity
-{
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link LoginFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class LoginFragment extends Fragment {
+
+    private FragmentLoginBinding binding;
+
     private EditText eEmail;
     private EditText ePassword;
     private Button eLogin;
@@ -56,19 +67,68 @@ public class MainLogInActivity extends AppCompatActivity
     private int counter = 5;
     CountDownTimer cTimer = null;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public LoginFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment LoginFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static LoginFragment newInstance(String param1, String param2) {
+        LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_log_in);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         //binding variable to xml layout
-        eEmail = findViewById(R.id.etEmail);
-        ePassword = findViewById(R.id.etPassword);
-        eLogin = findViewById(R.id.btnLogin);
-        eAttemptsInfo = findViewById(R.id.AttemptsInfo);
-        eForgot = findViewById(R.id.btnForgot);
-        eSignup = findViewById(R.id.btnSignup);
+        eEmail = binding.etEmail;
+        ePassword = binding.etPassword;
+        eLogin = binding.btnLogin;
+        eAttemptsInfo = binding.AttemptsInfo;
+        eForgot = binding.btnForgot;
+        eSignup = binding.btnSignup;
 
         //progress dialog(shows a loading wheel)
-        ProgressDialog = new ProgressDialog(this);
+        ProgressDialog = new ProgressDialog(getActivity());
 
 
         //check if user is already logged in.
@@ -77,11 +137,12 @@ public class MainLogInActivity extends AppCompatActivity
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null){
                     //do this if the user is logged in already.
-                    Toast.makeText(getBaseContext(), "You are logged in!!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getBaseContext(), "You are logged in!!", Toast.LENGTH_SHORT).show();
                     Log.i("Error", "User already logged in!"); //logging
-                    finish();
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
+//                    getActivity().finish();
+//                    Intent intent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+//                    startActivity(intent);
+//                    Navigation.findNavController(view).navigate(R.id.action_nav_user_reg_to_nav_login);
                 }
             }
         };
@@ -92,15 +153,13 @@ public class MainLogInActivity extends AppCompatActivity
         //user reg
         eSignup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainUserRegActivity.class);
-                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
             }
         });
 
         eForgot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), PasswordActivity.class);
-                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_password);
             }
         });
 
@@ -114,13 +173,13 @@ public class MainLogInActivity extends AppCompatActivity
                 if(inputEmail.isEmpty() || inputPassword.isEmpty()) //error message for empty field
                 {
                     Log.i("Error", "Empty input field from user!"); //logging
-                    Toast.makeText(getBaseContext(), "Please enter something in empty field!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Please enter something in empty field!", Toast.LENGTH_SHORT).show();
                 }
                 else if (!isEmailValid(inputEmail))
                 {
                     //checking for email
                     Log.i("Error", "Incorrect Email format!"); //logging
-                    Toast.makeText(getBaseContext(), "Please enter a correct email!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Please enter a correct email!", Toast.LENGTH_SHORT).show();
 
                 }
                 else
@@ -139,16 +198,15 @@ public class MainLogInActivity extends AppCompatActivity
                         Intent intent = new Intent(getBaseContext(), MainMyPage.class);
                         startActivity(intent);
                     }*/
-                    }
                 }
+            }
         });
-
-
     }
+
     private void CDTimer()
     {
         //creating timer with 5 seconds for testing(should be set to a minute+ otherwise)
-        cTimer = new CountDownTimer(5000, 1000) 
+        cTimer = new CountDownTimer(5000, 1000)
         {
             public void onTick(long millisUntilFinished)
             {
@@ -174,15 +232,15 @@ public class MainLogInActivity extends AppCompatActivity
                 //direct to activity if login successful
                 if (task.isSuccessful())
                 {
+                    View view = getView();
                     Log.i("Success", "User Login Successful!"); //logging
-                    ProgressDialog.dismiss();;
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
+                    ProgressDialog.dismiss();
+                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
                 }
                 //wrong credentials
                 else
                 {
-                    Toast.makeText(getBaseContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
                     counter--;
                     eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
                     ProgressDialog.dismiss();
@@ -217,4 +275,3 @@ public class MainLogInActivity extends AppCompatActivity
     }
 
 }
-

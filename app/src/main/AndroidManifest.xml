@@ -10,6 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidApp">
         <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_main3"
+            android:theme="@style/Theme.CovidApp.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LogIn.PasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HealthAdmin.AdminAddAvailableTimes"
+            android:exported="true" />
+        <activity
             android:name=".Dashboard.ActivityDosesAgeProduct"
             android:exported="true" />
         <activity
@@ -52,14 +69,9 @@
             android:name=".Dashboard.MainDashboard"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".MainActivityOld"
+            android:exported="true"
+        />
     </application>
 
 </manifest>
