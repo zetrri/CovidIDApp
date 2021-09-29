@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.covidapp.Booking.Booking;
 import com.example.covidapp.Booking.BookingMainActivity;
@@ -24,6 +26,7 @@ import com.example.covidapp.Passport.PassportMainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
+import com.google.firebase.auth.FirebaseAuth;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MyPageFragment#newInstance} factory method to
@@ -35,6 +38,8 @@ public class MyPageFragment extends Fragment {
 
     Booking[] Bookings = new Booking[2];
     MyPageFragment this_obj = this;
+
+    private FirebaseAuth firebaseAuth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -112,10 +117,17 @@ public class MyPageFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
             }
         });
+
+        firebaseAuth = FirebaseAuth.getInstance();
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO notifications
+                //test logout
+
+                firebaseAuth.signOut();
+                // startActivity(new Intent(MainActivity.this, MainActivity.class));
+                Log.i("Error", "User successfully logged out!"); //logging
+                Toast.makeText(getActivity().getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
             }
         });
 

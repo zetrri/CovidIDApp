@@ -35,4 +35,7 @@
     <string name="login">Login</string>
     <string name="passport">Passport</string>
     <string name="user_reg">User Registration</string>
+    <string name="Password">Password</string>
+    <string name="admin_add_available_times">Admin Add Available Times</string>
+    <string name="menu_logout">Logout</string>
 </resources>

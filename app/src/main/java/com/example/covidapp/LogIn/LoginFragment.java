@@ -1,8 +1,10 @@
 package com.example.covidapp.LogIn;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -18,7 +20,16 @@ import android.widget.Toast;
 
 import com.example.covidapp.Dashboard.MainDashboard;
 import com.example.covidapp.HealthAdmin.AdminMenu;
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.MainUserRegActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.example.covidapp.databinding.FragmentLoginBinding;
 
 /**
@@ -34,12 +45,21 @@ public class LoginFragment extends Fragment {
     private EditText ePassword;
     private Button eLogin;
     private TextView eAttemptsInfo;
+    private Button eForgot;
+    private Button eSignup;
+
+    //used to show progress while logging in
+    private android.app.ProgressDialog ProgressDialog;
+
+    private FirebaseAuth firebaseAuth;
+
     //Dummmy admin login
     private final String Username = "Admin@gmail.com";
     private final String Password = "Admin";
     //Dummy user login
     private final String Username1 = "User@gmail.com";
     private final String Password1 = "User";
+
     //used for checking input email and pass
     boolean isValid = false;
     boolean isValid1 = false;
@@ -104,8 +124,46 @@ public class LoginFragment extends Fragment {
         ePassword = binding.etPassword;
         eLogin = binding.btnLogin;
         eAttemptsInfo = binding.AttemptsInfo;
+        eForgot = binding.btnForgot;
+        eSignup = binding.btnSignup;
 
-        //listener
+        //progress dialog(shows a loading wheel)
+        ProgressDialog = new ProgressDialog(getActivity());
+
+
+        //check if user is already logged in.
+        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null){
+                    //do this if the user is logged in already.
+//                    Toast.makeText(getActivity().getBaseContext(), "You are logged in!!", Toast.LENGTH_SHORT).show();
+                    Log.i("Error", "User already logged in!"); //logging
+//                    getActivity().finish();
+//                    Intent intent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+//                    startActivity(intent);
+//                    Navigation.findNavController(view).navigate(R.id.action_nav_user_reg_to_nav_login);
+                }
+            }
+        };
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.addAuthStateListener(authStateListener);
+
+        //listeners
+        //user reg
+        eSignup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
+            }
+        });
+
+        eForgot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_password);
+            }
+        });
+
+        //login
         eLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -127,54 +185,20 @@ public class LoginFragment extends Fragment {
                 else
                 {
                     //Methods to check if email and pass matches our dummy admin & user accounts
-                    isValid = validate(inputEmail, inputPassword);
-                    isValid1 = validate1(inputEmail, inputPassword);
-                    if(isValid) // right credentials for Admin Login
+                    //isValid = validate(inputEmail, inputPassword);
+                    //isValid1 = validate1(inputEmail, inputPassword);
+                    validate(inputEmail, inputPassword);
+                    /*else if (isValid1) //right credentials for User Login
                     {
                         Log.i("Success", "User Login Successful!"); //logging
 
-                        Toast.makeText(getActivity().getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
+                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
 
                         //add code to go to new activity
-//                        Intent intent = new Intent(getActivity().getBaseContext(), AdminMenu.class);
-//                        startActivity(intent);
-                        Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_admin_menu);
-                    }
-                    else if (isValid1) //right credentials for User Login
-                    {
-                        Log.i("Success", "User Login Successful!"); //logging
-
-                        Toast.makeText(getActivity().getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
-
-                        //add code to go to new activity
-//                        Intent intent = new Intent(getActivity().getBaseContext(), MainDashboard.class);
-//                        startActivity(intent);
-                        Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
-                    }
-                    else //wrong credentials
-                    {
-
-                        counter--;
-
-                        Log.i("Error", "Incorrect credentials from user!"); //logging
-
-                        Toast.makeText(getActivity().getBaseContext(), "Incorrect credentials entered!", Toast.LENGTH_SHORT).show();
-
-                        eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
-
-                        if(counter == 0) //0 attempts left
-                        {
-                            eLogin.setEnabled(false); //hej
-                            CDTimer();
-                        }
-                    }
+                        Intent intent = new Intent(getBaseContext(), MainMyPage.class);
+                        startActivity(intent);
+                    }*/
                 }
-            }
-        });
-        binding.btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
             }
         });
     }
@@ -200,6 +224,35 @@ public class LoginFragment extends Fragment {
 
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
     {
+        ProgressDialog.setMessage("Verification in progress . . . ");
+        ProgressDialog.show();
+        firebaseAuth.signInWithEmailAndPassword(name, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //direct to activity if login successful
+                if (task.isSuccessful())
+                {
+                    View view = getView();
+                    Log.i("Success", "User Login Successful!"); //logging
+                    ProgressDialog.dismiss();
+                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
+                }
+                //wrong credentials
+                else
+                {
+                    Toast.makeText(getActivity().getBaseContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                    eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
+                    ProgressDialog.dismiss();
+                    if(counter == 0)
+                    {
+                        CDTimer();
+                        eLogin.setEnabled(false);
+                    }
+                }
+            }
+        });
+
         if(name.equals(Username) && password.equals(Password))
         {
             return true;
@@ -220,4 +273,5 @@ public class LoginFragment extends Fragment {
     {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
 }
