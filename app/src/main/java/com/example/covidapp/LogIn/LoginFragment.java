@@ -1,7 +1,9 @@
 package com.example.covidapp.LogIn;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,7 @@ public class LoginFragment extends Fragment {
     private TextView eAttemptsInfo;
     private Button eForgot;
     private Button eSignup;
+    public Context context = getActivity();
 
     //used to show progress while logging in
     private android.app.ProgressDialog ProgressDialog;
@@ -235,7 +238,12 @@ public class LoginFragment extends Fragment {
                     View view = getView();
                     Log.i("Success", "User Login Successful!"); //logging
                     ProgressDialog.dismiss();
-                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
+                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt("1", R.integer.logged_in);
+                    editor.apply();
+
+                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
                 }
                 //wrong credentials
                 else

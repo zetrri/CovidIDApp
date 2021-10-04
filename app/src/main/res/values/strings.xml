@@ -18,6 +18,8 @@
     <string name="menu_faq">FAQ</string>
     <string name="menu_login">Logga In</string>
 
+    <integer name="logged_in">0</integer>
+
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->

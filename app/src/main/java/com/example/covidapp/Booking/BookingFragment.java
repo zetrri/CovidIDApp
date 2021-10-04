@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -250,7 +251,7 @@ public class BookingFragment extends Fragment {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(getActivity().getBaseContext(), MainMyPage.class);
-                                startActivity(intent);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
                                 // TODO spara informationen i en databas och gå till min sida
                             }
                         })
