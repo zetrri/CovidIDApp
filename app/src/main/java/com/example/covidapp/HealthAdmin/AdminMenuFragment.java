@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,8 +104,8 @@ public class AdminMenuFragment extends Fragment {
         */
         eQuestionnaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), QuestionnaireResponseActivity.class);
-                startActivity(intent);
+
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_questionnaire_response);
             }
         });
         /*

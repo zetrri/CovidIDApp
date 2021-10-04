@@ -20,58 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LogIn.PasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".HealthAdmin.AdminAddAvailableTimes"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard.ActivityDosesAgeProduct"
-            android:exported="true" />
-        <activity
-            android:name=".HealthAdmin.AdminMenu"
-            android:exported="true" />
-        <activity
-            android:name=".HealthAdmin.QuestionnaireResponseActivity"
-            android:exported="true" />
-        <activity
-            android:name=".UserReg.MainUserRegActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Passport.PassportMainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Booking.BookingMainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MyPage.MainMyPage"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
-        <activity
-            android:name=".LogIn.MainLogInActivity"
-            android:exported="true" />
-        <activity
-            android:name=".faq.Faq_main"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard.DisplayCountyNumbersActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard.ActivityDeathsAndCases"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard.ActivityDistrubatedDoses"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard.MainDashboard"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivityOld"
-            android:exported="true"
-        />
     </application>
 
 </manifest>
