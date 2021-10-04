@@ -1,9 +1,6 @@
 package com.example.covidapp.UserReg;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -14,6 +11,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentUserRegBinding;
@@ -145,7 +145,7 @@ public class UserRegFragment extends Fragment {
                     //Gata
                     input = binding.editTextTextPersonGata;
                     account[8] = input.getText().toString();
-                    makeUser(account);
+                    makeUser(account,view);
                 }
             }
         });
@@ -179,7 +179,7 @@ public class UserRegFragment extends Fragment {
         });
 
     }
-    private void makeUser(String[] accounttoadd){
+    private void makeUser(String[] accounttoadd, View view){
         //Testklass ta bort
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         String username = accounttoadd[0];
@@ -217,6 +217,8 @@ public class UserRegFragment extends Fragment {
                         DatabaseReference myRef = database.getReference("User").child(user.getUid());
                         myRef.setValue(regClass);
                         Toast.makeText(getActivity().getBaseContext(), "Successfully registered!",Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(view).navigate(R.id.nav_login);
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
