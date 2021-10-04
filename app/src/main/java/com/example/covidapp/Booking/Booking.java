@@ -11,6 +11,7 @@ public class Booking {
     public String meds;
     public String message;
     public String personNr;
+    public String namn;
 
     public String getDate() {
         return date;
@@ -99,8 +100,6 @@ public class Booking {
     public void setNamn(String namn) {
         this.namn = namn;
     }
-
-    public String namn;
 
 
     public Booking(String _date, String _time, String _clinic, String _city, String _county, String _vaccine, String _allergy, String _meds, String _message, String _personNr, String _namn){
