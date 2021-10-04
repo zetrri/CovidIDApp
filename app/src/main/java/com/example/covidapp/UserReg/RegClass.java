@@ -8,9 +8,10 @@ public class RegClass {
     String Persnr;
     String Phonenr;
     String UserID;
+    Boolean admin;
 
     public RegClass(){}
-    public RegClass(String mail, String firstname, String lastname, String adress, String persnr, String phonenr, String userID) {
+    public RegClass(String mail, String firstname, String lastname, String adress, String persnr, String phonenr, String userID, Boolean isAdmin) {
         Mail = mail;
         Firstname = firstname;
         Lastname = lastname;
@@ -18,6 +19,15 @@ public class RegClass {
         Persnr = persnr;
         Phonenr = phonenr;
         UserID = userID;
+        admin = isAdmin;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 
     public String getMail() {

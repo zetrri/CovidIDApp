@@ -153,10 +153,10 @@ public class UserRegFragment extends Fragment {
     //Exempel på hur man hämtar uppgifter från databasen
     //
     //
-    private void getUser(){
+    private void getUser(String id){
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        DatabaseReference ref = database.getReference("User").child("43254325");
+        DatabaseReference ref = database.getReference("User").child(id);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -169,6 +169,7 @@ public class UserRegFragment extends Fragment {
                 System.out.println(regClass.Mail);
                 System.out.println(regClass.UserID);
                 System.out.println(regClass.Phonenr);
+                System.out.println(regClass.admin);
             }
 
             @Override
@@ -190,8 +191,9 @@ public class UserRegFragment extends Fragment {
         String County =accounttoadd[6];
         String city =accounttoadd[7];
         String street = accounttoadd[8];
+        Boolean admin = false;
 
-        DatabaseReference myRef = database.getReference("User").child(PerNR);
+
         FirebaseAuth mAuth;
         mAuth = FirebaseAuth.getInstance();
 
@@ -211,7 +213,8 @@ public class UserRegFragment extends Fragment {
                         regClass.setFirstname(name);
                         regClass.setLastname(lastname);
                         regClass.setUserID(user.getUid());
-
+                        regClass.setAdmin(admin);
+                        DatabaseReference myRef = database.getReference("User").child(user.getUid());
                         myRef.setValue(regClass);
                         Toast.makeText(getActivity().getBaseContext(), "Successfully registered!",Toast.LENGTH_LONG).show();
                     } else {
