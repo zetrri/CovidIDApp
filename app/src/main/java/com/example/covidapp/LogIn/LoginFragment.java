@@ -20,14 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.example.covidapp.databinding.FragmentLoginBinding;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -185,6 +189,7 @@ public class LoginFragment extends Fragment {
                     //Methods to check if email and pass matches our dummy admin & user accounts
                     //isValid = validate(inputEmail, inputPassword);
                     //isValid1 = validate1(inputEmail, inputPassword);
+
                     validate(inputEmail, inputPassword);
                     /*else if (isValid1) //right credentials for User Login
                     {
@@ -219,6 +224,44 @@ public class LoginFragment extends Fragment {
         };
         cTimer.start();
     }
+    private void getUser(View view){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                String UID = firebaseAuth.getCurrentUser().getUid();
+                DatabaseReference myRef = database.getReference("User").child(UID);
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        RegClass regClass = snapshot.getValue(RegClass.class);
+                        if (regClass.getAdmin()==false){
+                            Log.d("Admin","not an admin");
+                            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                        }
+                        else{
+                            Log.d("Admin","is an admin");
+                            Navigation.findNavController(view).navigate(R.id.nav_admin_menu);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        };
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.addAuthStateListener(authStateListener);
+
+
+
+    }
+
 
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
     {
@@ -237,8 +280,8 @@ public class LoginFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putInt("1", R.integer.logged_in);
                     editor.apply();
-
-                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                    getUser(view);
+                    //Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
                 }
                 //wrong credentials
                 else
