@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.covidapp.R;
-import com.example.covidapp.UserReg.MainUserRegActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,8 +110,9 @@ public class PasswordFragment extends Fragment {
                             if(task.isSuccessful()){
                                 Toast.makeText(getActivity().getBaseContext(), "Password reset email sent!", Toast.LENGTH_SHORT).show();
                                 getActivity().finish();
-                                Intent intent = new Intent(getActivity().getBaseContext(), MainLogInActivity.class);
-                                startActivity(intent);
+
+
+                                Navigation.findNavController(view).navigate(R.id.action_nav_password_to_nav_login);
                             }
                             else{
                                 Toast.makeText(getActivity().getBaseContext(), "Error sending password reset email!", Toast.LENGTH_SHORT).show();

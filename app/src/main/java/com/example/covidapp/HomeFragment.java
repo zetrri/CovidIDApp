@@ -1,6 +1,5 @@
 package com.example.covidapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,15 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.covidapp.Booking.BookingMainActivity;
-import com.example.covidapp.Dashboard.MainDashboard;
-import com.example.covidapp.HealthAdmin.QuestionnaireResponseActivity;
-import com.example.covidapp.LogIn.MainLogInActivity;
-import com.example.covidapp.MyPage.MainMyPage;
-import com.example.covidapp.Passport.PassportMainActivity;
-import com.example.covidapp.UserReg.MainUserRegActivity;
-import com.example.covidapp.faq.Faq_main;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -85,9 +85,9 @@ public class DashboardFragment extends Fragment {
         buttonCumelative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(),ActivityDistrubatedDoses.class);
-                intent.putExtra("Mode",false);
-                startActivity(intent);
+                //Intent intent = new Intent(getActivity().getBaseContext(),ActivityDistrubatedDoses.class);
+                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_distributed_doses);
+
             }
         });
         buttonAgeProduct.setOnClickListener(new View.OnClickListener() {

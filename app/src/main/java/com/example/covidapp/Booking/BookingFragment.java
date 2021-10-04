@@ -22,7 +22,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.covidapp.MyPage.MainMyPage;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentBookingBinding;
 
@@ -250,7 +249,6 @@ public class BookingFragment extends Fragment {
                         .setMessage(information+"\n\nVill du bekräfta?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(getActivity().getBaseContext(), MainMyPage.class);
                                 Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
                                 // TODO spara informationen i en databas och gå till min sida
                             }

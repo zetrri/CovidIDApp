@@ -21,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.Booking.Booking;
-import com.example.covidapp.Booking.BookingMainActivity;
-import com.example.covidapp.Passport.PassportMainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
@@ -196,8 +194,10 @@ public class MyPageFragment extends Fragment {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     new_card.removeAllViews();
-                                    Intent intent = new Intent(getActivity().getBaseContext(), BookingMainActivity.class);
-                                    startActivity(intent);
+
+
+                                    Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+
                                     // TODO remove information from database
                                 }
                             })

@@ -111,7 +111,13 @@
         android:id="@+id/nav_admin_menu"
         android:name="com.example.covidapp.HealthAdmin.AdminMenuFragment"
         android:label="@string/admin_menu"
-        tools:layout="@layout/fragment_admin_menu" />
+        tools:layout="@layout/fragment_admin_menu">
+
+        <action
+            android:id="@+id/action_nav_admin_menu_to_questionnaire_response"
+            app:destination="@+id/nav_questionnaire_response"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_admin_add_available_times"
@@ -152,7 +158,13 @@
         android:id="@+id/nav_password"
         android:name="com.example.covidapp.LogIn.PasswordFragment"
         android:label="@string/Password"
-        tools:layout="@layout/fragment_password" />
+        tools:layout="@layout/fragment_password">
+
+        <action
+            android:id="@+id/action_nav_password_to_nav_login"
+            app:destination="@+id/nav_login"/>
+
+    </fragment>
 
 
 

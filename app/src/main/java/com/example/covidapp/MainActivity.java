@@ -1,15 +1,11 @@
 package com.example.covidapp;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
-import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
-import com.example.covidapp.HealthAdmin.AdminAddAvailableTimes;
-import com.example.covidapp.HealthAdmin.AdminMenu;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.snackbar.Snackbar;
