@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BookingMainActivity extends AppCompatActivity {
-
+//Bois
     BookingMainActivity this_obj = this;
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
     private String[] cities;
