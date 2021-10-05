@@ -134,30 +134,9 @@ public class LoginFragment extends Fragment {
 
 
         //check if user is already logged in.
-//        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if (firebaseAuth.getCurrentUser() != null){
-//                    View view = getView();
-//                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
-//                }
-//            }
-//        };
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseAuth.addAuthStateListener(authStateListener);
         View view2 = getView();
         getUser(view2);
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            //getUser(view2);
-//            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
-//        }
 
-
-
-        //listeners
-        //user reg
         eSignup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_user_reg);
@@ -198,16 +177,7 @@ public class LoginFragment extends Fragment {
                     Log.d("Email",inputEmail);
                     Log.d("Pass",inputPassword);
                     validate(inputEmail, inputPassword);
-                    /*else if (isValid1) //right credentials for User Login
-                    {
-                        Log.i("Success", "User Login Successful!"); //logging
 
-                        Toast.makeText(getBaseContext(), "Login Successful!", Toast.LENGTH_SHORT).show(); //print
-
-                        //add code to go to new activity
-                        Intent intent = new Intent(getBaseContext(), MainMyPage.class);
-                        startActivity(intent);
-                    }*/
                 }
             }
         });
@@ -262,47 +232,8 @@ public class LoginFragment extends Fragment {
                         }
                     });
                 }
-            //getUser(view2);
-            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
+
         }
-//        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if (firebaseAuth.getCurrentUser() != null){
-//                    String UID = firebaseAuth.getCurrentUser().getUid();
-//                    DatabaseReference myRef = database.getReference("User").child(UID);
-//                    myRef.addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            RegClass regClass = snapshot.getValue(RegClass.class);
-//                            if (regClass.getAdmin()==false){
-//                                Log.d("Admin","not an admin");
-//                                View view = getView();
-//                                Navigation.findNavController(view).navigate(R.id.nav_my_page);
-//                            }
-//                            else{
-//                                Log.d("Admin","is an admin");
-//                                View view2 = getView();
-//                                Navigation.findNavController(view2).navigate(R.id.nav_admin_menu);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//                }
-//
-//
-//            }
-//        };
-
-
-
-
-
-
 
 
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
