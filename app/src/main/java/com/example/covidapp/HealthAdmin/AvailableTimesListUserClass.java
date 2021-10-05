@@ -47,5 +47,10 @@ public class AvailableTimesListUserClass {
     public void setDate(Calendar date) {
         this.date = date;
     }
+    @Override
+    public String toString(){
+        return getCity().toString();
+    }
 }
+
 

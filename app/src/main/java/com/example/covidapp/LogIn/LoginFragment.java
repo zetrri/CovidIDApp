@@ -134,22 +134,26 @@ public class LoginFragment extends Fragment {
 
 
         //check if user is already logged in.
-        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null){
-                    //do this if the user is logged in already.
-//                    Toast.makeText(getActivity().getBaseContext(), "You are logged in!!", Toast.LENGTH_SHORT).show();
-                    Log.i("Error", "User already logged in!"); //logging
-//                    getActivity().finish();
-//                    Intent intent = new Intent(getActivity().getBaseContext(), MainActivity.class);
-//                    startActivity(intent);
-//                    Navigation.findNavController(view).navigate(R.id.action_nav_user_reg_to_nav_login);
-                }
-            }
-        };
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.addAuthStateListener(authStateListener);
+//        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (firebaseAuth.getCurrentUser() != null){
+//                    View view = getView();
+//                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+//                }
+//            }
+//        };
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuth.addAuthStateListener(authStateListener);
+        View view2 = getView();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //getUser(view2);
+            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
+        }
+
+
 
         //listeners
         //user reg
@@ -190,6 +194,8 @@ public class LoginFragment extends Fragment {
                     //isValid = validate(inputEmail, inputPassword);
                     //isValid1 = validate1(inputEmail, inputPassword);
 
+                    Log.d("Email",inputEmail);
+                    Log.d("Pass",inputPassword);
                     validate(inputEmail, inputPassword);
                     /*else if (isValid1) //right credentials for User Login
                     {
@@ -227,6 +233,7 @@ public class LoginFragment extends Fragment {
     private void getUser(View view){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -239,11 +246,13 @@ public class LoginFragment extends Fragment {
                             RegClass regClass = snapshot.getValue(RegClass.class);
                             if (regClass.getAdmin()==false){
                                 Log.d("Admin","not an admin");
-                                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                                View view = getView();
+                                Navigation.findNavController(view).navigate(R.id.nav_my_page);
                             }
                             else{
                                 Log.d("Admin","is an admin");
-                                Navigation.findNavController(view).navigate(R.id.nav_admin_menu);
+                                View view2 = getView();
+                                Navigation.findNavController(view2).navigate(R.id.nav_admin_menu);
                             }
                         }
 
@@ -270,6 +279,7 @@ public class LoginFragment extends Fragment {
     {
         ProgressDialog.setMessage("Verification in progress . . . ");
         ProgressDialog.show();
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithEmailAndPassword(name, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
