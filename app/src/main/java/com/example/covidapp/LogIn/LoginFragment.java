@@ -230,27 +230,30 @@ public class LoginFragment extends Fragment {
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                String UID = firebaseAuth.getCurrentUser().getUid();
-                DatabaseReference myRef = database.getReference("User").child(UID);
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        RegClass regClass = snapshot.getValue(RegClass.class);
-                        if (regClass.getAdmin()==false){
-                            Log.d("Admin","not an admin");
-                            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                if (firebaseAuth.getCurrentUser() != null){
+                    String UID = firebaseAuth.getCurrentUser().getUid();
+                    DatabaseReference myRef = database.getReference("User").child(UID);
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            RegClass regClass = snapshot.getValue(RegClass.class);
+                            if (regClass.getAdmin()==false){
+                                Log.d("Admin","not an admin");
+                                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                            }
+                            else{
+                                Log.d("Admin","is an admin");
+                                Navigation.findNavController(view).navigate(R.id.nav_admin_menu);
+                            }
                         }
-                        else{
-                            Log.d("Admin","is an admin");
-                            Navigation.findNavController(view).navigate(R.id.nav_admin_menu);
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
-                    }
+                    });
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
             }
         };

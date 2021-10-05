@@ -93,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_admin_add_available_times);
                 return true;
+            case R.id.TestDriveAdmin:
+                NavController navController2 = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                navController2.navigate(R.id.ConnectedTimesFragment);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

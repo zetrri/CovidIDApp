@@ -11,4 +11,9 @@
         android:orderInCategory="50"
         android:title="Other"
         app:showAsAction="never"></item>
+    <item
+        android:id="@+id/TestDriveAdmin"
+        android:orderInCategory="50"
+        android:title="TestDriveAdmin"
+        app:showAsAction="never"></item>
 </menu>
