@@ -146,12 +146,13 @@ public class LoginFragment extends Fragment {
 //        firebaseAuth = FirebaseAuth.getInstance();
 //        firebaseAuth.addAuthStateListener(authStateListener);
         View view2 = getView();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //getUser(view2);
-            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
-        }
+        getUser(view2);
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            //getUser(view2);
+//            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
+//        }
 
 
 
@@ -234,11 +235,10 @@ public class LoginFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null){
-                    String UID = firebaseAuth.getCurrentUser().getUid();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            String UID = currentUser.getUid();
                     DatabaseReference myRef = database.getReference("User").child(UID);
                     myRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -262,17 +262,47 @@ public class LoginFragment extends Fragment {
                         }
                     });
                 }
+            //getUser(view2);
+            //Navigation.findNavController(view2).navigate(R.id.nav_my_page);
+        }
+//        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (firebaseAuth.getCurrentUser() != null){
+//                    String UID = firebaseAuth.getCurrentUser().getUid();
+//                    DatabaseReference myRef = database.getReference("User").child(UID);
+//                    myRef.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            RegClass regClass = snapshot.getValue(RegClass.class);
+//                            if (regClass.getAdmin()==false){
+//                                Log.d("Admin","not an admin");
+//                                View view = getView();
+//                                Navigation.findNavController(view).navigate(R.id.nav_my_page);
+//                            }
+//                            else{
+//                                Log.d("Admin","is an admin");
+//                                View view2 = getView();
+//                                Navigation.findNavController(view2).navigate(R.id.nav_admin_menu);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+//                }
+//
+//
+//            }
+//        };
 
 
-            }
-        };
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.addAuthStateListener(authStateListener);
 
 
 
-    }
+
 
 
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
