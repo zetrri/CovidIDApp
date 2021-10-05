@@ -90,24 +90,24 @@ public class ConnectedTimesFragment extends Fragment {
         listViewConnectedTimes = binding.listviewInConnectedTimes;
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasseslist = new ArrayList<>();
-//
-//        database.getReference().child("users")
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                            AvailableTimesListUserClass availableTimesListUserClass = snapshot.getValue(AvailableTimesListUserClass.class);
-//                            System.out.println(availableTimesListUserClass.city.toString());
-//                            availableTimesListUserClasseslist.add(availableTimesListUserClass);
-//
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                    }
-//                });
-//        ArrayAdapter<AvailableTimesListUserClass> availableTimesListUserClassArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1,availableTimesListUserClasseslist);
-//        listViewConnectedTimes.se
+
+        database.getReference().child("AvailableTimes")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            AvailableTimesListUserClass availableTimesListUserClass = snapshot.getValue(AvailableTimesListUserClass.class);
+                            System.out.println(availableTimesListUserClass.city.toString());
+                            availableTimesListUserClasseslist.add(availableTimesListUserClass);
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+        ArrayAdapter<AvailableTimesListUserClass> availableTimesListUserClassArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1,availableTimesListUserClasseslist);
+
 
     }
 }

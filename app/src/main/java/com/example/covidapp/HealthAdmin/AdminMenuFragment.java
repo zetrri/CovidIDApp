@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.example.covidapp.R;
@@ -80,6 +81,11 @@ public class AdminMenuFragment extends Fragment {
         LinearLayout eQuestionnaire = binding.Questionnaire;
         LinearLayout eTimeLine = binding.TimeLine;
         LinearLayout eHealthPass = binding.HealthPass;
+
+        //Removes keyboard if up
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        //Removes keyboard if up
 
         //Listeners, replace activity when implemented.
         /*
