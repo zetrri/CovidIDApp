@@ -212,17 +212,17 @@ public class BookingFragment extends Fragment {
                 List<String> freetimes = new ArrayList<>();
 
                 // exempel på att hitta rätt tider för rätt dag, kommer ändras när databaser implementeras
-                if(curDate.equals("1")) {
-                    radioGroup.removeAllViews();
-                    String[] dates = new String[]{"11:00", "11:15", "12:30", "13:00", "13:45", "14:15"}; //TODO hämta från databas
-                    Collections.addAll(freetimes, dates);
-
-                }
-                else if(curDate.equals("2")){
-                    radioGroup.removeAllViews();
-                    String[] dates= new String[]{"11:30", "13:15", "14:00"}; //TODO hämta från databas
-                    Collections.addAll(freetimes, dates);
-                }
+//                if(curDate.equals("1")) {
+//                    radioGroup.removeAllViews();
+//                    String[] dates = new String[]{"11:00", "11:15", "12:30", "13:00", "13:45", "14:15"}; //TODO hämta från databas
+//                    Collections.addAll(freetimes, dates);
+//gvhjvhgh
+//                }
+//                else if(curDate.equals("2")){
+//                    radioGroup.removeAllViews();
+//                    String[] dates= new String[]{"11:30", "13:15", "14:00"}; //TODO hämta från databas
+//                    Collections.addAll(freetimes, dates);
+                //}
 
                 //Skapa Radiobuttons
 //                int stringcount = freetimes.size(); // hur många tider den dagen
