@@ -1,16 +1,24 @@
 package com.example.covidapp.Dashboard;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentDashboardBinding;
 
@@ -22,6 +30,8 @@ import com.example.covidapp.databinding.FragmentDashboardBinding;
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
+    DashboardFragment this_obj = this;
+    private int flag = 0;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,47 +87,19 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button button,button_deathsandcases,buttonAgeProduct,buttonCumelative;
-        button_deathsandcases = binding.buttonDeathsandCases;
-        button = binding.buttonDisDoses;
-        buttonCumelative = binding.buttonCumelative;
-        buttonAgeProduct = binding.button;
-        buttonCumelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(getActivity().getBaseContext(),ActivityDistrubatedDoses.class);
-                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_distributed_doses);
+        Fragment fragment_covid_cases = new CovidCasesFragment();
+        CardView cardview = binding.cardView;
 
-            }
-        });
-        buttonAgeProduct.setOnClickListener(new View.OnClickListener() {
+        LinearLayout cases_button = binding.sickButton;
+        LinearLayout vaccinated_button = binding.vaccineButton;
+        LinearLayout distributed_button = binding.truckButton;
+        LinearLayout graph_button = binding.graphButton;
+
+        cases_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDosesAgeProduct.class);
-//                startActivity(intent);
-                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_doses_age_product);
-            }
-        });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity().getBaseContext(), ActivityDistrubatedDoses.class);
-//
-//                intent.putExtra("mode",true);
-//                startActivity(intent);
-//                DistributedDosesFragment fragment = new DistributedDosesFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putBoolean("mode", true);
-//                fragment.setArguments(bundle);
-                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_distributed_doses);
-            }
-        });
-        button_deathsandcases.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity().getBaseContext(),ActivityDeathsAndCases.class);
-//                startActivity(intent);
-                Navigation.findNavController(view).navigate(R.id.action_nav_dashboard_to_nav_deaths_and_cases);
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                ft.replace(R.id.cardView, fragment_covid_cases).commit();
             }
         });
     }

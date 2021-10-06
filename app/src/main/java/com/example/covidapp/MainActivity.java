@@ -1,5 +1,6 @@
 package com.example.covidapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -21,10 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.covidapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
-
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -70,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
 //            }
 //        });
+
+
     }
 
 
@@ -87,4 +88,5 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 }

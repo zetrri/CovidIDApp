@@ -6,41 +6,119 @@
     android:layout_height="match_parent"
     tools:context=".Dashboard.DashboardFragment">
 
-    <Button
-        android:layout_marginHorizontal="10sp"
-        android:id="@+id/buttonDisDoses"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
 
-        android:layout_marginTop="4dp"
+        <!-- Top menu-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="66dp">
 
-        android:text="Distrubated/Administrated doses"
-        app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/sick_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical">
 
-    <Button
-        android:layout_marginHorizontal="10sp"
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Doses per age/product"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_deathsandCases" />
-    <Button
-        android:layout_marginHorizontal="10sp"
-        android:id="@+id/button_deathsandCases"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Deaths/Cases"
-        app:layout_constraintTop_toBottomOf="@id/buttonDisDoses"
-        />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/sick" />
 
-    <Button
-        android:layout_marginHorizontal="10sp"
-        android:id="@+id/button_cumelative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="cumelative uptake"
-        app:layout_constraintTop_toBottomOf="@id/button"
-        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Sjukdomsfall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vaccine_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/syringe" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Vaccinerade" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/truck_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/truck" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Leveranser" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/graph_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/chart" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Graf" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <!-- grafer -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
