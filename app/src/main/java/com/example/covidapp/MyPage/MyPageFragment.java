@@ -152,7 +152,7 @@ public class MyPageFragment extends Fragment {
 
         DatabaseReference ref = database.getReference("BookedTimes");
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
