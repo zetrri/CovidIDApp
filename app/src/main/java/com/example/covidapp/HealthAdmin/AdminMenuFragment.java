@@ -88,26 +88,25 @@ public class AdminMenuFragment extends Fragment {
         //Removes keyboard if up
 
         //Listeners, replace activity when implemented.
-        /*
-       eCatalog.setOnClickListener(new View.OnClickListener() {
+
+       /*eCatalog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View view) {
                Intent intent = new Intent(getBaseContext(), ReplaceWithActivity.class);
                startActivity(intent);
            }
-       });
+       });*/
         eDashboard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
-                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_dashboard);
             }
         });
-        eSecDose.setOnClickListener(new View.OnClickListener() {
+        /*eSecDose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
                 startActivity(intent);
             }
-        });
-        */
+        });*/
+
         eQuestionnaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
