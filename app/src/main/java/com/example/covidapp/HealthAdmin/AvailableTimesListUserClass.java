@@ -14,9 +14,10 @@ public class AvailableTimesListUserClass {
     String allergies;
     String medication;
     String comments;
+    String vaccine;
 
     public AvailableTimesListUserClass(){}
-    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput) {
+    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput,String vaccineinput) {
         this.city = city;
         this.county = county;
         this.clinic = clinic;
@@ -27,6 +28,15 @@ public class AvailableTimesListUserClass {
         this.allergies = allergiesinput;
         this.medication = medicationinput;
         this.comments = commentsinput;
+        this.vaccine = vaccineinput;
+    }
+
+    public String getVaccine() {
+        return vaccine;
+    }
+
+    public void setVaccine(String vaccine) {
+        this.vaccine = vaccine;
     }
 
     public String getAllergies() {

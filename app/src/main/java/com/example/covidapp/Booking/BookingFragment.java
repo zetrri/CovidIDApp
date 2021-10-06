@@ -314,6 +314,7 @@ public class BookingFragment extends Fragment {
         Userclass.setCounty(booking.county);
         Userclass.setClinic(booking.clinic);
         Userclass.setTimestamp(date.getTimeInMillis());
+        Userclass.setVaccine(booking.vaccine);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();

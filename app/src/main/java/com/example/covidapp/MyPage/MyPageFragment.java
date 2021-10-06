@@ -173,6 +173,7 @@ public class MyPageFragment extends Fragment {
                     //TODO hämta storleken från databas
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
                     for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
 
@@ -186,7 +187,7 @@ public class MyPageFragment extends Fragment {
                         TextView date_time = new TextView(getActivity());
 
                         //date_time.setText(String.valueOf(date1.getDay())+"/"+String.valueOf(date1.getMonth())+"-"+date1.getYear());
-                        date_time.setText(sdf.format(date1));
+                        date_time.setText(sdf.format(date1) +" "+sdfclock.format(date1));
                         date_time.setTextSize(20);
                         date_time.setBackgroundColor(0xFF6200EE);
                         date_time.setTextColor(Color.WHITE);
@@ -199,7 +200,7 @@ public class MyPageFragment extends Fragment {
 
                         TextView vaccin_text = new TextView(getActivity());
                         vaccin_text.setTextSize(15);
-                        vaccin_text.setText( (String) ("Vaccin: " + availableTimesListUserClasses.get(i).getMedication())); //ska vara vaccine
+                        vaccin_text.setText( (String) ("Vaccin: " + availableTimesListUserClasses.get(i).getVaccine())); //ska vara vaccine
                         linear_layout1.addView(vaccin_text);
 
                         LinearLayout linear_layout2 = new LinearLayout(getActivity());
