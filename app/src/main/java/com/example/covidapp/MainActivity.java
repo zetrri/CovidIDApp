@@ -2,6 +2,7 @@ package com.example.covidapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_my_page, R.id.nav_dashboard, R.id.nav_faq, R.id.nav_login)
+                R.id.nav_my_page, R.id.nav_dashboard, R.id.nav_faq, R.id.nav_login,R.id.nav_admin_menu)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -80,6 +81,27 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity3, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+
+                return true;
+            case R.id.OtherItem:
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_admin_add_available_times);
+                return true;
+            case R.id.TestDriveAdmin:
+                NavController navController2 = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                navController2.navigate(R.id.ConnectedTimesFragment);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

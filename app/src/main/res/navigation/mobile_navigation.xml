@@ -5,11 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_my_page">
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.covidapp.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_my_page"
@@ -69,6 +64,16 @@
         android:name="com.example.covidapp.HealthAdmin.AdminAddAvailableTimesFragment"
         android:label="@string/admin_add_available_times"
         tools:layout="@layout/fragment_admin_add_available_times" />
+
+    <fragment
+        android:id="@+id/ConnectedTimesFragment"
+        android:name="com.example.covidapp.HealthAdmin.ConnectedTimesFragment"
+        android:label="@+string/ConnectedTimesFragment"
+        tools:layout="@layout/fragment_connected_times">
+    <action
+        android:id="@+id/action_nav_x_to_nav_y"
+        app:destination="@id/nav_my_page" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_questionnaire_response"
@@ -137,15 +142,5 @@
 
 
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.covidapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.covidapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>
