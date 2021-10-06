@@ -179,9 +179,10 @@ public class AdminAddAvailableTimesFragment extends Fragment {
                     Calendar date1 = Calendar.getInstance();
                     date1.setTimeInMillis(availableTimesListUserClass.getTimestamp());
                     Log.d("Found",date1.toString());
+                    timesfromDatabase.add(availableTimesListUserClass);
                 }
-                //ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
-                //listView.setAdapter(timesfromDatabaseadapter);
+                ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
+                listView.setAdapter(timesfromDatabaseadapter);
 
             }
 
