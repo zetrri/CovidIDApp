@@ -22,10 +22,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covidapp.Booking.Booking;
+import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MyPageFragment#newInstance} factory method to
@@ -136,84 +148,126 @@ public class MyPageFragment extends Fragment {
 
         LinearLayout container = binding.containerbookings;
 
-        //Skapar kort med mina bokningar
-        //TODO hämta storleken från databas
-        for(int i = 0; i < Bookings.length; i++){
-            CardView new_card = new CardView(getActivity());
-            new_card.setId(i+1);
-            LinearLayout linear_layout1 = new LinearLayout(getActivity());
-            linear_layout1.setOrientation(LinearLayout.VERTICAL);
-            TextView date_time = new TextView(getActivity());
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
 
-            date_time.setText((String)(Bookings[i].date + " kl " + Bookings[i].time));
-            date_time.setTextSize(20);
-            date_time.setBackgroundColor(0xFF6200EE);
-            date_time.setTextColor(Color.WHITE);
-            linear_layout1.addView(date_time);
-
-            TextView clinic_text = new TextView(getActivity());
-            clinic_text.setTextSize(15);
-            clinic_text.setText( (String) ("Mottagning: " + Bookings[i].clinic + " " + Bookings[i].city));
-            linear_layout1.addView(clinic_text);
-
-            TextView vaccin_text = new TextView(getActivity());
-            vaccin_text.setTextSize(15);
-            vaccin_text.setText( (String) ("Vaccin: " + Bookings[i].vaccine));
-            linear_layout1.addView(vaccin_text);
-
-            LinearLayout linear_layout2 = new LinearLayout(getActivity());
-            linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
-            linear_layout2.setPadding(0,0,0,16);
-            linear_layout2.setGravity(Gravity.RIGHT);
-
-            Button buttonAvboka = new Button(getActivity());
-            buttonAvboka.setText("Avboka");
-            linear_layout2.addView(buttonAvboka);
-            buttonAvboka.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Avboka")
-                            .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new_card.removeAllViews();
-                                    // TODO remove information from database
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .show();
-
+        DatabaseReference ref = database.getReference("BookedTimes");
+        ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+                if ( firebaseAuth1.getCurrentUser() == null){
+                    return;
                 }
-            });
+                else{
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
+                        if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
+                            Log.d("FoundOne",availableTimesListUserClass.getId());
+                            availableTimesListUserClasses.add(availableTimesListUserClass);
+                        }
+//
+                    }
+                    //Make Cards
+                    //Skapar kort med mina bokningar
+                    //TODO hämta storleken från databas
+                    Calendar date = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
-            Button buttonOmboka = new Button(getActivity());
-            buttonOmboka.setText("Omboka");
-            linear_layout2.addView(buttonOmboka);
-            buttonOmboka.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Omboka")
-                            .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new_card.removeAllViews();
 
+                        date.setTimeInMillis(availableTimesListUserClasses.get(i).getTimestamp());
+                        Date date1 = date.getTime();
 
-                                    Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+                        CardView new_card = new CardView(getActivity());
+                        new_card.setId(i+1);
+                        LinearLayout linear_layout1 = new LinearLayout(getActivity());
+                        linear_layout1.setOrientation(LinearLayout.VERTICAL);
+                        TextView date_time = new TextView(getActivity());
 
-                                    // TODO remove information from database
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .show();
+                        //date_time.setText(String.valueOf(date1.getDay())+"/"+String.valueOf(date1.getMonth())+"-"+date1.getYear());
+                        date_time.setText(sdf.format(date1));
+                        date_time.setTextSize(20);
+                        date_time.setBackgroundColor(0xFF6200EE);
+                        date_time.setTextColor(Color.WHITE);
+                        linear_layout1.addView(date_time);
+
+                        TextView clinic_text = new TextView(getActivity());
+                        clinic_text.setTextSize(15);
+                        clinic_text.setText( (String) ("Mottagning: " + availableTimesListUserClasses.get(i).getClinic() + " " + availableTimesListUserClasses.get(i).getCity()));
+                        linear_layout1.addView(clinic_text);
+
+                        TextView vaccin_text = new TextView(getActivity());
+                        vaccin_text.setTextSize(15);
+                        vaccin_text.setText( (String) ("Vaccin: " + availableTimesListUserClasses.get(i).getMedication())); //ska vara vaccine
+                        linear_layout1.addView(vaccin_text);
+
+                        LinearLayout linear_layout2 = new LinearLayout(getActivity());
+                        linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
+                        linear_layout2.setPadding(0,0,0,16);
+                        linear_layout2.setGravity(Gravity.RIGHT);
+
+                        Button buttonAvboka = new Button(getActivity());
+                        buttonAvboka.setText("Avboka");
+                        linear_layout2.addView(buttonAvboka);
+//                        buttonAvboka.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                new AlertDialog.Builder(getActivity())
+//                                        .setTitle("Avboka")
+//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
+//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                            public void onClick(DialogInterface dialog, int which) {
+//                                                new_card.removeAllViews();
+//                                                // TODO remove information from database
+//                                            }
+//                                        })
+//                                        .setNegativeButton(android.R.string.no, null)
+//                                        .show();
+//
+//                            }
+//                        });
+
+                        Button buttonOmboka = new Button(getActivity());
+                        buttonOmboka.setText("Omboka");
+                        linear_layout2.addView(buttonOmboka);
+//                        buttonOmboka.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                new AlertDialog.Builder(getActivity())
+//                                        .setTitle("Omboka")
+//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
+//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                            public void onClick(DialogInterface dialog, int which) {
+//                                                new_card.removeAllViews();
+//
+//
+//                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+//
+//                                                // TODO remove information from database
+//                                            }
+//                                        })
+//                                        .setNegativeButton(android.R.string.no, null)
+//                                        .show();
+//                            }
+//                        });
+
+                        linear_layout1.addView(linear_layout2);
+                        new_card.addView(linear_layout1);
+                        container.addView(new_card);
+                    }
                 }
-            });
 
-            linear_layout1.addView(linear_layout2);
-            new_card.addView(linear_layout1);
-            container.addView(new_card);
-        }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
     }
+
+    private void createCard(){}
 }
