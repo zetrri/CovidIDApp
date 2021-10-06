@@ -216,7 +216,6 @@ public class BookingFragment extends Fragment {
 //                    radioGroup.removeAllViews();
 //                    String[] dates = new String[]{"11:00", "11:15", "12:30", "13:00", "13:45", "14:15"}; //TODO hämta från databas
 //                    Collections.addAll(freetimes, dates);
-//gvhjvhgh
 //                }
 //                else if(curDate.equals("2")){
 //                    radioGroup.removeAllViews();
