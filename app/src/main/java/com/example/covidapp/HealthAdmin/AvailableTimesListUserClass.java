@@ -11,9 +11,12 @@ public class AvailableTimesListUserClass {
     String bookedBy;
     Boolean isAvailable;
     Long timestamp;
+    String allergies;
+    String medication;
+    String comments;
 
     public AvailableTimesListUserClass(){}
-    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean) {
+    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput) {
         this.city = city;
         this.county = county;
         this.clinic = clinic;
@@ -21,6 +24,33 @@ public class AvailableTimesListUserClass {
         this.id = thisid;
         this.bookedBy = bookedByUser;
         this.isAvailable = isAvailableboolean;
+        this.allergies = allergiesinput;
+        this.medication = medicationinput;
+        this.comments = commentsinput;
+    }
+
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    public String getMedication() {
+        return medication;
+    }
+
+    public void setMedication(String medication) {
+        this.medication = medication;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public Long getTimestamp() {

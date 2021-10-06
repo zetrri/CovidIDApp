@@ -21,13 +21,22 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentBookingBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.PrimitiveIterator;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +49,7 @@ public class BookingFragment extends Fragment {
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
     private String[] cities;
     private String[] clinics;
-
+    private int choosedDay,choosedMonth,choosedYear,choosedHour,choosedMinute;
     private FragmentBookingBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -181,9 +190,23 @@ public class BookingFragment extends Fragment {
         // få ut datum från kalendern
         CalendarView Kalender = binding.calendarView;
         TextView error = binding.errormessage;
+
         Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                choosedYear = year;
+                choosedDay = day;
+                choosedMonth = month;
+                Log.d("Choosedday",String.valueOf(choosedDay));
+                ArrayList<Times> timeslist = new ArrayList<>();
+                for (int j=8;j<17;j++){
+                    for (int i=0;i<60;i+=15){
+                        Times times = new Times(j,i);
+                        timeslist.add(times);
+                        //Log.d("Times",String.valueOf(times.hour)+String.valueOf(times.minute));
+                    }
+                }
+
                 booking.date = day + "/" + month + "-" + year; // valt datum
                 String curDate = String.valueOf(day);
                 List<String> freetimes = new ArrayList<>();
@@ -202,10 +225,18 @@ public class BookingFragment extends Fragment {
                 }
 
                 //Skapa Radiobuttons
-                int stringcount = freetimes.size(); // hur många tider den dagen
+//                int stringcount = freetimes.size(); // hur många tider den dagen
+//                for (int i=0; i<stringcount; i++){
+//                    RadioButton newRadioButton = new RadioButton(getActivity());
+//                    newRadioButton.setText(freetimes.get(i));
+//                    newRadioButton.setId(View.generateViewId());
+//                    radioGroup.addView(newRadioButton);
+//                }
+                int stringcount = timeslist.size(); // hur många tider den dagen
                 for (int i=0; i<stringcount; i++){
                     RadioButton newRadioButton = new RadioButton(getActivity());
-                    newRadioButton.setText(freetimes.get(i));
+                    newRadioButton.setText(timeslist.get(i).toString());
+
                     newRadioButton.setId(View.generateViewId());
                     radioGroup.addView(newRadioButton);
                 }
@@ -235,6 +266,11 @@ public class BookingFragment extends Fragment {
                 }
 
                 booking.time = (String) radioButton.getText(); //tiden som är vald
+                //Separera timma och minut
+                String[] STRstr = booking.time.split(":");
+                Log.d("Vald tid",STRstr[0].toString()+ STRstr[1].toString());
+                Calendar date = Calendar.getInstance();
+                date.set(choosedYear,choosedMonth,choosedDay,Integer.parseInt(STRstr[0]),Integer.parseInt(STRstr[1]));
                 EditText text_allergies = (EditText) binding.editTextAllergies;
                 EditText text_medicines = (EditText) binding.editTextMedicine;
                 EditText text_comments = (EditText) binding.editTextComments;
@@ -256,8 +292,44 @@ public class BookingFragment extends Fragment {
                         .setNegativeButton(android.R.string.no, null)
                         .show();
 
+                //Create new class and import to database
+                ConnectUserWithTime(booking,date);
             }
         });
+
+
     }
 
+    private AvailableTimesListUserClass getNewAppointment(){
+        AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass();
+        return availableTimesListUserClass;
+    }
+
+    private void ConnectUserWithTime(Booking booking,Calendar date){
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        AvailableTimesListUserClass Userclass = getNewAppointment();
+        Userclass.setAllergies(booking.allergy);
+        Userclass.setMedication(booking.meds);
+        Userclass.setComments(booking.message);
+        Userclass.setCity(booking.city);
+        Userclass.setCounty(booking.county);
+        Userclass.setClinic(booking.clinic);
+        Userclass.setTimestamp(date.getTimeInMillis());
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if ( currentUser==null){
+            Toast.makeText(getActivity().getBaseContext(),"User Not logged in",Toast.LENGTH_LONG).show();
+            return;
+        }
+        else{
+            String UID = currentUser.getUid();
+            Userclass.setBookedBy(UID);
+            Userclass.setAvailable(false);
+            Userclass.setId(UUID.randomUUID().toString());
+            DatabaseReference myRef = database.getReference("BookedTimes").child(Userclass.getId());
+            myRef.setValue(Userclass);
+        }
+
+    }
 }
