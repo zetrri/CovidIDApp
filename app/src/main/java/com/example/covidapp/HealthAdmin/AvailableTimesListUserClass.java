@@ -6,14 +6,53 @@ public class AvailableTimesListUserClass {
     String city;
     String county;
     String clinic;
-    Calendar date;
+    //Calendar date;
+    String id;
+    String bookedBy;
+    Boolean isAvailable;
+    Long timestamp;
 
     public AvailableTimesListUserClass(){}
-    public AvailableTimesListUserClass(String city, String county, String clinic, Calendar date) {
+    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean) {
         this.city = city;
         this.county = county;
         this.clinic = clinic;
-        this.date = date;
+        this.timestamp = date;
+        this.id = thisid;
+        this.bookedBy = bookedByUser;
+        this.isAvailable = isAvailableboolean;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getBookedBy() {
+        return bookedBy;
+    }
+
+    public void setBookedBy(String bookedBy) {
+        this.bookedBy = bookedBy;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCity() {
@@ -40,16 +79,10 @@ public class AvailableTimesListUserClass {
         this.clinic = clinic;
     }
 
-    public Calendar getDate() {
-        return date;
-    }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
     @Override
     public String toString(){
-        return getCity().toString();
+        return getTimestamp().toString();
     }
 }
 

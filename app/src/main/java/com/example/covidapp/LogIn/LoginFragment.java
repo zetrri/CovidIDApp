@@ -201,6 +201,7 @@ public class LoginFragment extends Fragment {
         };
         cTimer.start();
     }
+    //Getting the current user, if logged in
     private void getUser(View view){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");

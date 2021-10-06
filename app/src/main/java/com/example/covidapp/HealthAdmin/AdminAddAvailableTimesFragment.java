@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.example.covidapp.Dashboard.Data;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentAdminAddAvailableTimesBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,8 +49,9 @@ public class AdminAddAvailableTimesFragment extends Fragment {
     Calendar date;
     DateFormat dateFormat;
     String pattern = "MM/dd/yyyy HH:mm";
-    ArrayList<Calendar> calendars;
+
     ArrayList<String> calendarsInString;
+    Spinner spinnerCities, spinnerCounties, spinnerClinics;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,30 +110,92 @@ public class AdminAddAvailableTimesFragment extends Fragment {
         timePicker = binding.datePickerAdminAddTimes;
         datePicker = binding.calendarViewChooseDate;
         listView = binding.listviewAdminAddedTimes;
-        calendars = new ArrayList<>();
+        //calendars = new ArrayList<>();
         calendarsInString = new ArrayList<>();
         date = Calendar.getInstance();
         dateFormat = new SimpleDateFormat(pattern);
-        ArrayAdapter<String> calendarArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, calendarsInString);
-        listView.setAdapter(calendarArrayAdapter);
+        ArrayList<AvailableTimesListUserClass> timesfromDatabase = new ArrayList<>();
+        ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
+        //listView.setAdapter(timesfromDatabaseadapter);
         timePicker.setIs24HourView(true);
+
+
+        ArrayList<String> Counties = new ArrayList<>();
+        Counties.add("Värmland län");
+        Counties.add("Örebro län");
+        Counties.add("Västergötland län");
+        ArrayList<String> Cities = new ArrayList<>();
+        Cities.add("Örebro");
+        Cities.add("Karlstad");
+        Cities.add("Götebord");
+        ArrayList<String> Clinics = new ArrayList<>();
+        Clinics.add("Adolfsbergs vårdcentral");
+        Clinics.add("Ruds vårdcentral");
+        Clinics.add("Kronoparkens vårdcentral");
+        ArrayAdapter<String> CountyAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, Counties);
+        ArrayAdapter<String> CitiesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, Cities);
+        ArrayAdapter<String> ClinicAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, Clinics);
+        spinnerCities = binding.spinnerCity;
+        spinnerCounties = binding.spinnerCounty;
+        spinnerClinics = binding.spinnerClinic;
+        spinnerCities.setAdapter(CitiesAdapter);
+        spinnerCounties.setAdapter(CountyAdapter);
+        spinnerClinics.setAdapter(ClinicAdapter);
 
         buttonAddTimes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String City = (String)spinnerCities.getSelectedItem();
+                String County = (String)spinnerCounties.getSelectedItem();
+                String Clinic = (String)spinnerClinics.getSelectedItem();
                 day = datePicker.getDayOfMonth();
                 month = datePicker.getMonth();
                 year = datePicker.getYear();
                 minute = timePicker.getMinute();
                 hour = timePicker.getHour();
 
+                String uniqueID = UUID.randomUUID().toString();
+                Log.d("Unique ID",uniqueID);
                 date.set(year,month,day,hour,minute);
-                calendars.add(date);
-                calendarsInString.add(dateFormat.format(date.getTime()));
-
-                listView.setAdapter(calendarArrayAdapter);
+                AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true);
+//                calendars.add(date);
+//                calendarsInString.add(dateFormat.format(date.getTime()));
+//
+//                listView.setAdapter(calendarArrayAdapter);
+                SendToDatabase(availableTimesListUserClass);
 
             }
         });
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+
+        DatabaseReference ref = database.getReference("AvailableTimes");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
+                    //timesfromDatabase.add(availableTimesListUserClass);
+                    Calendar date1 = Calendar.getInstance();
+                    date1.setTimeInMillis(availableTimesListUserClass.getTimestamp());
+                    Log.d("Found",date1.toString());
+                }
+
+
+                //ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
+                //listView.setAdapter(timesfromDatabaseadapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+    private void SendToDatabase(AvailableTimesListUserClass availableTimesListUserClass){
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference myRef = database.getReference("AvailableTimes").child(availableTimesListUserClass.id);
+        myRef.setValue(availableTimesListUserClass);
     }
 }

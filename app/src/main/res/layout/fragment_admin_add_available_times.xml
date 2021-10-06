@@ -58,7 +58,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerClinic" />
+
+    <Spinner
+        android:id="@+id/spinnerCounty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datePickerAdminAddTimes" />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/spinnerCounty"
+        app:layout_constraintTop_toBottomOf="@+id/datePickerAdminAddTimes" />
+
+    <Spinner
+        android:id="@+id/spinnerClinic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCounty" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

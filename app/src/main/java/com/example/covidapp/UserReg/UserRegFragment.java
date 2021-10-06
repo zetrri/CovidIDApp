@@ -179,8 +179,10 @@ public class UserRegFragment extends Fragment {
         });
 
     }
+
+    //adds the user to the database
     private void makeUser(String[] accounttoadd, View view){
-        //Testklass ta bort
+
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         String username = accounttoadd[0];
         String PerNR = accounttoadd[2];
