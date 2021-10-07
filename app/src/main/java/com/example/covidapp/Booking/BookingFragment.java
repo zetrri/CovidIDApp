@@ -137,9 +137,10 @@ public class BookingFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
-                    countieslist.add(availableTimesListUserClass.getCounty());
-                    citieslist.add(availableTimesListUserClass.getCity());
-                    clinicslist.add(availableTimesListUserClass.getClinic());
+                    if (!countieslist.contains(availableTimesListUserClass.getCounty())) countieslist.add(availableTimesListUserClass.getCounty());
+                    if (!citieslist.contains(availableTimesListUserClass.getCity())) citieslist.add(availableTimesListUserClass.getCity());
+                    if (!clinicslist.contains(availableTimesListUserClass.getClinic())) clinicslist.add(availableTimesListUserClass.getClinic());
+
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(availableTimesListUserClass.getTimestamp());
                     datelist.add(calendar.getTime());
