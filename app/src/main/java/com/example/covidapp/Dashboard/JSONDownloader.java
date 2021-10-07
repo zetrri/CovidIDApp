@@ -17,7 +17,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class JSONDownloader implements Serializable {
-    private String[][] regionDoubleArray = new String[28][3];
+    private String[][] regionDoubleArray = new String[22][3];
     private String[][] ageDoubleArray = new String[11][3];
 
     public JSONDownloader(){
