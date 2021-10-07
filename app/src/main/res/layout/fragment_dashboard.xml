@@ -29,7 +29,7 @@
                     android:id="@+id/sick_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.2"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:orientation="vertical">
@@ -44,14 +44,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Sjukdomsfall" />
+                        android:text="" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/vaccine_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.2"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:orientation="vertical">
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Vaccinerade" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -75,7 +75,7 @@
                     android:id="@+id/truck_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.2"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:orientation="vertical">
@@ -90,14 +90,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Leveranser" />
+                        android:text="" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/graph_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.2"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:orientation="vertical">
@@ -112,8 +112,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Graf" />
+                        android:text="" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/update_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+
+                        app:srcCompat="@drawable/update" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="" />
+                </LinearLayout>
+
             </LinearLayout>
             <View
                 android:layout_width="match_parent"

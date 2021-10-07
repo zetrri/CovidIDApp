@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentDashboardBinding;
 
@@ -57,6 +58,7 @@ public class DashboardFragment extends Fragment {
         LinearLayout vaccinated_button = binding.vaccineButton;
         LinearLayout distributed_button = binding.truckButton;
         LinearLayout graph_button = binding.graphButton;
+        LinearLayout update_button = binding.updateButton;
 
         cases_button.setOnClickListener(new View.OnClickListener() {
             @Override

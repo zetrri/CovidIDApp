@@ -117,8 +117,8 @@ public class CumulativeUptakeFragment extends Fragment {
         }
 
         List<ILineDataSet> entries = new ArrayList<>();
-        LineDataSet set1 = new LineDataSet(values1, "DataSet 1");
-        LineDataSet set2 = new LineDataSet(values2, "Dataset 2");
+        LineDataSet set1 = new LineDataSet(values1, "1 dos");
+        LineDataSet set2 = new LineDataSet(values2, "2 doser");
 
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
@@ -126,14 +126,13 @@ public class CumulativeUptakeFragment extends Fragment {
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setDrawCircles(false);
         set1.setFillAlpha(255);
-        set1.setLabel("poop");
-        set1.setColor(Color.WHITE);
+        set1.setColor(Color.rgb(187, 134, 252));
         set1.setDrawFilled(true);
         set1.setFillColor(Color.rgb(187, 134, 252));
 
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
         set2.setDrawCircles(false);
-        set2.setColor(Color.WHITE);
+        set2.setColor(Color.rgb(140, 234, 255));
         set2.setFillAlpha(255);
         set2.setDrawFilled(true);
         set2.setFillColor(Color.rgb(140, 234, 255));
