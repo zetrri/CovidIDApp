@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,13 +48,16 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Bundle b = getActivity().getIntent().getExtras();
         try {
-            Log.i("TRY", "BEFORE");
-            savedInstanceState.getSerializable("excelDownloader");
-            Log.i("TRY", "AFTER");
-            excelDownloader = (ExcelDownloader) savedInstanceState.getSerializable("excelDownloader");
-            jsonDownloader = (JSONDownloader) savedInstanceState.getSerializable(("jsonDownloader"));
+            Log.i("onResume()",((ExcelDownloader) b.getSerializable("excelDownloader")).toString());
+            excelDownloader = (ExcelDownloader) b.getSerializable("excelDownloader");
+            excelBundle = new Bundle();
+            excelBundle.putSerializable("jsonDownloader", excelDownloader);
+            Log.i("excelDownloader", excelDownloader.getCumulativeUptakeArray()[0][0]);
+            jsonDownloader = (JSONDownloader) b.getSerializable("jsonDownloader");
+            jsonBundle = new Bundle();
+            jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
         }
         catch (Exception e){
             excelDownloader = new ExcelDownloader();
@@ -97,20 +101,9 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i("onSaveInstanceState", "AFTER");
-        //outState.putSerializable("excelDownloader", excelDownloader);
-        //outState.putSerializable("jsonDownloader", jsonDownloader);
-    }
-
-    @Override
     public void onPause() {
-        Log.i("onPause", "AFTER");
-        Bundle b = new Bundle();
-        b.putSerializable("excelDownloader", excelDownloader);
-        b.putSerializable("jsonDownloader", jsonDownloader);
-        onSaveInstanceState(b);
+        getActivity().getIntent().putExtra("excelDownloader",((ExcelDownloader) excelBundle.getSerializable("excelDownloader")));
+        getActivity().getIntent().putExtra("jsonDownloader", ((JSONDownloader) excelBundle.getSerializable("jsonDownloader")));
         super.onPause();
     }
 
