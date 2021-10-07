@@ -161,7 +161,7 @@ public class CovidCasesFragment extends Fragment {
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
-        set.setColor(Color.rgb(140, 234, 255));
+        set.setColors(getColors());
 
         casesAgegroupGraph.setData(data);
         casesAgegroupGraph.getDescription().setEnabled(false);
@@ -206,7 +206,7 @@ public class CovidCasesFragment extends Fragment {
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
-        set.setColor(Color.rgb(140, 234, 255));
+        set.setColors(getColors());
 
         casesRegionGraph.setData(data);
         casesRegionGraph.getDescription().setEnabled(false);
@@ -236,7 +236,7 @@ public class CovidCasesFragment extends Fragment {
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
-        set.setColor(Color.rgb(140, 234, 255));
+        set.setColors(getColors());
 
         deathsAgegroupGraph.setData(data);
         deathsAgegroupGraph.getDescription().setEnabled(false);
@@ -281,11 +281,17 @@ public class CovidCasesFragment extends Fragment {
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
-        set.setColor(Color.rgb(140, 234, 255));
+        set.setColors(getColors());
 
         deathsRegionGraph.setData(data);
         deathsRegionGraph.getDescription().setEnabled(false);
         deathsRegionGraph.setFitBars(true); // make the x-axis fit exactly all bars
         deathsRegionGraph.invalidate(); // refresh
+    }
+
+    private int[] getColors() {
+        int [] color = {Color.rgb(187, 134, 252), Color.rgb(140, 234, 255)};
+
+        return color;
     }
 }
