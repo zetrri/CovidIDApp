@@ -18,9 +18,37 @@
                 android:id="@+id/spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:layout_weight="0.5"/>
         </LinearLayout>
+       <!-- <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
+            <TextView
+                android:id="@+id/week_button"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:background="#808080"
+                android:textColor="@color/black"
+                android:clickable="true"
+                android:layout_marginEnd="1dp"
+                android:text="Visa per vecka"
+                android:focusable="true" />
+            <TextView
+                android:id="@+id/month_button"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:background="#CFCFCF"
+                android:textColor="@color/black"
+                android:clickable="true"
+                android:text="Visa per månad"
+                android:focusable="true" />
+        </LinearLayout>-->
         <androidx.cardview.widget.CardView
             android:id="@+id/container"
             android:layout_width="match_parent"

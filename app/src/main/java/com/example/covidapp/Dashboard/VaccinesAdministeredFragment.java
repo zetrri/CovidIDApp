@@ -35,7 +35,6 @@ import java.util.List;
 public class VaccinesAdministeredFragment extends Fragment {
     private FragmentVaccinesAdministeredBinding binding;
     private HorizontalBarChart graph;
-    private String region;
 
     public VaccinesAdministeredFragment() {
         // Required empty public constructor
@@ -66,6 +65,7 @@ public class VaccinesAdministeredFragment extends Fragment {
 
         CardView container = binding.container;
 
+        //TODO ska egentligen hämtas från filen
         Spinner region_spinner = binding.spinner;
         String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
                 "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
@@ -77,8 +77,8 @@ public class VaccinesAdministeredFragment extends Fragment {
         region_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                region = region_spinner.getItemAtPosition(position).toString();
-                createGraph();
+                String region = region_spinner.getItemAtPosition(position).toString();
+                createGraph(region);
                 container.removeAllViews();
                 container.addView(graph);
             }
@@ -88,16 +88,20 @@ public class VaccinesAdministeredFragment extends Fragment {
         });
     }
 
-    public void createGraph(){
+    public void createGraph(String region){
         graph = new HorizontalBarChart(getContext());
 
+        //TODO hämta labels från filen
         ArrayList<String> yLabels = new ArrayList<>(Arrays.asList("16-17 år", "18-29 år", "30-39 år", "40-49 år", "50-59 år", "60-69 år", "70-79 år", "80-89 år", "90 år +"));
         graph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(yLabels));
-        graph.getXAxis().setLabelCount(9);
+        graph.getXAxis().setLabelCount(9); //TODO antal från filen
+        graph.getXAxis().setDrawGridLines(false);
         graph.getAxisLeft().setAxisMinimum(0f);
+        graph.getAxisLeft().setDrawGridLines(false);
 
+        //TODO hitta rätt region
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, new float[]{56839/*färdigvaccinerad*/, 221369-56839/*minst 1 dos - färdigvaccinerade*/}));
+        entries.add(new BarEntry(0f, new float[]{56839/*TODO färdigvaccinerad*/, 221369-56839/*TODO minst 1 dos - färdigvaccinerade*/}));
         entries.add(new BarEntry(1f, new float[]{799852, 1068050-799852}));
         entries.add(new BarEntry(2f, new float[]{870090, 1035606-870090}));
         entries.add(new BarEntry(3f, new float[]{988614, 1076674-988614}));
@@ -108,7 +112,7 @@ public class VaccinesAdministeredFragment extends Fragment {
         entries.add(new BarEntry(8f, new float[]{85894, 90665-85894}));
         BarDataSet set = new BarDataSet(entries, "      Antal vaccinerade i " + region);
         set.setColors(getColors());
-        set.setStackLabels(new String[]{"2 doser", "Minst 1 dos"});
+        set.setStackLabels(new String[]{"Färdigvaccinerad", "Minst 1 dos"});
 
         BarData data = new BarData(set);
         data.setDrawValues(false);

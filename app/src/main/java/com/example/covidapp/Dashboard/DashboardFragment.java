@@ -134,7 +134,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(jsonBundle == null){
+                if(excelBundle == null){
                     return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
                 }
                 fragment_covid_cases.setArguments(jsonBundle);

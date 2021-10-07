@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentCovidCasesBinding;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -30,6 +32,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,10 +79,13 @@ public class CovidCasesFragment extends Fragment {
         TextView agegroup = binding.agegroupButton;
         TextView region = binding.regionButton;
 
-        createCasesAgegroupGraph();
-        createCasesRegionGraph();
-        createDeathsAgegroupGraph();
-        createDeathsRegionGraph();
+        JSONDownloader jsonDownloader = (JSONDownloader) getArguments().getSerializable("jsonDownloader");
+        String [][] ageArray = jsonDownloader.getAgeDoubleArray();
+        String [][] regionArray = jsonDownloader.getRegionDoubleArray();
+        createCasesAgegroupGraph(ageArray);
+        createCasesRegionGraph(regionArray);
+        createDeathsAgegroupGraph(ageArray);
+        createDeathsRegionGraph(regionArray);
         container.addView(casesAgegroupGraph);
 
         cases.setOnClickListener(new View.OnClickListener() {
@@ -137,30 +143,39 @@ public class CovidCasesFragment extends Fragment {
 
             }
         });
+
+        //TODO kanske att sverige blir för stort jämfört med resten - lägg till en total mängd för sverige i text isåfall
+
     }
 
-    public void createCasesAgegroupGraph(){
+    public void createCasesAgegroupGraph(String[][] ageArray){
         casesAgegroupGraph = new HorizontalBarChart(getContext());
+        XAxis xAxis = casesAgegroupGraph.getXAxis();
+        YAxis yAxis = casesAgegroupGraph.getAxisLeft();
 
-        ArrayList<String> yLabels = new ArrayList<>(Arrays.asList("16-17 år", "18-29 år", "30-39 år", "40-49 år", "50-59 år", "60-69 år", "70-79 år", "80-89 år", "90 år +"));
-        casesAgegroupGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(yLabels));
-        casesAgegroupGraph.getXAxis().setLabelCount(9);
-
+        ArrayList<String> yLabels = new ArrayList<>();
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 30f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        entries.add(new BarEntry(4f, 50f));
-        entries.add(new BarEntry(5f, 70f));
-        entries.add(new BarEntry(6f, 60f));
-        entries.add(new BarEntry(7f, 70f));
-        entries.add(new BarEntry(8f, 60f));
+
+        int [] max_arr = new int[ageArray.length];
+        for(int i=0; i<ageArray.length; i++){
+            yLabels.add(ageArray[i][0]);
+            entries.add(new BarEntry(i, Float.parseFloat(ageArray[i][1])));
+            max_arr[i] = Integer.parseInt(ageArray[i][1]);
+        }
+
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
+        xAxis.setLabelCount(ageArray.length);
+        xAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(arrayMax(max_arr)+(arrayMax(max_arr)/5));
+        yAxis.setDrawGridLines(false);
+
         BarDataSet set = new BarDataSet(entries, "Antal fall per åldersgrupp");
 
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
+        set.setValueTextSize(10);
         set.setColors(getColors());
 
         casesAgegroupGraph.setData(data);
@@ -169,14 +184,18 @@ public class CovidCasesFragment extends Fragment {
         casesAgegroupGraph.invalidate(); // refresh
     }
 
-    public void createCasesRegionGraph(){
+    public void createCasesRegionGraph(String[][] regionArray){
         casesRegionGraph = new HorizontalBarChart(getContext());
 
+        //TODO hämta in labels från filen
         String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
                 "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
                 "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
         casesRegionGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        casesRegionGraph.getXAxis().setLabelCount(22);
+        casesRegionGraph.getXAxis().setLabelCount(22); //TODO antal labels från filen
+        casesRegionGraph.getXAxis().setDrawGridLines(false);
+        casesRegionGraph.getAxisLeft().setDrawGridLines(false);
+
 
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, 30f));
@@ -214,28 +233,34 @@ public class CovidCasesFragment extends Fragment {
         casesRegionGraph.invalidate(); // refresh
     }
 
-    public void createDeathsAgegroupGraph(){
+    public void createDeathsAgegroupGraph(String[][] ageArray){
         deathsAgegroupGraph = new HorizontalBarChart(getContext());
+        XAxis xAxis = deathsAgegroupGraph.getXAxis();
+        YAxis yAxis = deathsAgegroupGraph.getAxisLeft();
 
-        ArrayList<String> yLabels = new ArrayList<>(Arrays.asList("16-17 år", "18-29 år", "30-39 år", "40-49 år", "50-59 år", "60-69 år", "70-79 år", "80-89 år", "90 år +"));
-        deathsAgegroupGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(yLabels));
-        deathsAgegroupGraph.getXAxis().setLabelCount(9);
-
+        ArrayList<String> yLabels = new ArrayList<>();
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 30f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        entries.add(new BarEntry(4f, 50f));
-        entries.add(new BarEntry(5f, 70f));
-        entries.add(new BarEntry(6f, 60f));
-        entries.add(new BarEntry(7f, 70f));
-        entries.add(new BarEntry(8f, 60f));
+
+        int [] max_arr = new int[ageArray.length];
+        for(int i=0; i<ageArray.length; i++){
+            yLabels.add(ageArray[i][0]); // add lables
+            entries.add(new BarEntry(i, Float.parseFloat(ageArray[i][2]))); // add values
+            max_arr[i] = Integer.parseInt(ageArray[i][2]);
+        }
+
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
+        xAxis.setLabelCount(ageArray.length);
+        xAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(arrayMax(max_arr)+(arrayMax(max_arr)/5));
+        yAxis.setDrawGridLines(false);
+
         BarDataSet set = new BarDataSet(entries, "Antal avlidna per åldersgrupp");
 
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
+        set.setValueTextSize(10);
         set.setColors(getColors());
 
         deathsAgegroupGraph.setData(data);
@@ -244,14 +269,17 @@ public class CovidCasesFragment extends Fragment {
         deathsAgegroupGraph.invalidate(); // refresh
     }
 
-    public void createDeathsRegionGraph(){
+    public void createDeathsRegionGraph(String[][] regionArray){
         deathsRegionGraph = new HorizontalBarChart(getContext());
 
+        //TODO hämta in labels från filen
         String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
                 "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
                 "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
         deathsRegionGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        deathsRegionGraph.getXAxis().setLabelCount(22);
+        deathsRegionGraph.getXAxis().setLabelCount(22); //TODO antal från filen
+        deathsRegionGraph.getXAxis().setDrawGridLines(false);
+        deathsRegionGraph.getAxisLeft().setDrawGridLines(false);
 
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, 30f));
@@ -293,5 +321,14 @@ public class CovidCasesFragment extends Fragment {
         int [] color = {Color.rgb(187, 134, 252), Color.rgb(140, 234, 255)};
 
         return color;
+    }
+
+    private int arrayMax(int[] arr){
+        int max = 0;
+        for(int i=0; i<arr.length; i++){
+            if (arr[i] > max)
+                max = arr[i];
+        }
+        return max;
     }
 }

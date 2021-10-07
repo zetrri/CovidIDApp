@@ -59,20 +59,27 @@ public class VaccinesDistributedFragment extends Fragment {
         createGraph();
         container.addView(graph);
 
+        //TODO kanske att sverige blir för stort jämfört med resten - lägg till en total mängd för sverige i text isåfall
+
     }
 
     public void createGraph(){
         graph = new HorizontalBarChart(getContext());
 
+        //TODO hämta labels från filen
         String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
                 "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
                 "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
         graph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        graph.getXAxis().setLabelCount(22);
+        graph.getXAxis().setLabelCount(22); //TODO antal labels från filen
+        graph.getXAxis().setDrawGridLines(false);
+        graph.getAxisLeft().setDrawGridLines(false);
         graph.getAxisLeft().setAxisMinimum(0f);
 
+        //TODO hitta rätt region
+
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, new float[]{56839, 221369-56839}));
+        entries.add(new BarEntry(0f, new float[]{56839/*TODO moderna*/, /*TODO pfizer*/221369-56839}));
         entries.add(new BarEntry(1f, new float[]{799852, 1068050-799852}));
         entries.add(new BarEntry(2f, new float[]{870090, 1035606-870090}));
         entries.add(new BarEntry(3f, new float[]{988614, 1076674-988614}));
