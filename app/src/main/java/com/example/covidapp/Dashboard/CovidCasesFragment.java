@@ -49,7 +49,6 @@ public class CovidCasesFragment extends Fragment {
     private String cases_sum;
     private String deaths_sum;
 
-
     public CovidCasesFragment() {
         // Required empty public constructor
     }
@@ -94,6 +93,7 @@ public class CovidCasesFragment extends Fragment {
 
         container.addView(casesAgegroupGraph);
 
+        // Cases button listener
         cases.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,13 +101,17 @@ public class CovidCasesFragment extends Fragment {
                 deaths.setBackgroundColor(Color.rgb(207, 207, 207));
                 cases.setBackgroundColor(Color.rgb(128, 128, 128));
                 container.removeAllViews();
-                if(second_set_buttons.equals("agegroup"))
+                if(second_set_buttons.equals("agegroup")) {
+                    total_sweden.setText("");
                     container.addView(casesAgegroupGraph);
-                else
+                }
+                else {
+                    total_sweden.setText(cases_sum);
                     container.addView(casesRegionGraph);
-
+                }
             }
         });
+        // Deaths button listener
         deaths.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,13 +119,19 @@ public class CovidCasesFragment extends Fragment {
                 cases.setBackgroundColor(Color.rgb(207, 207, 207));
                 deaths.setBackgroundColor(Color.rgb(128, 128, 128));
                 container.removeAllViews();
-                if(second_set_buttons.equals("agegroup"))
+                if(second_set_buttons.equals("agegroup")) {
+                    total_sweden.setText("");
                     container.addView(deathsAgegroupGraph);
-                else
+                }
+                else{
+                    total_sweden.setText(deaths_sum);
                     container.addView(deathsRegionGraph);
+                }
+
 
             }
         });
+        // Agegroup button listener
         agegroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,12 +139,17 @@ public class CovidCasesFragment extends Fragment {
                 region.setBackgroundColor(Color.rgb(207, 207, 207));
                 agegroup.setBackgroundColor(Color.rgb(128, 128, 128));
                 container.removeAllViews();
-                if(first_set_buttons.equals("cases"))
+                if(first_set_buttons.equals("cases")) {
+                    total_sweden.setText("");
                     container.addView(casesAgegroupGraph);
-                else
+                }
+                else {
+                    total_sweden.setText("");
                     container.addView(deathsAgegroupGraph);
+                }
             }
         });
+        // Region button listener
         region.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,7 +232,7 @@ public class CovidCasesFragment extends Fragment {
         yAxis.setAxisMaximum(arrayMax(int_arr)+(arrayMax(int_arr)/5));
         yAxis.setDrawGridLines(false);
 
-        BarDataSet set = new BarDataSet(entries, "Antal avlidna per åldersgrupp");
+        BarDataSet set = new BarDataSet(entries, "Antal fall per län");
 
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
@@ -269,44 +284,36 @@ public class CovidCasesFragment extends Fragment {
 
     public void createDeathsRegionGraph(String[][] regionArray){
         deathsRegionGraph = new HorizontalBarChart(getContext());
+        XAxis xAxis = deathsRegionGraph.getXAxis();
+        YAxis yAxis = deathsRegionGraph.getAxisLeft();
 
-        //TODO hämta in labels från filen
-        String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
-                "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
-                "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
-        deathsRegionGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        deathsRegionGraph.getXAxis().setLabelCount(22); //TODO antal från filen
-        deathsRegionGraph.getXAxis().setDrawGridLines(false);
-        deathsRegionGraph.getAxisLeft().setDrawGridLines(false);
-
+        ArrayList<String> yLabels = new ArrayList<>();
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 30f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        entries.add(new BarEntry(4f, 50f));
-        entries.add(new BarEntry(5f, 70f));
-        entries.add(new BarEntry(6f, 60f));
-        entries.add(new BarEntry(7f, 70f));
-        entries.add(new BarEntry(8f, 60f));
-        entries.add(new BarEntry(9f, 60f));
-        entries.add(new BarEntry(10f, 30f));
-        entries.add(new BarEntry(11f, 80f));
-        entries.add(new BarEntry(12f, 60f));
-        entries.add(new BarEntry(13f, 50f));
-        entries.add(new BarEntry(14f, 50f));
-        entries.add(new BarEntry(15f, 70f));
-        entries.add(new BarEntry(16f, 60f));
-        entries.add(new BarEntry(17f, 70f));
-        entries.add(new BarEntry(18f, 60f));
-        entries.add(new BarEntry(19f, 60f));
-        entries.add(new BarEntry(20f, 30f));
-        entries.add(new BarEntry(21f, 80f));
-        BarDataSet set = new BarDataSet(entries, "Antal avlidna per region");
+
+        int [] int_arr = new int[regionArray.length];
+        yLabels.add((regionArray[0][0]));
+        entries.add(new BarEntry(0, Float.parseFloat(regionArray[0][2])));
+        for(int i=2; i<regionArray.length; i++){
+            yLabels.add(regionArray[i][0]); // add lables
+            entries.add(new BarEntry(i-1, Float.parseFloat(regionArray[i][2]))); // add values
+            int_arr[i] = Integer.parseInt(regionArray[i][2]); // add to int array for calculating max and sum
+        }
+
+        deaths_sum = "Totalt Sverige: " + arraySum(int_arr);
+
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
+        xAxis.setLabelCount(regionArray.length);
+        xAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(arrayMax(int_arr)+(arrayMax(int_arr)/5));
+        yAxis.setDrawGridLines(false);
+
+        BarDataSet set = new BarDataSet(entries, "Antal avlidna per län");
 
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
+        set.setValueTextSize(10);
         set.setColors(getColors());
 
         deathsRegionGraph.setData(data);
