@@ -33,11 +33,9 @@ import java.util.Iterator;
 public class ExcelDownloader implements Serializable {
     //public String[][] buffer = new String [2000][100];
     public String[][] cumulativeUptakeArray = new String[3000][8];
-    public String[][] dosesAdministratedArray = new String[512][8];
+    public String[][] dosesAdministratedArray = new String[441][5];
     public String[][] dosesDistributedArray = new String[128][128];
     public int counter=0;
-    public int column =1;
-    public boolean newline = false;
 
     public ExcelDownloader(){
 
@@ -59,17 +57,22 @@ public class ExcelDownloader implements Serializable {
                         fileInputStream = new FileInputStream(file1);
                         Log.i("info", "Reading from Excel " + file1);
                         workbook = new XSSFWorkbook(fileInputStream);
-                        cumulativeUptake(workbook.getSheet("Vaccinerade tidsserie"), cumulativeUptakeArray);
+                        //cumulativeUptake(workbook.getSheet("Vaccinerade tidsserie"), cumulativeUptakeArray);
 
                         dosesAdministrated(workbook.getSheet("Vaccinerade ålder"), dosesAdministratedArray);
 
+                        for(int i = 0; i< dosesAdministratedArray.length; i++){
+                            for(int j = 0; j < dosesAdministratedArray[0].length; j++){
+                                Log.i("dosesAdministratedArray", Integer.toString(i) + dosesAdministratedArray[i][j] + "   " + Integer.toString(j));
+                            }
+                        }
                         fileInputStream.close();
                         workbook.close();
 
                         fileInputStream = new FileInputStream(file2);
                         Log.i("info", "Reading from Excel " + file2);
                         workbook = new XSSFWorkbook(fileInputStream);
-                        dosesDistributed(workbook.getSheet("Antal doser av vaccin"), dosesDistributedArray);
+                        //dosesDistributed(workbook.getSheet("Antal doser av vaccin"), dosesDistributedArray);
 
                     } catch (IOException e) {
                         Log.i("info", "Error reading exception: ", e);
@@ -120,21 +123,12 @@ public class ExcelDownloader implements Serializable {
         long downLoadId2=downloadManager.enqueue(request);
     }
 
-    //******************************* Adds cell to buffer **************************************//
-    public void addCell(String str, String row, ArrayList<Integer> exceptions){
-        if(!exceptions.contains(column)) row = str;
-        column++;
-        newline = false;
-    }
-
     //******************************* Get cell from file ***************************************//
-    public void cellExtraction(Sheet sheet, ArrayList<Integer> exceptions, String [][] buffer){
+    public void cellExtraction(Sheet sheet, String [][] buffer){
         for(int i = 0; i < sheet.getLastRowNum()+1; i++){
             Row row = sheet.getRow(i);
             if(row == null)
                 return;
-            column = 1;
-            newline = true;
             int j = 0;
             if(row.getRowNum()>0){
                 Iterator<Cell> cellIterator = row.cellIterator();
@@ -143,14 +137,14 @@ public class ExcelDownloader implements Serializable {
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_STRING:
                             //Log.i("IIII", String.valueOf(cell.getStringCellValue()));
-                            addCell(String.valueOf(cell.getStringCellValue()), buffer[i+1][j], exceptions);
+                            buffer[i][j] = String.valueOf(cell.getStringCellValue());
                             break;
                         case Cell.CELL_TYPE_NUMERIC:
                             //Log.i("IIII", String.valueOf(cell.getNumericCellValue()));
-                            addCell(String.valueOf(cell.getNumericCellValue()), buffer[i+1][j], exceptions);
+                            buffer[i][j] = String.valueOf(cell.getNumericCellValue());
                             break;
                         case Cell.CELL_TYPE_BOOLEAN:
-                            addCell(String.valueOf(cell.getBooleanCellValue()), buffer[i+1][j], exceptions);
+                            //addCell(String.valueOf(cell.getBooleanCellValue()), buffer, i, j);
                             break;
                         default:
                     }
@@ -163,53 +157,48 @@ public class ExcelDownloader implements Serializable {
     /* Cumulative uptake (%) of at least one vaccine dose and full vaccination among adults in Sweden and counties
 - there should be a filter that sorts the result by week and month */
     public void cumulativeUptake(Sheet sheet, String [][] buffer){
-        buffer[0][0] = "Vecka";
+        /*buffer[0][0] = "Vecka";
         buffer[0][1] = "År";
         buffer[0][2] = "Region";
         buffer[0][3] = "Andel vaccinerade";
-        buffer[0][4] = "Vaccinationsstatus";
-        ArrayList<Integer> exceptions = new ArrayList<Integer>();
-        exceptions.add(4);
-        cellExtraction(sheet, exceptions, buffer);
+        buffer[0][4] = "Vaccinationsstatus";*/
+
+        cellExtraction(sheet, buffer);
     }
     /* Total doses administered in Counties and Sweden
         - filter: counties, age groups, 1 vs 2 */
     //TODO saknas filter för produkt
     public void dosesAdministrated(Sheet sheet, String [][] buffer){
-        buffer[0][0] = "Region";
+        /*buffer[0][0] = "Region";
         buffer[0][1] = "Åldersgrupp";
         buffer[0][2] = "Antal vaccinterade";
-        buffer[0][3] = "Vaccinationsstatus";
-        ArrayList<Integer> exceptions = new ArrayList<Integer>();
-        exceptions.add(4);
-        cellExtraction(sheet, exceptions, buffer);
+        buffer[0][3] = "Vaccinationsstatus";*/
+
+        cellExtraction(sheet, buffer);
     }
 
     /* Total cases and total deaths
     - filter: counties */
     public void casesPerRegion(Sheet sheet, String [][] buffer){
-        buffer[0][0] = "Region";
+        /*buffer[0][0] = "Region";
         buffer[0][1] = "Totalt antal fall";
-        buffer[0][2] = "Totalt antal avlidna";
-        ArrayList<Integer> exceptions = new ArrayList<Integer>();
-        exceptions.add(3);
-        exceptions.add(4);
-        cellExtraction(sheet, exceptions, buffer);
+        buffer[0][2] = "Totalt antal avlidna";*/
+
+        cellExtraction(sheet, buffer);
     }
     /* Total cases and total deaths
     - filter: age groups */
     public void casesPerAge(Sheet sheet, String [][] buffer){
-        buffer[0][0] = "Åldersgrupp";
+        /*buffer[0][0] = "Åldersgrupp";
         buffer[0][1] = "Totalt antal fall";
-        buffer[0][2] = "Totalt antal avlidna";
-        ArrayList<Integer> exceptions = new ArrayList<Integer>();
-        exceptions.add(3);
-        cellExtraction(sheet, exceptions, buffer);
+        buffer[0][2] = "Totalt antal avlidna";*/
+
+        cellExtraction(sheet, buffer);
     }
 
     public void dosesDistributed(Sheet sheet, String [][] buffer){
-        ArrayList<Integer> exceptions = new ArrayList<Integer>();
-        cellExtraction(sheet, exceptions, buffer);
+
+        cellExtraction(sheet, buffer);
     }
 
     public String[][] getCumulativeUptakeArray(){
