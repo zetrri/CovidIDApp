@@ -175,7 +175,7 @@ public class MyPageFragment extends Fragment {
                     //TODO hämta storleken från databas
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                     for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
 

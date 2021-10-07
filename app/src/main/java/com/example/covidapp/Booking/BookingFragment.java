@@ -160,7 +160,7 @@ public class BookingFragment extends Fragment {
                 city_dropdown.setAdapter(citieslistadapter);
                 clinic_dropdown.setAdapter(clinicslistadapter);
                 RadioGroup radioGroup = binding.radGroup1;
-                SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
+                SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                 for (int i=0; i<datelist.size(); i++){
                     RadioButton newRadioButton = new RadioButton(getActivity());
                     newRadioButton.setText(sdfclock.format(datelist.get(i)));
@@ -169,6 +169,8 @@ public class BookingFragment extends Fragment {
                 }
                 CalendarView Kalender = binding.calendarView;
                 TextView error = binding.errormessage;
+                Kalender.setFirstDayOfWeek(2);
+                Kalender.setMinDate(Kalender.getDate());
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -198,7 +200,8 @@ public class BookingFragment extends Fragment {
                         Log.d("Vald tid",STRstr[0].toString()+ STRstr[1].toString());
                         //Skapar en "date" variabel
                         Calendar date = Calendar.getInstance();
-                        date.set(choosedYear,choosedMonth,choosedDay,Integer.parseInt(STRstr[0]),Integer.parseInt(STRstr[1]));
+                        date.set(choosedYear,choosedMonth,choosedDay,Integer.parseInt(STRstr[0]),Integer.parseInt(STRstr[1]),0);
+                        System.out.println(choosedDay+" "+choosedMonth+" "+choosedYear+" "+STRstr[0]+" "+STRstr[1]);
                         Log.d("hour and minute",STRstr[0]+":"+STRstr[1]);
                         EditText text_allergies = (EditText) binding.editTextAllergies;
                         EditText text_medicines = (EditText) binding.editTextMedicine;
@@ -443,15 +446,22 @@ public class BookingFragment extends Fragment {
     }
 
     private void ConnectUserWithTime(Booking booking,Calendar date,ArrayList<AvailableTimesListUserClass> listofDates){
+        Calendar datetest = Calendar.getInstance();
+        SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         AvailableTimesListUserClass Userclass = new AvailableTimesListUserClass();
         Userclass.setCity("None");
         for (AvailableTimesListUserClass key: listofDates){
-            if (key.getTimestamp().toString().equals(String.valueOf(date.getTimeInMillis()))){
+            datetest.setTimeInMillis(key.getTimestamp());
+            if ((sdf.format(datetest.getTimeInMillis())+ sdfclock.format(datetest.getTimeInMillis())).equals(sdf.format(date.getTimeInMillis())+ sdfclock.format(date.getTimeInMillis()))){
                 Userclass=key;
                 Log.d("TAG", key.getTimestamp().toString());
             }
-            Log.d("timestampinkey", key.getTimestamp().toString());
-            Log.d("timestampininchoosed", String.valueOf(date.getTimeInMillis()));
+
+            //Log.d("TAG","HEHOPP");
+            //System.out.println(sdf.format(date.getTimeInMillis())+ sdfclock.format(date.getTimeInMillis()));
+            //Log.d("timestampinkey", key.getTimestamp().toString() );
+            //Log.d("timestampininchoosed", String.valueOf(date.getTimeInMillis()));
         }
         if (Userclass.getCity().equals("None")){
             Log.d("Error creating user","Error creating user");
@@ -479,8 +489,12 @@ public class BookingFragment extends Fragment {
             Userclass.setBookedBy(UID);
             Userclass.setAvailable(false);
             //Userclass.setId(UUID.randomUUID().toString());
-            //DatabaseReference myRef = database.getReference("BookedTimes").child(Userclass.getId());
-            //myRef.setValue(Userclass);
+            DatabaseReference myRef = database.getReference("BookedTimes").child(Userclass.getId());
+            myRef.setValue(Userclass);
+
+            DatabaseReference myRef3 = database.getReference("AvailableTimes").child(Userclass.getId());
+            myRef3.removeValue();
+
         }
 
     }
