@@ -80,6 +80,7 @@ public class DashboardFragment extends Fragment {
                     if(jsonCounter == 2){
                         jsonBundle = new Bundle();
                         jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
                     }
                 }
             };
