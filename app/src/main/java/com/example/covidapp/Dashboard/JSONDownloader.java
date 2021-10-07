@@ -1,7 +1,10 @@
 package com.example.covidapp.Dashboard;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import androidx.fragment.app.FragmentActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,13 +24,17 @@ public class JSONDownloader implements Serializable {
 
     }
 
-    public void startDownload(){
+    public void startDownload(FragmentActivity activity){
         new Thread(new Runnable() {
             public void run() {
                 JSONObject regionJSON = AsyncDownloader.doInBackground("region");
 
                 fillArray(regionJSON, regionDoubleArray, "region");
-                printArrays(); //Används för debugging
+                //printArrays(); //Används för debugging
+
+                Intent doneIntent = new Intent();
+                doneIntent.setAction("JSON_DOWNLOAD_COMPLETE_REGION");
+                activity.sendBroadcast(doneIntent);
             }
         }).start();
         new Thread(new Runnable() {
@@ -35,7 +42,11 @@ public class JSONDownloader implements Serializable {
                 JSONObject ageJSON = AsyncDownloader.doInBackground("age");
 
                 fillArray(ageJSON, ageDoubleArray, "age");
-                printArrays(); //Används för debugging
+                //printArrays(); //Används för debugging
+
+                Intent doneIntent = new Intent();
+                doneIntent.setAction("JSON_DOWNLOAD_COMPLETE_AGE");
+                activity.sendBroadcast(doneIntent);
             }
         }).start();
     }

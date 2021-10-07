@@ -1,11 +1,17 @@
 package com.example.covidapp.Dashboard;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +23,13 @@ import com.example.covidapp.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
+    private ExcelDownloader excelDownloader = null;
+    private JSONDownloader jsonDownloader = null;
+    private Bundle excelBundle = null;
+    private Bundle jsonBundle = null;
+    private  int jsonCounter = 0;
+    private Bundle administeredBundle = null;
+    private Bundle distributedBundle = null;
     DashboardFragment this_obj = this;
 
     public DashboardFragment() {
@@ -34,6 +47,71 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            Log.i("TRY", "BEFORE");
+            savedInstanceState.getSerializable("excelDownloader");
+            Log.i("TRY", "AFTER");
+            excelDownloader = (ExcelDownloader) savedInstanceState.getSerializable("excelDownloader");
+            jsonDownloader = (JSONDownloader) savedInstanceState.getSerializable(("jsonDownloader"));
+        }
+        catch (Exception e){
+            excelDownloader = new ExcelDownloader();
+            jsonDownloader = new JSONDownloader();
+
+            BroadcastReceiver excelDownloaderReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    excelBundle = new Bundle();
+                    excelBundle.putSerializable("excelDownloader", excelDownloader);
+                }
+            };
+            BroadcastReceiver jsonDownloaderRegionReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    jsonCounter++;
+                    if(jsonCounter == 2){
+                        jsonBundle = new Bundle();
+                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+                    }
+                }
+            };
+            BroadcastReceiver jsonDownloaderAgeReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    jsonCounter++;
+                    if(jsonCounter == 2){
+                        jsonBundle = new Bundle();
+                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+                    }
+                }
+            };
+
+            getActivity().registerReceiver(excelDownloaderReceiver, new IntentFilter("EXCEL_DOWNLOAD_COMPLETE"));
+            getActivity().registerReceiver(jsonDownloaderRegionReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_REGION"));
+            getActivity().registerReceiver(jsonDownloaderAgeReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_AGE"));
+
+            excelDownloader.startDownload(getActivity());
+            jsonDownloader.startDownload(getActivity());
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i("onSaveInstanceState", "AFTER");
+        //outState.putSerializable("excelDownloader", excelDownloader);
+        //outState.putSerializable("jsonDownloader", jsonDownloader);
+    }
+
+    @Override
+    public void onPause() {
+        Log.i("onPause", "AFTER");
+        Bundle b = new Bundle();
+        b.putSerializable("excelDownloader", excelDownloader);
+        b.putSerializable("jsonDownloader", jsonDownloader);
+        onSaveInstanceState(b);
+        super.onPause();
     }
 
     @Override
@@ -62,6 +140,12 @@ public class DashboardFragment extends Fragment {
         cases_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(jsonBundle == null){
+                    return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
+                }
+                fragment_covid_cases.setArguments(jsonBundle);
+
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.cardView, fragment_covid_cases).commit();
             }
@@ -69,6 +153,12 @@ public class DashboardFragment extends Fragment {
         vaccinated_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(jsonBundle == null){
+                    return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
+                }
+                fragment_vaccines_administered.setArguments(excelBundle);
+
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.cardView, fragment_vaccines_administered).commit();
             }
@@ -76,6 +166,12 @@ public class DashboardFragment extends Fragment {
         distributed_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(jsonBundle == null){
+                    return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
+                }
+                fragment_vaccines_distributed.setArguments(excelBundle);
+
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.cardView, fragment_vaccines_distributed).commit();
             }
@@ -83,6 +179,12 @@ public class DashboardFragment extends Fragment {
         graph_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(jsonBundle == null){
+                    return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
+                }
+                fragment_cumulative_uptake.setArguments(excelBundle);
+
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.cardView, fragment_cumulative_uptake).commit();
             }
