@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -256,7 +257,7 @@ public class LoginFragment extends Fragment {
                     editor.putInt("1", R.integer.logged_in);
                     editor.apply();
                     getUser(view);
-                    //Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_my_page);
+                    ((MainActivity)getActivity()).loggedIn();
                 }
                 //wrong credentials
                 else
