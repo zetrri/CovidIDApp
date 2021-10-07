@@ -116,6 +116,7 @@ public class BookingFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO Se till att endast tider den dagen visas, inte tider för alla dagar
         ArrayList<String> countieslist = new ArrayList<>();
         ArrayList<String> citieslist = new ArrayList<>();
         ArrayList<String> clinicslist = new ArrayList<>();
