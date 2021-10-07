@@ -117,8 +117,8 @@ public class CumulativeUptakeFragment extends Fragment {
         }
 
         List<ILineDataSet> entries = new ArrayList<>();
-        LineDataSet set1 = new LineDataSet(values1, "1 dos");
-        LineDataSet set2 = new LineDataSet(values2, "2 doser");
+        LineDataSet set1 = new LineDataSet(values1, "Minst 1 dos");
+        LineDataSet set2 = new LineDataSet(values2, "Färdigvaccinerad");
 
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
