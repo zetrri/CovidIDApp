@@ -28,6 +28,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,14 +43,6 @@ public class CovidCasesFragment extends Fragment {
     private String first_set_buttons = "cases";
     private String second_set_buttons = "agegroup";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public CovidCasesFragment() {
         // Required empty public constructor
@@ -58,8 +51,6 @@ public class CovidCasesFragment extends Fragment {
     public static CovidCasesFragment newInstance(String param1, String param2) {
         CovidCasesFragment fragment = new CovidCasesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,15 +58,10 @@ public class CovidCasesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCovidCasesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
@@ -95,8 +81,6 @@ public class CovidCasesFragment extends Fragment {
         createDeathsAgegroupGraph();
         createDeathsRegionGraph();
         container.addView(casesAgegroupGraph);
-
-
 
         cases.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,48 +137,155 @@ public class CovidCasesFragment extends Fragment {
 
             }
         });
-
-
     }
 
     public void createCasesAgegroupGraph(){
         casesAgegroupGraph = new HorizontalBarChart(getContext());
 
-        final ArrayList<String> yLables = new ArrayList<>();
-        yLables.add("9-10");
-        yLables.add("11-20");
-        yLables.add("21-30");
-        casesAgegroupGraph.getAxisRight().setValueFormatter(new IndexAxisValueFormatter(yLables));
+        ArrayList<String> yLabels = new ArrayList<>(Arrays.asList("16-17 år", "18-29 år", "30-39 år", "40-49 år", "50-59 år", "60-69 år", "70-79 år", "80-89 år", "90 år +"));
+        casesAgegroupGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(yLabels));
+        casesAgegroupGraph.getXAxis().setLabelCount(9);
+
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, 30f));
         entries.add(new BarEntry(1f, 80f));
         entries.add(new BarEntry(2f, 60f));
         entries.add(new BarEntry(3f, 50f));
-        // gap of 2f
+        entries.add(new BarEntry(4f, 50f));
         entries.add(new BarEntry(5f, 70f));
         entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(7f, 70f));
+        entries.add(new BarEntry(8f, 60f));
         BarDataSet set = new BarDataSet(entries, "Antal fall per åldersgrupp");
 
         BarData data = new BarData(set);
         data.setBarWidth(0.9f); // set custom bar width
 
-
-
+        set.setColor(Color.rgb(140, 234, 255));
 
         casesAgegroupGraph.setData(data);
+        casesAgegroupGraph.getDescription().setEnabled(false);
         casesAgegroupGraph.setFitBars(true); // make the x-axis fit exactly all bars
         casesAgegroupGraph.invalidate(); // refresh
     }
 
     public void createCasesRegionGraph(){
         casesRegionGraph = new HorizontalBarChart(getContext());
+
+        String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
+                "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
+                "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
+        casesRegionGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
+        casesRegionGraph.getXAxis().setLabelCount(22);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, 30f));
+        entries.add(new BarEntry(1f, 80f));
+        entries.add(new BarEntry(2f, 60f));
+        entries.add(new BarEntry(3f, 50f));
+        entries.add(new BarEntry(4f, 50f));
+        entries.add(new BarEntry(5f, 70f));
+        entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(7f, 70f));
+        entries.add(new BarEntry(8f, 60f));
+        entries.add(new BarEntry(9f, 60f));
+        entries.add(new BarEntry(10f, 30f));
+        entries.add(new BarEntry(11f, 80f));
+        entries.add(new BarEntry(12f, 60f));
+        entries.add(new BarEntry(13f, 50f));
+        entries.add(new BarEntry(14f, 50f));
+        entries.add(new BarEntry(15f, 70f));
+        entries.add(new BarEntry(16f, 60f));
+        entries.add(new BarEntry(17f, 70f));
+        entries.add(new BarEntry(18f, 60f));
+        entries.add(new BarEntry(19f, 60f));
+        entries.add(new BarEntry(20f, 30f));
+        entries.add(new BarEntry(21f, 80f));
+        BarDataSet set = new BarDataSet(entries, "Antal fall per region");
+
+        BarData data = new BarData(set);
+        data.setBarWidth(0.9f); // set custom bar width
+
+        set.setColor(Color.rgb(140, 234, 255));
+
+        casesRegionGraph.setData(data);
+        casesRegionGraph.getDescription().setEnabled(false);
+        casesRegionGraph.setFitBars(true); // make the x-axis fit exactly all bars
+        casesRegionGraph.invalidate(); // refresh
     }
 
     public void createDeathsAgegroupGraph(){
         deathsAgegroupGraph = new HorizontalBarChart(getContext());
+
+        ArrayList<String> yLabels = new ArrayList<>(Arrays.asList("16-17 år", "18-29 år", "30-39 år", "40-49 år", "50-59 år", "60-69 år", "70-79 år", "80-89 år", "90 år +"));
+        deathsAgegroupGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(yLabels));
+        deathsAgegroupGraph.getXAxis().setLabelCount(9);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, 30f));
+        entries.add(new BarEntry(1f, 80f));
+        entries.add(new BarEntry(2f, 60f));
+        entries.add(new BarEntry(3f, 50f));
+        entries.add(new BarEntry(4f, 50f));
+        entries.add(new BarEntry(5f, 70f));
+        entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(7f, 70f));
+        entries.add(new BarEntry(8f, 60f));
+        BarDataSet set = new BarDataSet(entries, "Antal avlidna per åldersgrupp");
+
+        BarData data = new BarData(set);
+        data.setBarWidth(0.9f); // set custom bar width
+
+        set.setColor(Color.rgb(140, 234, 255));
+
+        deathsAgegroupGraph.setData(data);
+        deathsAgegroupGraph.getDescription().setEnabled(false);
+        deathsAgegroupGraph.setFitBars(true); // make the x-axis fit exactly all bars
+        deathsAgegroupGraph.invalidate(); // refresh
     }
 
     public void createDeathsRegionGraph(){
         deathsRegionGraph = new HorizontalBarChart(getContext());
+
+        String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
+                "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
+                "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
+        deathsRegionGraph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
+        deathsRegionGraph.getXAxis().setLabelCount(22);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, 30f));
+        entries.add(new BarEntry(1f, 80f));
+        entries.add(new BarEntry(2f, 60f));
+        entries.add(new BarEntry(3f, 50f));
+        entries.add(new BarEntry(4f, 50f));
+        entries.add(new BarEntry(5f, 70f));
+        entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(7f, 70f));
+        entries.add(new BarEntry(8f, 60f));
+        entries.add(new BarEntry(9f, 60f));
+        entries.add(new BarEntry(10f, 30f));
+        entries.add(new BarEntry(11f, 80f));
+        entries.add(new BarEntry(12f, 60f));
+        entries.add(new BarEntry(13f, 50f));
+        entries.add(new BarEntry(14f, 50f));
+        entries.add(new BarEntry(15f, 70f));
+        entries.add(new BarEntry(16f, 60f));
+        entries.add(new BarEntry(17f, 70f));
+        entries.add(new BarEntry(18f, 60f));
+        entries.add(new BarEntry(19f, 60f));
+        entries.add(new BarEntry(20f, 30f));
+        entries.add(new BarEntry(21f, 80f));
+        BarDataSet set = new BarDataSet(entries, "Antal avlidna per region");
+
+        BarData data = new BarData(set);
+        data.setBarWidth(0.9f); // set custom bar width
+
+        set.setColor(Color.rgb(140, 234, 255));
+
+        deathsRegionGraph.setData(data);
+        deathsRegionGraph.getDescription().setEnabled(false);
+        deathsRegionGraph.setFitBars(true); // make the x-axis fit exactly all bars
+        deathsRegionGraph.invalidate(); // refresh
     }
 }

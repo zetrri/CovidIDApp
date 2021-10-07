@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.example.covidapp.Dashboard.Data;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentAdminAddAvailableTimesBinding;
