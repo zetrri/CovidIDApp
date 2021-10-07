@@ -50,14 +50,17 @@ public class DashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle b = getActivity().getIntent().getExtras();
         try {
-            Log.i("onResume()",((ExcelDownloader) b.getSerializable("excelDownloader")).toString());
+            Log.i("onCreate()",((ExcelDownloader) b.getSerializable("excelDownloader")).toString());
             excelDownloader = (ExcelDownloader) b.getSerializable("excelDownloader");
             excelBundle = new Bundle();
             excelBundle.putSerializable("jsonDownloader", excelDownloader);
             Log.i("excelDownloader", excelDownloader.getCumulativeUptakeArray()[0][0]);
+
+            Log.i("onCreate()",((JSONDownloader) b.getSerializable("jsonDownloader")).toString());
             jsonDownloader = (JSONDownloader) b.getSerializable("jsonDownloader");
             jsonBundle = new Bundle();
             jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+            Log.i("excelDownloader", jsonDownloader.getAgeDoubleArray()[0][0]);
         }
         catch (Exception e){
             excelDownloader = new ExcelDownloader();
@@ -102,8 +105,12 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onPause() {
-        getActivity().getIntent().putExtra("excelDownloader",((ExcelDownloader) excelBundle.getSerializable("excelDownloader")));
-        getActivity().getIntent().putExtra("jsonDownloader", ((JSONDownloader) excelBundle.getSerializable("jsonDownloader")));
+        try {
+            getActivity().getIntent().putExtra("excelDownloader", ((ExcelDownloader) excelBundle.getSerializable("excelDownloader")));
+            getActivity().getIntent().putExtra("jsonDownloader", ((JSONDownloader) jsonBundle.getSerializable("jsonDownloader")));
+        }catch (Exception e){
+            Log.i("onPause()", "File not finished downloading");
+        }
         super.onPause();
     }
 
@@ -147,7 +154,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(jsonBundle == null){
+                if(excelBundle == null){
                     return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
                 }
                 fragment_vaccines_administered.setArguments(excelBundle);
@@ -160,7 +167,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(jsonBundle == null){
+                if(excelBundle == null){
                     return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
                 }
                 fragment_vaccines_distributed.setArguments(excelBundle);
@@ -173,7 +180,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(jsonBundle == null){
+                if(excelBundle == null){
                     return; //TODO FIXA SNURR GREJ "Laddar ner filer, vänligen vänta"
                 }
                 fragment_cumulative_uptake.setArguments(excelBundle);
