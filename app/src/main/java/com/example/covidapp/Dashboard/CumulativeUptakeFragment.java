@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,16 +76,22 @@ public class CumulativeUptakeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         CardView container = binding.container;
+
+        ExcelDownloader excelDownloader = (ExcelDownloader) getArguments().getSerializable("excelDownloader");
+        String [][] cumulativeArray = excelDownloader.getCumulativeUptakeArray();
+
         //TextView week_button = binding.weekButton;
         //TextView month_button = binding.monthButton;
-        Spinner region_spinner = binding.spinner;
 
-        //TODO ska egentligen hämtas från filen
-        String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
-                "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
-                "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
+        //Add labels from file
+        List<String> regions = new ArrayList<String>();
+        for(int i=1; i<cumulativeArray.length; i++){
+            if(!regions.contains(cumulativeArray[i][2]) && cumulativeArray[i][2]!=null)
+                regions.add(cumulativeArray[i][2]);
+
+        }
+        Spinner region_spinner = binding.spinner;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, regions);
         region_spinner.setAdapter(adapter);
 
@@ -94,7 +101,7 @@ public class CumulativeUptakeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 String region = region_spinner.getItemAtPosition(position).toString();
                 container.removeAllViews();
-                createWeekChart(region);
+                createWeekChart(region, cumulativeArray);
                 //createMonthChart(region);
                 if(selection.equals("week"))
                     container.addView(weekChart);
@@ -128,41 +135,44 @@ public class CumulativeUptakeFragment extends Fragment {
         });*/
     }
 
-    public void createWeekChart(String region){
+    public void createWeekChart(String region, String[][] cumulativeArray){
         weekChart = new LineChart(getActivity());
-
-        //TODO hitta rätt region
-
-        weekChart.getAxisLeft().setAxisMinimum(0f);
-        weekChart.getAxisLeft().setEnabled(false);
         XAxis xAxis = weekChart.getXAxis();
+        YAxis yAxis = weekChart.getAxisLeft();
+
+        yAxis.setAxisMinimum(0f);
+        yAxis.setEnabled(false);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        int count = 52; // TODO hämta från filen -> räkna hur många olika veckor som finns i filen
-        ArrayList<String> labels = new ArrayList<>();
-        for (int i = 0; i<count; i++){
-            labels.add(Integer.toString(i)); //TODO lägg till veckonummrena
+        //Adding the weeks from the file
+        ArrayList<String> weeks = new ArrayList<>();
+        for(int i=1; i<cumulativeArray.length; i++){
+            if(cumulativeArray[i][0]!=null && !cumulativeArray[i][0].equals(cumulativeArray[i-1][0]))
+                weeks.add(cumulativeArray[i][0]);
         }
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-        xAxis.setLabelCount(count);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(weeks));
+        xAxis.setLabelCount(weeks.size());
+        xAxis.setGranularityEnabled(true);
 
-        ArrayList<Entry> values1 = new ArrayList<>();
+        //Add values
+        ArrayList<Entry> one_dose = new ArrayList<>();
+        ArrayList<Entry> complete_vacc = new ArrayList<>();
+        int j=0;
+        int k=0;
+        for(int i=0; i<cumulativeArray.length; i++){
+            if(cumulativeArray[i][0]!=null && cumulativeArray[i][2].equals(region)){
+                if(cumulativeArray[i][5].equals("Minst 1 dos")){
+                    one_dose.add(new Entry(j, Float.parseFloat(cumulativeArray[i][4]))); j++;}
+                else if (cumulativeArray[i][5].equals("Färdigvaccinerade")){
+                    complete_vacc.add(new Entry(k, Float.parseFloat(cumulativeArray[i][4]))); k++; }
 
-        for (int i = 0; i < count; i++) {
-            float val = (float) (i*i+i*i); //TODO lägg till minst 1 dos värderna
-            values1.add(new Entry(i, val));
-        }
-        ArrayList<Entry> values2 = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            float val = (float) (i*i); //TODO lägg till färdigvaccinerade värderna
-            values2.add(new Entry(i, val));
+            }
         }
 
         List<ILineDataSet> entries = new ArrayList<>();
-        LineDataSet set1 = new LineDataSet(values1, "Minst 1 dos");
-        LineDataSet set2 = new LineDataSet(values2, "Färdigvaccinerad");
+        LineDataSet set1 = new LineDataSet(one_dose, "Minst 1 dos");
+        LineDataSet set2 = new LineDataSet(complete_vacc, "Färdigvaccinerad");
 
         weekChart.setDragEnabled(true);
         weekChart.setScaleEnabled(true);
