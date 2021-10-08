@@ -28,7 +28,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class ExcelDownloader implements Serializable {
     //public String[][] buffer = new String [2000][100];
@@ -39,6 +41,7 @@ public class ExcelDownloader implements Serializable {
     private long downLoadId1;
     private long downLoadId2;
     private DownloadManager downloadManager;
+    BroadcastReceiver onComplete;
     private int remove_flag = 0;
 
     public ExcelDownloader(){
@@ -47,7 +50,7 @@ public class ExcelDownloader implements Serializable {
 
     public void startDownload(FragmentActivity activity){
 
-        BroadcastReceiver onComplete = new BroadcastReceiver() {
+        onComplete = new BroadcastReceiver() {
             public void onReceive(Context ctxt, Intent intent) {
                 counter++;
                 Log.i("ExcelDownloader", counter +" Downloads completed!");
@@ -100,6 +103,7 @@ public class ExcelDownloader implements Serializable {
     public void downloadFiles(FragmentActivity activity){
         Log.i("info", "Laddar ner filer");
         remove_flag = 0;
+        counter=0;
         downloadManager= (DownloadManager) activity.getSystemService(activity.DOWNLOAD_SERVICE);
         DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://fohm.maps.arcgis.com/sharing/rest/content/items/fc749115877443d29c2a49ea9eca77e9/data"));
         request.setTitle("Voyager1")
@@ -108,7 +112,13 @@ public class ExcelDownloader implements Serializable {
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         downLoadId1=downloadManager.enqueue(request);
 
-        request=new DownloadManager.Request(Uri.parse("https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx"));
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+        Log.i("ExcelDownloader", "Week = " + week);
+        String covid_leveranser = "https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v" + Integer.toString(week-2) +"-leveranser-av-covid-vaccin-till-och-med-vecka-" + Integer.toString(week) + ".xlsx";
+        Log.i("ExcelDownloader", covid_leveranser);
+
+        request=new DownloadManager.Request(Uri.parse(covid_leveranser));
         request.setTitle("Voyager2")
                 .setDescription("File is downloading...")
                 .setDestinationInExternalFilesDir(activity, "Download", "v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx")
@@ -191,11 +201,23 @@ public class ExcelDownloader implements Serializable {
         return dosesDistributedArray;
     }
 
-    public void stopDownloads(){
+    public void stopDownloads(FragmentActivity activity){
         downloadManager.remove(downLoadId1);
         downloadManager.remove(downLoadId2);
         Log.i("ExcelDownloader", "Removing downloads");
         remove_flag=1;
+
+        File file1 = new File(activity.getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
+        File file2 = new File(activity.getExternalFilesDir("Download"), "v37-leveranser-av-covid-vaccin-till-och-med-vecka-39.xlsx");
+        if(file1.exists()){
+            Log.i("info", "Deleting file " + file1);
+            file1.delete();
+        }if(file2.exists()){
+            Log.i("info", "Deleting file " + file2);
+            file2.delete();
+        }
+
+        activity.unregisterReceiver(onComplete);
     }
 
 
