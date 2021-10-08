@@ -25,6 +25,7 @@ public class JSONDownloader implements Serializable {
     }
 
     public void startDownload(FragmentActivity activity){
+        Log.i("JSONDownloader", "Starting JSON downloads");
         new Thread(new Runnable() {
             public void run() {
                 JSONObject regionJSON = AsyncDownloader.doInBackground("region");
@@ -117,7 +118,6 @@ abstract class AsyncDownloader extends AsyncTask<Void, Void, JSONObject>
             URL url = new URL(str);
             urlConn = url.openConnection();
             bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-            Log.i("pepe","ps");
 
             StringBuffer stringBuffer = new StringBuffer();
             String line;

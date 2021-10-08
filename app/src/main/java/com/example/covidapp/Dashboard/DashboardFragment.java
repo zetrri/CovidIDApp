@@ -30,7 +30,10 @@ public class DashboardFragment extends Fragment {
     private Bundle jsonBundle = null;
     private  int jsonCounter = 0;
     Fragment fragment_covid_cases;
-    Fragment current_fragment;
+    Fragment fragment_cumulative_uptake;
+    Fragment fragment_vaccines_administered;
+    Fragment fragment_vaccines_distributed;
+    String current_fragment;
     DashboardFragment this_obj = this;
 
     public DashboardFragment() {
@@ -52,17 +55,25 @@ public class DashboardFragment extends Fragment {
         try {
             // Kollar om excel och JSON objecten blivit sparade, om dom inte blivit det så kommer den kasta ett error och få laddar
             // Vi ner dom i catch()
+
             excelDownloader = (ExcelDownloader) b.getSerializable("excelDownloader");
             excelBundle = new Bundle();
-            excelBundle.putSerializable("jsonDownloader", excelDownloader);
+            excelBundle.putSerializable("excelDownloader", excelDownloader);
 
             jsonDownloader = (JSONDownloader) b.getSerializable("jsonDownloader");
             jsonBundle = new Bundle();
             jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
+            //När JSON filen är klar så byter den automatiskt fragment till covid_cases
+            //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            //ft.replace(R.id.cardView, fragment_covid_cases).commit();
+            //current_fragment = fragment_covid_cases;
         }
         catch (Exception e){
             excelDownloader = new ExcelDownloader();
             jsonDownloader = new JSONDownloader();
+
+            Log.i("Dashboard Fragment: ", "No downloaders found, creating new ones");
 
             //Alla broadcast receivers lyssnar på när de filerna är färdiga
             BroadcastReceiver excelDownloaderReceiver = new BroadcastReceiver() {
@@ -72,10 +83,18 @@ public class DashboardFragment extends Fragment {
                     excelBundle.putSerializable("excelDownloader", excelDownloader);
 
                     //Om någon har klickat på en annan knapp än "sjukdomsfall" och har loading screenen uppe så laddar den upp den sidan.
-                    if(current_fragment != fragment_covid_cases){
-                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        ft.replace(R.id.cardView, current_fragment).commit();
+                    Log.i("Dashboard:", Boolean.toString(isAdded()));
+                    FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                    switch (current_fragment){
+                        case "fragment_covid_cases": break;
+                        case "fragment_vaccines_administered": ft.replace(R.id.cardView, fragment_vaccines_administered).commit(); break;
+                        case "fragment_vaccines_distributed": ft.replace(R.id.cardView, fragment_vaccines_distributed).commit(); break;
+                        case "fragment_cumulative_uptake": ft.replace(R.id.cardView, fragment_cumulative_uptake).commit(); break;
                     }
+                    //if(current_fragment != fragment_covid_cases){
+                        //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        //ft.replace(R.id.cardView, current_fragment).commit();
+                    //}
                 }
             };
             BroadcastReceiver jsonDownloaderRegionReceiver = new BroadcastReceiver() {
@@ -91,7 +110,7 @@ public class DashboardFragment extends Fragment {
                         //När JSON filen är klar så byter den automatiskt fragment till covid_cases
                         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                         ft.replace(R.id.cardView, fragment_covid_cases).commit();
-                        current_fragment = fragment_covid_cases;
+                        current_fragment = "fragment_covid_cases";
                     }
                 }
             };
@@ -107,7 +126,7 @@ public class DashboardFragment extends Fragment {
                         //När JSON filen är klar så byter den automatiskt fragment till covid_cases
                         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                         ft.replace(R.id.cardView, fragment_covid_cases).commit();
-                        current_fragment = fragment_covid_cases;
+                        current_fragment = "fragment_covid_cases";
                     }
                 }
             };
@@ -128,8 +147,7 @@ public class DashboardFragment extends Fragment {
             getActivity().getIntent().putExtra("excelDownloader", ((ExcelDownloader) excelBundle.getSerializable("excelDownloader")));
             getActivity().getIntent().putExtra("jsonDownloader", ((JSONDownloader) jsonBundle.getSerializable("jsonDownloader")));
         }catch (Exception e){
-            excelDownloader.stopDownloads();
-            Log.i("onPause()", "File not finished downloading");
+            excelDownloader.stopDownloads(getActivity());
         }
         super.onPause();
     }
@@ -146,9 +164,9 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragment_covid_cases = new CovidCasesFragment();
-        Fragment fragment_vaccines_administered = new VaccinesAdministeredFragment();
-        Fragment fragment_vaccines_distributed = new VaccinesDistributedFragment();
-        Fragment fragment_cumulative_uptake = new CumulativeUptakeFragment();
+        fragment_vaccines_administered = new VaccinesAdministeredFragment();
+        fragment_vaccines_distributed = new VaccinesDistributedFragment();
+        fragment_cumulative_uptake = new CumulativeUptakeFragment();
 
         CardView cardview = binding.cardView;
 
@@ -162,13 +180,13 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 if(jsonBundle == null){
-                    removeFragment(ft, fragment_covid_cases);
+                    removeFragment(ft, "fragment_covid_cases");
                     return;
                 }
                 fragment_covid_cases.setArguments(jsonBundle);
 
                 ft.replace(R.id.cardView, fragment_covid_cases).commit();
-                current_fragment = fragment_covid_cases;
+                current_fragment = "fragment_covid_cases";
             }
         });
         vaccinated_button.setOnClickListener(new View.OnClickListener() {
@@ -176,13 +194,16 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 if(excelBundle == null){
-                    removeFragment(ft, fragment_vaccines_administered);
+                    removeFragment(ft, "fragment_vaccines_administered");
                     return;
                 }
+                //Log.i("asd",(((JSONDownloader) jsonBundle.getSerializable("jsonDownloader")).getAgeDoubleArray())[0][0]);
+                //Log.i("asd",(((ExcelDownloader) excelBundle.getSerializable("excelDownloader")).getDosesAdministratedArray())[3][3]);
                 fragment_vaccines_administered.setArguments(excelBundle);
 
                 ft.replace(R.id.cardView, fragment_vaccines_administered).commit();
-                current_fragment = fragment_vaccines_administered;
+
+                current_fragment = "fragment_vaccines_administered";
             }
         });
         distributed_button.setOnClickListener(new View.OnClickListener() {
@@ -190,13 +211,13 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 if(excelBundle == null){
-                    removeFragment(ft, fragment_vaccines_distributed);
+                    removeFragment(ft, "fragment_vaccines_distributed");
                     return;
                 }
                 fragment_vaccines_distributed.setArguments(excelBundle);
 
                 ft.replace(R.id.cardView, fragment_vaccines_distributed).commit();
-                current_fragment = fragment_vaccines_distributed;
+                current_fragment = "fragment_vaccines_distributed";
             }
         });
         graph_button.setOnClickListener(new View.OnClickListener() {
@@ -204,20 +225,25 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 if(excelBundle == null){
-                    removeFragment(ft, fragment_cumulative_uptake);
+                    removeFragment(ft, "fragment_cumulative_uptake");
                     return;
                 }
                 fragment_cumulative_uptake.setArguments(excelBundle);
 
                 ft.replace(R.id.cardView, fragment_cumulative_uptake).commit();
-                current_fragment = fragment_cumulative_uptake;
+                current_fragment = "fragment_cumulative_uptake";
             }
         });
     }
 
-    public void removeFragment(FragmentTransaction ft, Fragment this_fragment){
+    public void removeFragment(FragmentTransaction ft, String this_fragment){
         try {
-            ft.remove(current_fragment).commit();
+            switch (current_fragment){
+                case "fragment_covid_cases" : ft.remove(fragment_covid_cases).commit(); break;
+                case "fragment_vaccines_administered": ft.remove(fragment_vaccines_administered).commit(); break;
+                case "fragment_vaccines_distributed": ft.remove(fragment_vaccines_distributed).commit(); break;
+                case "fragment_cumulative_uptake": ft.remove(fragment_cumulative_uptake).commit(); break;
+            }
             current_fragment = this_fragment;
         }catch (Exception e){
             Log.i("Nothing", "Serious");
