@@ -36,6 +36,10 @@ public class ExcelDownloader implements Serializable {
     public String[][] dosesAdministratedArray = new String[441][5];
     public String[][] dosesDistributedArray = new String[30][128];
     public int counter=0;
+    private long downLoadId1;
+    private long downLoadId2;
+    private DownloadManager downloadManager;
+    private int remove_flag = 0;
 
     public ExcelDownloader(){
 
@@ -46,13 +50,14 @@ public class ExcelDownloader implements Serializable {
         BroadcastReceiver onComplete = new BroadcastReceiver() {
             public void onReceive(Context ctxt, Intent intent) {
                 counter++;
+                Log.i("ExcelDownloader", counter +" Downloads completed!");
                 if (counter == 2) {
-                    Log.i("DOWNLOAD", "ALL " + counter + "DOWNLOADS FINISHED, STARTING LOAD");
+                    if(remove_flag==1) return;
+                    Log.i("ExcelDownloader", "ALL " + counter + "DOWNLOADS FINISHED, STARTING POI WORK");
                     File file1 = new File(activity.getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
                     File file2 = new File(activity.getExternalFilesDir("Download"), "v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx");
                     FileInputStream fileInputStream = null;
                     Workbook workbook = null;
-
                     try {
                         fileInputStream = new FileInputStream(file1);
                         Log.i("info", "Reading from Excel " + file1);
@@ -94,20 +99,21 @@ public class ExcelDownloader implements Serializable {
     //******************************* Downloads the files **************************************//
     public void downloadFiles(FragmentActivity activity){
         Log.i("info", "Laddar ner filer");
-        DownloadManager downloadManager= (DownloadManager) activity.getSystemService(activity.DOWNLOAD_SERVICE);
+        remove_flag = 0;
+        downloadManager= (DownloadManager) activity.getSystemService(activity.DOWNLOAD_SERVICE);
         DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://fohm.maps.arcgis.com/sharing/rest/content/items/fc749115877443d29c2a49ea9eca77e9/data"));
         request.setTitle("Voyager1")
                 .setDescription("File is downloading...")
                 .setDestinationInExternalFilesDir(activity, "Download", "Folkhalsomyndigheten_Covid19_Vaccine.xlsx")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        long downLoadId1=downloadManager.enqueue(request);
+        downLoadId1=downloadManager.enqueue(request);
 
         request=new DownloadManager.Request(Uri.parse("https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx"));
         request.setTitle("Voyager2")
                 .setDescription("File is downloading...")
                 .setDestinationInExternalFilesDir(activity, "Download", "v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        long downLoadId2=downloadManager.enqueue(request);
+        downLoadId2=downloadManager.enqueue(request);
     }
 
     //******************************* Get cell from file ***************************************//
@@ -183,6 +189,13 @@ public class ExcelDownloader implements Serializable {
 
     public String[][] getDosesDistributedArray(){
         return dosesDistributedArray;
+    }
+
+    public void stopDownloads(){
+        downloadManager.remove(downLoadId1);
+        downloadManager.remove(downLoadId2);
+        Log.i("ExcelDownloader", "Removing downloads");
+        remove_flag=1;
     }
 
 

@@ -128,6 +128,7 @@ public class DashboardFragment extends Fragment {
             getActivity().getIntent().putExtra("excelDownloader", ((ExcelDownloader) excelBundle.getSerializable("excelDownloader")));
             getActivity().getIntent().putExtra("jsonDownloader", ((JSONDownloader) jsonBundle.getSerializable("jsonDownloader")));
         }catch (Exception e){
+            excelDownloader.stopDownloads();
             Log.i("onPause()", "File not finished downloading");
         }
         super.onPause();
