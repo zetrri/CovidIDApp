@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentVaccinesDistributedBinding;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -78,17 +80,20 @@ public class VaccinesDistributedFragment extends Fragment {
 
     public void createGraph(String[][] distributedArray){
         graph = new HorizontalBarChart(getContext());
+        XAxis xAxis = graph.getXAxis();
+        YAxis leftAxis = graph.getAxisLeft();
 
         // Hämtar Labels
         ArrayList <String> regions = new ArrayList<>();
         for(int i=5; i<distributedArray.length-4; i++){
             regions.add(distributedArray[i][0]);
         }
-        graph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        graph.getXAxis().setLabelCount(regions.size());
-        graph.getXAxis().setDrawGridLines(false);
-        graph.getAxisLeft().setDrawGridLines(false);
-        graph.getAxisLeft().setAxisMinimum(0f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(regions));
+        xAxis.setLabelCount(regions.size());
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMinimum(0f);
 
         //Räknar ut totalt för sverige antal pfizer och moderna doser
         for(int i=0; i<distributedArray[0].length; i++){

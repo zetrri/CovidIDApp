@@ -184,10 +184,10 @@ public class CovidCasesFragment extends Fragment {
             max_arr[i] = Integer.parseInt(ageArray[i][1]);
         }
 
-
         xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
         xAxis.setLabelCount(ageArray.length);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(arrayMax(max_arr)+(arrayMax(max_arr)/5));
         yAxis.setDrawGridLines(false);
@@ -228,6 +228,7 @@ public class CovidCasesFragment extends Fragment {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
         xAxis.setLabelCount(regionArray.length);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(arrayMax(int_arr)+(arrayMax(int_arr)/5));
         yAxis.setDrawGridLines(false);
@@ -264,6 +265,7 @@ public class CovidCasesFragment extends Fragment {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
         xAxis.setLabelCount(ageArray.length);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(arrayMax(max_arr)+(arrayMax(max_arr)/5));
         yAxis.setDrawGridLines(false);
@@ -304,6 +306,7 @@ public class CovidCasesFragment extends Fragment {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(yLabels));
         xAxis.setLabelCount(regionArray.length);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(arrayMax(int_arr)+(arrayMax(int_arr)/5));
         yAxis.setDrawGridLines(false);
