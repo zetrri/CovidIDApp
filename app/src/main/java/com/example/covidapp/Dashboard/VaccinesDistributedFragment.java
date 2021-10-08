@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,20 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class VaccinesDistributedFragment extends Fragment {
     private FragmentVaccinesDistributedBinding binding;
     private HorizontalBarChart graph;
+    float total_pfizer = 0;
+    float total_moderna = 0;
+    DecimalFormat formatter = new DecimalFormat();
 
     public VaccinesDistributedFragment() {
         // Required empty public constructor
@@ -56,54 +64,58 @@ public class VaccinesDistributedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ExcelDownloader excelDownloader = (ExcelDownloader) getArguments().getSerializable("excelDownloader");
+        String [][] distributedArray = excelDownloader.getDosesDistributedArray();
+
         TextView total_sweden = binding.totalSweden;
         CardView container = binding.container;
 
-        createGraph();
+        createGraph(distributedArray);
+        total_sweden.setText("Totalt Sverige Pfizer: " + formatter.format(total_pfizer) + " doser\nTotalt Sverige Moderna: " + formatter.format(total_moderna) + " doser");
         container.addView(graph);
-
-        //TODO kanske att sverige blir för stort jämfört med resten - lägg till en total mängd för sverige i text isåfall
 
     }
 
-    public void createGraph(){
+    public void createGraph(String[][] distributedArray){
         graph = new HorizontalBarChart(getContext());
 
-        //TODO hämta labels från filen
-        String[] regions = new String[] {"Sverige", "Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping",
-                "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro",
-                "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"};
+        // Hämtar Labels
+        ArrayList <String> regions = new ArrayList<>();
+        for(int i=5; i<distributedArray.length-4; i++){
+            regions.add(distributedArray[i][0]);
+        }
         graph.getXAxis().setValueFormatter(new IndexAxisValueFormatter(regions));
-        graph.getXAxis().setLabelCount(22); //TODO antal labels från filen
+        graph.getXAxis().setLabelCount(regions.size());
         graph.getXAxis().setDrawGridLines(false);
         graph.getAxisLeft().setDrawGridLines(false);
         graph.getAxisLeft().setAxisMinimum(0f);
 
-        //TODO total_sweden.setText("Totalt Sverige: " + arraySum(Array med alla värden))
+        //Räknar ut totalt för sverige antal pfizer och moderna doser
+        for(int i=0; i<distributedArray[0].length; i++){
+            if(distributedArray[4][i]!=null){
+                if(distributedArray[3][i].contains("Pfizer"))
+                    total_pfizer = total_pfizer + Float.parseFloat(distributedArray[4][i]);
+                else if (distributedArray[3][i].equals("Moderna"))
+                    total_moderna = total_moderna + Float.parseFloat(distributedArray[4][i]);
+            }
+        }
 
+        // hämtar värden för alla län
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, new float[]{56839/*TODO moderna*/, /*TODO pfizer*/221369-56839}));
-        entries.add(new BarEntry(1f, new float[]{799852, 1068050-799852}));
-        entries.add(new BarEntry(2f, new float[]{870090, 1035606-870090}));
-        entries.add(new BarEntry(3f, new float[]{988614, 1076674-988614}));
-        entries.add(new BarEntry(4f, new float[]{1102940, 1153460-1102940}));
-        entries.add(new BarEntry(5f, new float[]{983995, 1013470-983995}));
-        entries.add(new BarEntry(6f, new float[]{928244, 952056-928244}));
-        entries.add(new BarEntry(7f, new float[]{404101, 418524-404101}));
-        entries.add(new BarEntry(8f, new float[]{85894, 90665-85894}));
-        entries.add(new BarEntry(9f, new float[]{988614, 1076674-988614}));
-        entries.add(new BarEntry(10f, new float[]{56839, 221369-56839}));
-        entries.add(new BarEntry(11f, new float[]{799852, 1068050-799852}));
-        entries.add(new BarEntry(12f, new float[]{870090, 1035606-870090}));
-        entries.add(new BarEntry(13f, new float[]{988614, 1076674-988614}));
-        entries.add(new BarEntry(14f, new float[]{1102940, 1153460-1102940}));
-        entries.add(new BarEntry(15f, new float[]{983995, 1013470-983995}));
-        entries.add(new BarEntry(16f, new float[]{928244, 952056-928244}));
-        entries.add(new BarEntry(17f, new float[]{404101, 418524-404101}));
-        entries.add(new BarEntry(18f, new float[]{85894, 90665-85894}));
-        entries.add(new BarEntry(19f, new float[]{988614, 1076674-988614}));
-        entries.add(new BarEntry(20f, new float[]{56839, 221369-56839}));
-        entries.add(new BarEntry(21f, new float[]{799852, 1068050-799852}));
+        for(int i=5; i<distributedArray.length-4; i++){
+            float sum_pfizer = 0;
+            float sum_moderna = 0;
+            for(int j=0; j<distributedArray[i].length; j++){
+                if(distributedArray[i][j]!=null){
+                    if(distributedArray[3][j].contains("Pfizer"))
+                        sum_pfizer = sum_pfizer + Float.parseFloat(distributedArray[i][j]);
+                    else if (distributedArray[3][j].equals("Moderna"))
+                        sum_moderna = sum_moderna + Float.parseFloat(distributedArray[i][j]);
+                }
+                entries.add(new BarEntry(i-5, new float[]{sum_moderna, sum_pfizer}));
+            }
+        }
+
         BarDataSet set = new BarDataSet(entries, "      Antal levererade doser");
         set.setColors(getColors());
         set.setStackLabels(new String[]{"Modena", "Pfizer/BioNTech"});
