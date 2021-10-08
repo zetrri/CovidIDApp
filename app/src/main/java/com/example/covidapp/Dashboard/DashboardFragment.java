@@ -52,94 +52,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle b = getActivity().getIntent().getExtras();
-        try {
-            // Kollar om excel och JSON objecten blivit sparade, om dom inte blivit det så kommer den kasta ett error och få laddar
-            // Vi ner dom i catch()
 
-            excelDownloader = (ExcelDownloader) b.getSerializable("excelDownloader");
-            excelBundle = new Bundle();
-            excelBundle.putSerializable("excelDownloader", excelDownloader);
-
-            jsonDownloader = (JSONDownloader) b.getSerializable("jsonDownloader");
-            jsonBundle = new Bundle();
-            jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
-
-            //När JSON filen är klar så byter den automatiskt fragment till covid_cases
-            //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            //ft.replace(R.id.cardView, fragment_covid_cases).commit();
-            //current_fragment = fragment_covid_cases;
-        }
-        catch (Exception e){
-            excelDownloader = new ExcelDownloader();
-            jsonDownloader = new JSONDownloader();
-
-            Log.i("Dashboard Fragment: ", "No downloaders found, creating new ones");
-
-            //Alla broadcast receivers lyssnar på när de filerna är färdiga
-            BroadcastReceiver excelDownloaderReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    excelBundle = new Bundle();
-                    excelBundle.putSerializable("excelDownloader", excelDownloader);
-
-                    //Om någon har klickat på en annan knapp än "sjukdomsfall" och har loading screenen uppe så laddar den upp den sidan.
-                    Log.i("Dashboard:", Boolean.toString(isAdded()));
-                    FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                    switch (current_fragment){
-                        case "fragment_covid_cases": break;
-                        case "fragment_vaccines_administered": fragment_vaccines_administered.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_administered).commit(); break;
-                        case "fragment_vaccines_distributed": fragment_vaccines_distributed.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_distributed).commit(); break;
-                        case "fragment_cumulative_uptake": fragment_cumulative_uptake.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_cumulative_uptake).commit(); break;
-                    }
-                    //if(current_fragment != fragment_covid_cases){
-                        //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        //ft.replace(R.id.cardView, current_fragment).commit();
-                    //}
-                }
-            };
-            BroadcastReceiver jsonDownloaderRegionReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    jsonCounter++;
-                    if(jsonCounter == 2){
-                        jsonBundle = new Bundle();
-                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
-
-                        fragment_covid_cases.setArguments(jsonBundle);
-
-                        //När JSON filen är klar så byter den automatiskt fragment till covid_cases
-                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        ft.replace(R.id.cardView, fragment_covid_cases).commit();
-                        current_fragment = "fragment_covid_cases";
-                    }
-                }
-            };
-            BroadcastReceiver jsonDownloaderAgeReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    jsonCounter++;
-                    if(jsonCounter == 2){
-                        jsonBundle = new Bundle();
-                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
-
-                        fragment_covid_cases.setArguments(jsonBundle);
-
-                        //När JSON filen är klar så byter den automatiskt fragment till covid_cases
-                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        ft.replace(R.id.cardView, fragment_covid_cases).commit();
-                        current_fragment = "fragment_covid_cases";
-                    }
-                }
-            };
-
-            getActivity().registerReceiver(excelDownloaderReceiver, new IntentFilter("EXCEL_DOWNLOAD_COMPLETE"));
-            getActivity().registerReceiver(jsonDownloaderRegionReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_REGION"));
-            getActivity().registerReceiver(jsonDownloaderAgeReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_AGE"));
-
-            excelDownloader.startDownload(getActivity());
-            jsonDownloader.startDownload(getActivity());
-        }
     }
 
     //När man går ur dashboard så sparas excel och json objecten undan så man inte behöver ladda ner igen, är dom inte klara sparas de ej undan
@@ -229,6 +142,95 @@ public class DashboardFragment extends Fragment {
                 current_fragment = "fragment_cumulative_uptake";
             }
         });
+
+        Bundle b = getActivity().getIntent().getExtras();
+        try {
+            // Kollar om excel och JSON objecten blivit sparade, om dom inte blivit det så kommer den kasta ett error och få laddar
+            // Vi ner dom i catch()
+
+            excelDownloader = (ExcelDownloader) b.getSerializable("excelDownloader");
+            excelBundle = new Bundle();
+            excelBundle.putSerializable("excelDownloader", excelDownloader);
+
+            jsonDownloader = (JSONDownloader) b.getSerializable("jsonDownloader");
+            jsonBundle = new Bundle();
+            jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
+            //När JSON filen är klar så byter den automatiskt fragment till covid_cases
+            //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            //ft.replace(R.id.cardView, fragment_covid_cases).commit();
+            //current_fragment = fragment_covid_cases;
+        }
+        catch (Exception e){
+            excelDownloader = new ExcelDownloader();
+            jsonDownloader = new JSONDownloader();
+
+            Log.i("Dashboard Fragment: ", "No downloaders found, creating new ones");
+
+            //Alla broadcast receivers lyssnar på när de filerna är färdiga
+            BroadcastReceiver excelDownloaderReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    excelBundle = new Bundle();
+                    excelBundle.putSerializable("excelDownloader", excelDownloader);
+
+                    //Om någon har klickat på en annan knapp än "sjukdomsfall" och har loading screenen uppe så laddar den upp den sidan.
+                    Log.i("Dashboard:", Boolean.toString(isAdded()));
+                    FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                    switch (current_fragment){
+                        case "fragment_covid_cases": break;
+                        case "fragment_vaccines_administered": fragment_vaccines_administered.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_administered).commit(); break;
+                        case "fragment_vaccines_distributed": fragment_vaccines_distributed.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_distributed).commit(); break;
+                        case "fragment_cumulative_uptake": fragment_cumulative_uptake.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_cumulative_uptake).commit(); break;
+                    }
+                    //if(current_fragment != fragment_covid_cases){
+                    //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                    //ft.replace(R.id.cardView, current_fragment).commit();
+                    //}
+                }
+            };
+            BroadcastReceiver jsonDownloaderRegionReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    jsonCounter++;
+                    if(jsonCounter == 2){
+                        jsonBundle = new Bundle();
+                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
+                        fragment_covid_cases.setArguments(jsonBundle);
+
+                        //När JSON filen är klar så byter den automatiskt fragment till covid_cases
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        ft.replace(R.id.cardView, fragment_covid_cases).commit();
+                        current_fragment = "fragment_covid_cases";
+                    }
+                }
+            };
+            BroadcastReceiver jsonDownloaderAgeReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    jsonCounter++;
+                    if(jsonCounter == 2){
+                        jsonBundle = new Bundle();
+                        jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
+                        fragment_covid_cases.setArguments(jsonBundle);
+
+                        //När JSON filen är klar så byter den automatiskt fragment till covid_cases
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        ft.replace(R.id.cardView, fragment_covid_cases).commit();
+                        current_fragment = "fragment_covid_cases";
+                    }
+                }
+            };
+
+            getActivity().registerReceiver(excelDownloaderReceiver, new IntentFilter("EXCEL_DOWNLOAD_COMPLETE"));
+            getActivity().registerReceiver(jsonDownloaderRegionReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_REGION"));
+            getActivity().registerReceiver(jsonDownloaderAgeReceiver, new IntentFilter("JSON_DOWNLOAD_COMPLETE_AGE"));
+
+            excelDownloader.startDownload(getActivity());
+            jsonDownloader.startDownload(getActivity());
+        }
     }
 
     public void removeFragment(FragmentTransaction ht, String this_fragment){
