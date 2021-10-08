@@ -88,9 +88,9 @@ public class DashboardFragment extends Fragment {
                     FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                     switch (current_fragment){
                         case "fragment_covid_cases": break;
-                        case "fragment_vaccines_administered": ft.replace(R.id.cardView, fragment_vaccines_administered).commit(); break;
-                        case "fragment_vaccines_distributed": ft.replace(R.id.cardView, fragment_vaccines_distributed).commit(); break;
-                        case "fragment_cumulative_uptake": ft.replace(R.id.cardView, fragment_cumulative_uptake).commit(); break;
+                        case "fragment_vaccines_administered": fragment_vaccines_administered.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_administered).commit(); break;
+                        case "fragment_vaccines_distributed": fragment_vaccines_distributed.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_vaccines_distributed).commit(); break;
+                        case "fragment_cumulative_uptake": fragment_cumulative_uptake.setArguments(excelBundle); ft.replace(R.id.cardView, fragment_cumulative_uptake).commit(); break;
                     }
                     //if(current_fragment != fragment_covid_cases){
                         //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
@@ -122,6 +122,7 @@ public class DashboardFragment extends Fragment {
                     if(jsonCounter == 2){
                         jsonBundle = new Bundle();
                         jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
+
                         fragment_covid_cases.setArguments(jsonBundle);
 
                         //När JSON filen är klar så byter den automatiskt fragment till covid_cases
@@ -163,8 +164,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        CardView cardview = binding.cardView;
 
         LinearLayout cases_button = binding.sickButton;
         LinearLayout vaccinated_button = binding.vaccineButton;
@@ -234,7 +233,7 @@ public class DashboardFragment extends Fragment {
 
     public void removeFragment(FragmentTransaction ht, String this_fragment){
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.cardView, fragment_loading);
+        ft.replace(R.id.cardView, fragment_loading).commit();
         current_fragment = this_fragment;
     }
 
