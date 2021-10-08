@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentVaccinesDistributedBinding;
@@ -55,7 +56,9 @@ public class VaccinesDistributedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView total_sweden = binding.totalSweden;
         CardView container = binding.container;
+
         createGraph();
         container.addView(graph);
 
@@ -76,7 +79,7 @@ public class VaccinesDistributedFragment extends Fragment {
         graph.getAxisLeft().setDrawGridLines(false);
         graph.getAxisLeft().setAxisMinimum(0f);
 
-        //TODO hitta rätt region
+        //TODO total_sweden.setText("Totalt Sverige: " + arraySum(Array med alla värden))
 
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, new float[]{56839/*TODO moderna*/, /*TODO pfizer*/221369-56839}));
@@ -118,5 +121,20 @@ public class VaccinesDistributedFragment extends Fragment {
         int [] color = {Color.rgb(187, 134, 252), Color.rgb(140, 234, 255)};
 
         return color;
+    }
+    private int arrayMax(int[] arr){
+        int max = 0;
+        for(int i=0; i<arr.length; i++){
+            if (arr[i] > max)
+                max = arr[i];
+        }
+        return max;
+    }
+
+    private int arraySum (int [] arr){
+        int sum=0;
+        for(int i=0; i<arr.length; i++)
+            sum = sum + arr[i];
+        return sum;
     }
 }

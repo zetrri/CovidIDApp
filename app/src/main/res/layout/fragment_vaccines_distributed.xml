@@ -5,9 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".Dashboard.VaccinesDistributedFragment">
 
-   <androidx.cardview.widget.CardView
-       android:id="@+id/container"
+   <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+      <TextView
+          android:id="@+id/total_sweden"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="Total"/>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+   </LinearLayout>
 
 </FrameLayout>
