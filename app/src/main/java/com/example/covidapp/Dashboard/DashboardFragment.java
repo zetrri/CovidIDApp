@@ -29,10 +29,11 @@ public class DashboardFragment extends Fragment {
     private Bundle excelBundle = null;
     private Bundle jsonBundle = null;
     private  int jsonCounter = 0;
-    Fragment fragment_covid_cases;
-    Fragment fragment_cumulative_uptake;
-    Fragment fragment_vaccines_administered;
-    Fragment fragment_vaccines_distributed;
+    Fragment fragment_covid_cases = new CovidCasesFragment();
+    Fragment fragment_vaccines_administered = new VaccinesAdministeredFragment();
+    Fragment fragment_vaccines_distributed = new VaccinesDistributedFragment();
+    Fragment fragment_cumulative_uptake = new CumulativeUptakeFragment();
+    Fragment fragment_loading = new LoadingFragment();
     String current_fragment;
     DashboardFragment this_obj = this;
 
@@ -163,11 +164,6 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragment_covid_cases = new CovidCasesFragment();
-        fragment_vaccines_administered = new VaccinesAdministeredFragment();
-        fragment_vaccines_distributed = new VaccinesDistributedFragment();
-        fragment_cumulative_uptake = new CumulativeUptakeFragment();
-
         CardView cardview = binding.cardView;
 
         LinearLayout cases_button = binding.sickButton;
@@ -236,18 +232,10 @@ public class DashboardFragment extends Fragment {
         });
     }
 
-    public void removeFragment(FragmentTransaction ft, String this_fragment){
-        try {
-            switch (current_fragment){
-                case "fragment_covid_cases" : ft.remove(fragment_covid_cases).commit(); break;
-                case "fragment_vaccines_administered": ft.remove(fragment_vaccines_administered).commit(); break;
-                case "fragment_vaccines_distributed": ft.remove(fragment_vaccines_distributed).commit(); break;
-                case "fragment_cumulative_uptake": ft.remove(fragment_cumulative_uptake).commit(); break;
-            }
-            current_fragment = this_fragment;
-        }catch (Exception e){
-            Log.i("Nothing", "Serious");
-        }
+    public void removeFragment(FragmentTransaction ht, String this_fragment){
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.replace(R.id.cardView, fragment_loading);
+        current_fragment = this_fragment;
     }
 
 }
