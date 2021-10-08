@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.StackedValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -127,6 +128,7 @@ public class VaccinesDistributedFragment extends Fragment {
 
         BarData data = new BarData(set);
         data.setDrawValues(false);
+        //data.setValueFormatter(new StackedValueFormatter(false, " ", 0));
         data.setBarWidth(0.8f); // set custom bar width
 
         graph.setData(data);
