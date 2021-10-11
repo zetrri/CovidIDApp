@@ -216,6 +216,7 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             RegClass regClass = snapshot.getValue(RegClass.class);
+                            ((MainActivity)getActivity()).loggedIn();
                             if (regClass.getAdmin()==false){
                                 Log.d("Admin","not an admin");
                                 View view = getView();
