@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -25,12 +26,9 @@ import android.widget.Toast;
 import com.example.covidapp.Booking.Booking;
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
-import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +62,7 @@ public class MyPageFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String UID;
+
     public MyPageFragment() {
         // Required empty public constructor
     }
@@ -107,16 +105,16 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         //Removes keyboard if up
-        Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
-        Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
-        //TODO ta från databas
 
-        View view2 = getView();
-        make_cards(view2);
+        //Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
+        //Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
+
+
         //Top menu listeners
         LinearLayout passport = binding.passport;
         LinearLayout bookappointment = binding.bookappointment;
@@ -138,6 +136,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        //Logout button
         firebaseAuth = FirebaseAuth.getInstance();
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,42 +149,42 @@ public class MyPageFragment extends Fragment {
                 Toast.makeText(getActivity().getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
             }
         });
-    }
-    private void make_cards(View view)
-    {
+
         LinearLayout container = binding.containerbookings;
 
+        //Getting bookings from firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-
         DatabaseReference ref = database.getReference("BookedTimes");
-
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
-
+                //if user not logged in
                 if ( firebaseAuth1.getCurrentUser() == null){
                     return;
                 }
+                //If logged in
                 else{
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+
+                        //getting all appointments booked by the user
                         AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                         if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                             Log.d("FoundOne",availableTimesListUserClass.getId());
-                            UID = availableTimesListUserClass.getId();
                             availableTimesListUserClasses.add(availableTimesListUserClass);
 
                         }
+//
                     }
-                    //Skapar kort med mina bokningar
-                    //TODO hämta storleken från databas
+
+                    //Calendar and formatting helpers
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                     for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
-
+                        //Making a card for each appointment
                         date.setTimeInMillis(availableTimesListUserClasses.get(i).getTimestamp());
                         Date date1 = date.getTime();
 
@@ -212,10 +211,24 @@ public class MyPageFragment extends Fragment {
                         vaccin_text.setText( (String) ("Vaccin: " + availableTimesListUserClasses.get(i).getVaccine())); //ska vara vaccine
                         linear_layout1.addView(vaccin_text);
 
+                        TextView test_text = new TextView(getActivity());
+                        test_text.setTextSize(15);
+                        test_text.setText(availableTimesListUserClasses.get(i).getId());
+                        test_text.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text);
+
+                        TextView test_text2 = new TextView(getActivity());
+                        test_text2.setTextSize(15);
+                        test_text2.setText(String.valueOf(i));
+                        test_text2.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text2);
+
+
                         LinearLayout linear_layout2 = new LinearLayout(getActivity());
                         linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
                         linear_layout2.setPadding(0,0,0,16);
                         linear_layout2.setGravity(Gravity.RIGHT);
+
                         Button buttonAvboka = new Button(getActivity());
                         buttonAvboka.setText("Avboka");
                         linear_layout2.addView(buttonAvboka);
@@ -228,11 +241,9 @@ public class MyPageFragment extends Fragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new_card.removeAllViews();
-                                                View view = getView();
+                                                deleteCard(test_text.getText().toString());
+
                                                 // TODO remove information from database
-                                                Log.d("Choosedday",String.valueOf(UID));
-                                                deleteCard(UID);
-                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -240,6 +251,7 @@ public class MyPageFragment extends Fragment {
 
                             }
                         });
+
                         Button buttonOmboka = new Button(getActivity());
                         buttonOmboka.setText("Omboka");
                         linear_layout2.addView(buttonOmboka);
@@ -252,10 +264,13 @@ public class MyPageFragment extends Fragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new_card.removeAllViews();
+                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                deleteCard(test_text.getText().toString());
                                                 View view2 = getView();
                                                 Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
 
-                                                deleteCard(UID);
+
+                                                // TODO remove information from database
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -276,13 +291,28 @@ public class MyPageFragment extends Fragment {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+
+
     }
-    //method to delete card
     private void deleteCard(String id)
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference ref = database.getReference("BookedTimes");
         ref.child(id).removeValue();
     }
+    private void gettimeback(AvailableTimesListUserClass item)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("AvailableTimes");
+        item.setAvailable(true);
+        item.setBookedBy("");
+        item.setAllergies("");
+        item.setComments("");
+        item.setVaccine("");
+        item.setMedication("");
+        ref.child(item.getId()).setValue(item);
+
+    }
+
     private void createCard(){}
 }
