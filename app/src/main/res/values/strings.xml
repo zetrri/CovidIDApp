@@ -40,4 +40,34 @@
     <string name="Password">Password</string>
     <string name="admin_add_available_times">Admin Add Available Times</string>
     <string name="menu_logout">Logout</string>
+
+    <string name="faq_vaccin_swe">"Vaccination är det effektivaste sättet att undvika att bli allvarligt sjuk eller dö i covid-19. Vaccination hjälper också till att minska smittspridningen. Därför är det viktigt att så många som möjligt väljer att vaccineras."</string>
+    <string name="faq_vaccin">"Vaccination is the most effective way to avoid becoming seriously ill or dying in covid-19. Vaccination also helps to reduce the spread of infection. Therefore, it is important that as many people as possible choose to be vaccinated."</string>
+    <string name="faq_button_vaccin_swe">Om vaccin mot covid_19</string>
+    <string name="faq_button_vaccin">Vaccin against covid-19</string>
+    <string name="faq_resor_swe">"För resor inom EU krävs särskilda covidbevis. De är utformade på samma sätt inom hela EU och gäller för alla som är medborgare eller bosatta i ett EU-land. Flera länder utanför EU kräver ett intyg som visar att du inte har covid-19, för att du ska kunna resa in i landet. Det är inte säkert att den offentliga vården kan hjälpa till med intyg, och du kan behöva stå för kostnaden själv. "</string>
+    <string name="faq_resor">"Special travel documents are required for travel within the EU. They are designed in the same way throughout the EU and apply to everyone who is a citizen or resident of an EU country. Several countries outside the EU require a certificate showing that you do not have covid-19, in order to be able to travel into the country. It is not certain that the public health service can help with certificates, and you may have to cover the cost yourself."</string>
+    <string name="faq_button_resor_swe">"Covid 19 : resor och covidbevis"</string>
+    <string name="faq_button_resor">"covid 19 : Traveling and covid passport"</string>
+    <string name="faq_risken_swe">"Du behöver fortsätta att följa de allmänna råd och regler som finns för att minska spridningen av covid-19 och för att undvika att själv bli sjuk. Undvik trängsel, håll avstånd och tvätta händerna. Det är också viktigt att du stannar hemma om det behövs."</string>
+    <string name="faq_risken">"You need to continue to follow the general advice and rules available to reduce the spread of covid-19 and to avoid getting sick yourself. Avoid crowded places, keep your distance and wash your hands. It is also important that you stay at home if necessary. "</string>
+    <string name="faq_button_risken_swe">"Minska risken att du och andra får covid-19"</string>
+    <string name="faq_button_risken">"Minimize the risk that you or others get covid-19"</string>
+    <string name="faq_covid_swe">"Covid-19 är en infektionssjukdom som orsakas av ett virus. Det är vanligt att bli sjuk som vid förkylning eller influensa. Du kan också få andra symtom. Lämna prov om du har symtom. Stanna hemma så länge som behövs. Oftast går covid-19 över av sig själv, men ibland behövs vård på sjukhus."</string>
+    <string name="faq_covid">"Covid-19 is an infectious disease caused by a virus. It is common to get symptoms like a cold or flu. You may also get other symptoms. You can leave a sample if you have symptoms. Stay home as long as needed. Covid-19 usually goes away on its own, but sometimes hospital care is needed."</string>
+    <string name="faq_button_covid_swe">"Covid-19</string>
+    <string name="faq_button_covid">"Covid-19</string>
+    <string name="faq_munskydd_swe">"Två saker är viktiga när du använder munskydd. Använd CE-märkta munskydd. Använd munskydden på rätt sätt."</string>
+    <string name="faq_munskydd">"Two things are important when using a face mask. Use CE-marked face mask. Use the face mask correctly."</string>
+    <string name="faq_button_munskydd_swe">"Så använder du munskydd"</string>
+    <string name="faq_button_munskydd">"How to properly use facial masks"</string>
+    <string name="faq_gorasjalv_swe">"Här är råd till dig som har covid-19 men som kan vara hemma utan att behöva vård. Det är viktigt att du kontaktar vården om dina symtom förvärras."</string>
+    <string name="faq_gorasjalv">"Here is advice for you who have covid-19 but who can be at home without needing care. It is important that you contact healthcare if your symptoms worsen"</string>
+    <string name="faq_button_gorasjalv_swe">"Vad kan jag göra själv om jag får covid_19?"</string>
+    <string name="faq_button_gorasjalv">"What can i do myself if i get covid_19?</string>
+    <string name="faq_mabattre_swe">"Det är vanligt att behöva återhämta sig efter en infektion. Det gäller även covid-19. Hur du behöver återhämta dig beror på hur du mår. Här får du råd om vad du kan göra själv och när du kan behöva söka vård. Att fortsätta ha symtom efter covid-19 kan kallas att ha postcovid."</string>
+    <string name="faq_mabattre">"It is common to need to recover from an infection. This also applies to covid-19. How you need to recover depends on how you feel. Here you get advice on what you can do yourself and when you may need to seek care. Continuing to have symptoms after covid-19 can be called having postcovid."</string>
+    <string name="faq_button_mabattre_swe">"Så kan jag må bättre efter covid_19"</string>
+    <string name="faq_button_mabattre">"So can i feel better after covid-19</string>
+
 </resources>
