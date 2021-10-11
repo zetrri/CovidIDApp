@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -28,7 +27,9 @@ import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -153,11 +154,13 @@ public class MyPageFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
 
         DatabaseReference ref = database.getReference("BookedTimes");
+
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+
                 if ( firebaseAuth1.getCurrentUser() == null){
                     return;
                 }
@@ -175,7 +178,7 @@ public class MyPageFragment extends Fragment {
                     //TODO hämta storleken från databas
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
                     for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
 
@@ -213,47 +216,48 @@ public class MyPageFragment extends Fragment {
                         Button buttonAvboka = new Button(getActivity());
                         buttonAvboka.setText("Avboka");
                         linear_layout2.addView(buttonAvboka);
-//                        buttonAvboka.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                new AlertDialog.Builder(getActivity())
-//                                        .setTitle("Avboka")
-//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
-//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                new_card.removeAllViews();
-//                                                // TODO remove information from database
-//                                            }
-//                                        })
-//                                        .setNegativeButton(android.R.string.no, null)
-//                                        .show();
-//
-//                            }
-//                        });
+                        String UID = firebaseAuth1.getCurrentUser().getUid();
+                        buttonAvboka.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Avboka")
+                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
+                                       .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new_card.removeAllViews();
+                                                // TODO remove information from database
+                                                Log.d("Choosedday",String.valueOf(UID));
+                                                deleteCard(UID);
+                                            }
+                                       })
+                                        .setNegativeButton(android.R.string.no, null)
+                                       .show();
 
+                            }
+                       });
                         Button buttonOmboka = new Button(getActivity());
                         buttonOmboka.setText("Omboka");
                         linear_layout2.addView(buttonOmboka);
-//                        buttonOmboka.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                new AlertDialog.Builder(getActivity())
-//                                        .setTitle("Omboka")
-//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
-//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                new_card.removeAllViews();
-//
-//
-//                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
-//
-//                                                // TODO remove information from database
-//                                            }
-//                                        })
-//                                        .setNegativeButton(android.R.string.no, null)
-//                                        .show();
-//                            }
-//                        });
+
+                        buttonOmboka.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Omboka")
+                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new_card.removeAllViews();
+                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+
+                                                deleteCard(UID);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+                            }
+                        });
 
                         linear_layout1.addView(linear_layout2);
                         new_card.addView(linear_layout1);
@@ -268,9 +272,13 @@ public class MyPageFragment extends Fragment {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-
-
     }
-
+    //method to delete card
+    private void deleteCard(String id)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("BookedTimes");
+        ref.child(id).removeValue();
+    }
     private void createCard(){}
 }
