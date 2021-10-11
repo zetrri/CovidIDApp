@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.covidapp.Booking.Booking;
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,7 +64,7 @@ public class MyPageFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private String UID;
     public MyPageFragment() {
         // Required empty public constructor
     }
@@ -110,11 +111,12 @@ public class MyPageFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         //Removes keyboard if up
-
         Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
         Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
         //TODO ta från databas
 
+        View view2 = getView();
+        make_cards(view2);
         //Top menu listeners
         LinearLayout passport = binding.passport;
         LinearLayout bookappointment = binding.bookappointment;
@@ -148,7 +150,9 @@ public class MyPageFragment extends Fragment {
                 Toast.makeText(getActivity().getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
             }
         });
-
+    }
+    private void make_cards(View view)
+    {
         LinearLayout container = binding.containerbookings;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -169,11 +173,11 @@ public class MyPageFragment extends Fragment {
                         AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                         if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                             Log.d("FoundOne",availableTimesListUserClass.getId());
+                            UID = availableTimesListUserClass.getId();
                             availableTimesListUserClasses.add(availableTimesListUserClass);
+
                         }
-//
                     }
-                    //Make Cards
                     //Skapar kort med mina bokningar
                     //TODO hämta storleken från databas
                     Calendar date = Calendar.getInstance();
@@ -212,34 +216,33 @@ public class MyPageFragment extends Fragment {
                         linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
                         linear_layout2.setPadding(0,0,0,16);
                         linear_layout2.setGravity(Gravity.RIGHT);
-
                         Button buttonAvboka = new Button(getActivity());
                         buttonAvboka.setText("Avboka");
                         linear_layout2.addView(buttonAvboka);
-                        String UID = firebaseAuth1.getCurrentUser().getUid();
                         buttonAvboka.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle("Avboka")
                                         .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
-                                       .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new_card.removeAllViews();
+                                                View view = getView();
                                                 // TODO remove information from database
                                                 Log.d("Choosedday",String.valueOf(UID));
                                                 deleteCard(UID);
+                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
                                             }
-                                       })
+                                        })
                                         .setNegativeButton(android.R.string.no, null)
-                                       .show();
+                                        .show();
 
                             }
-                       });
+                        });
                         Button buttonOmboka = new Button(getActivity());
                         buttonOmboka.setText("Omboka");
                         linear_layout2.addView(buttonOmboka);
-
                         buttonOmboka.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -249,7 +252,8 @@ public class MyPageFragment extends Fragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new_card.removeAllViews();
-                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+                                                View view2 = getView();
+                                                Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
 
                                                 deleteCard(UID);
                                             }
