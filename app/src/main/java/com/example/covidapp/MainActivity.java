@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Build;
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,13 +31,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.covidapp.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
+
 
     private Boolean isLoggedIn = false;
 
+
+public class MainActivity extends AppCompatActivity {
+
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
-
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
         loggedOut();
 
         binding.navView.getMenu().findItem(R.id.nav_login).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
             }
         });
+
     }
 
     //Changes the drawer menu and sets isLoggedIn to false
@@ -137,4 +144,19 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    protected void onStop() {
+        File file1 = new File(getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
+        File file2 = new File(getExternalFilesDir("Download"), "v37-leveranser-av-covid-vaccin-till-och-med-vecka-39.xlsx");
+        if(file1.exists()){
+            Log.i("info", "Deleting file " + file1);
+            file1.delete();
+        }if(file2.exists()){
+            Log.i("info", "Deleting file " + file2);
+            file2.delete();
+        }
+        super.onStop();
+    }
+
 }

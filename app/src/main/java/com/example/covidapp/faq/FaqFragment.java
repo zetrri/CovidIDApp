@@ -101,15 +101,14 @@ public class FaqFragment extends Fragment {
         TextMaBattre = binding.TextMaBattre;
         ButtonMaBattre = binding.ButtonMaBattre;
 
-        TextBarn = binding.TextBarn;
-        ButtonBarn = binding.ButtonBarn;
+
 
 
         ButtonVaccin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextVaccin.getText() != "Vaccination är det effektivaste sättet att undvika att bli allvarligt sjuk eller dö i covid-19. Vaccination hjälper också till att minska smittspridningen. Därför är det viktigt att så många som möjligt väljer att vaccineras."  ){
-                    TextVaccin.setText("Vaccination är det effektivaste sättet att undvika att bli allvarligt sjuk eller dö i covid-19. Vaccination hjälper också till att minska smittspridningen. Därför är det viktigt att så många som möjligt väljer att vaccineras.");
+                if(TextVaccin.getText() == ""  ){
+                    TextVaccin.setText(getString(R.string.faq_vaccin));
                 }
                 else{
                     //System.out.println("Test");
@@ -121,11 +120,10 @@ public class FaqFragment extends Fragment {
         ButtonResor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextResor.getText() != "För resor inom EU krävs särskilda covidbevis. De är utformade på samma sätt inom hela EU och gäller för alla som är medborgare eller bosatta i ett EU-land. Flera länder utanför EU kräver ett intyg som visar att du inte har covid-19, för att du ska kunna resa in i landet. Det är inte säkert att den offentliga vården kan hjälpa till med intyg, och du kan behöva stå för kostnaden själv. "  ){
-                    TextResor.setText("För resor inom EU krävs särskilda covidbevis. De är utformade på samma sätt inom hela EU och gäller för alla som är medborgare eller bosatta i ett EU-land. Flera länder utanför EU kräver ett intyg som visar att du inte har covid-19, för att du ska kunna resa in i landet. Det är inte säkert att den offentliga vården kan hjälpa till med intyg, och du kan behöva stå för kostnaden själv. ");
+                if(TextResor.getText() == ""  ){
+                    TextResor.setText(getString(R.string.faq_resor));
                 }
                 else{
-                    //System.out.println("Test");
                     TextResor.setText(null);
                 }
             }
@@ -134,8 +132,8 @@ public class FaqFragment extends Fragment {
         ButtonRisken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextRisken.getText() != "Du behöver fortsätta att följa de allmänna råd och regler som finns för att minska spridningen av covid-19 och för att undvika att själv bli sjuk. Undvik trängsel, håll avstånd och tvätta händerna. Det är också viktigt att du stannar hemma om det behövs. Här kan du läsa mer."  ){
-                    TextRisken.setText("Du behöver fortsätta att följa de allmänna råd och regler som finns för att minska spridningen av covid-19 och för att undvika att själv bli sjuk. Undvik trängsel, håll avstånd och tvätta händerna. Det är också viktigt att du stannar hemma om det behövs. Här kan du läsa mer.");
+                if(TextRisken.getText() == ""  ){
+                    TextRisken.setText(getString(R.string.faq_risken));
                 }
                 else{
                     //System.out.println("Test");
@@ -147,8 +145,8 @@ public class FaqFragment extends Fragment {
         ButtonCovid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextCovid.getText() != "Covid-19 är en infektionssjukdom som orsakas av ett virus. Det är vanligt att bli sjuk som vid förkylning eller influensa. Du kan också få andra symtom. Lämna prov om du har symtom. Stanna hemma så länge som behövs. Oftast går covid-19 över av sig själv, men ibland behövs vård på sjukhus."  ){
-                    TextCovid.setText("Covid-19 är en infektionssjukdom som orsakas av ett virus. Det är vanligt att bli sjuk som vid förkylning eller influensa. Du kan också få andra symtom. Lämna prov om du har symtom. Stanna hemma så länge som behövs. Oftast går covid-19 över av sig själv, men ibland behövs vård på sjukhus.");
+                if(TextCovid.getText() == ""  ){
+                    TextCovid.setText(R.string.faq_covid);
                 }
                 else{
                     //System.out.println("Test");
@@ -160,8 +158,8 @@ public class FaqFragment extends Fragment {
         ButtonMunskydd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextMunskydd.getText() != "Två saker är viktiga när du använder munskydd. Använd CE-märkta munskydd. Använd munskydden på rätt sätt."  ){
-                    TextMunskydd.setText("Två saker är viktiga när du använder munskydd. Använd CE-märkta munskydd. Använd munskydden på rätt sätt.");
+                if(TextMunskydd.getText() == ""  ){
+                    TextMunskydd.setText(getString(R.string.faq_munskydd));
                 }
                 else{
                     //System.out.println("Test");
@@ -173,8 +171,8 @@ public class FaqFragment extends Fragment {
         ButtonGoraSjalv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextGoraSjalv.getText() != "Här är råd till dig som har covid-19 men som kan vara hemma utan att behöva vård. Det är viktigt att du kontaktar vården om dina symtom förvärras."  ){
-                    TextGoraSjalv.setText("Här är råd till dig som har covid-19 men som kan vara hemma utan att behöva vård. Det är viktigt att du kontaktar vården om dina symtom förvärras.");
+                if(TextGoraSjalv.getText() == ""  ){
+                     TextGoraSjalv.setText(R.string.faq_gorasjalv);
                 }
                 else{
                     //System.out.println("Test");
@@ -186,8 +184,8 @@ public class FaqFragment extends Fragment {
         ButtonMaBattre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(TextMaBattre.getText() != "Det är vanligt att behöva återhämta sig efter en infektion. Det gäller även covid-19. Hur du behöver återhämta dig beror på hur du mår. Här får du råd om vad du kan göra själv och när du kan behöva söka vård. Att fortsätta ha symtom efter covid-19 kan kallas att ha postcovid."){
-                    TextMaBattre.setText("Det är vanligt att behöva återhämta sig efter en infektion. Det gäller även covid-19. Hur du behöver återhämta dig beror på hur du mår. Här får du råd om vad du kan göra själv och när du kan behöva söka vård. Att fortsätta ha symtom efter covid-19 kan kallas att ha postcovid.");
+                if(TextMaBattre.getText() == ""  ){
+                    TextMaBattre.setText(R.string.faq_mabattre);
                 }
                 else{
                     //System.out.println("Test");
@@ -196,18 +194,7 @@ public class FaqFragment extends Fragment {
             }
         });
 
-        ButtonBarn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                if(TextBarn.getText() != "Här kan du titta på en film om coronaviruset och om vad du kan göra för att inte sprida smitta eller bli smittad. Du får tips och råd om vad du kan göra om du är orolig och info om hur det går till att lämna prov för covid-19."){
-                    TextBarn.setText("Här kan du titta på en film om coronaviruset och om vad du kan göra för att inte sprida smitta eller bli smittad. Du får tips och råd om vad du kan göra om du är orolig och info om hur det går till att lämna prov för covid-19.");
-                }
-                else{
-                    //System.out.println("Test");
-                    TextBarn.setText(null);
-                }
-            }
-        });
+
     }
 
 }

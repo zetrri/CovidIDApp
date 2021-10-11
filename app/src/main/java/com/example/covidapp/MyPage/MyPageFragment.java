@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -103,14 +105,15 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         //Removes keyboard if up
 
-        Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
-        Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
-        //TODO ta från databas
+        //Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
+        //Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
+
 
         //Top menu listeners
         LinearLayout passport = binding.passport;
@@ -133,6 +136,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        //Logout button
         firebaseAuth = FirebaseAuth.getInstance();
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,19 +152,23 @@ public class MyPageFragment extends Fragment {
 
         LinearLayout container = binding.containerbookings;
 
+        //Getting bookings from firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-
         DatabaseReference ref = database.getReference("BookedTimes");
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+                //if user not logged in
                 if ( firebaseAuth1.getCurrentUser() == null){
                     return;
                 }
+                //If logged in
                 else{
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+
+                        //getting all appointments booked by the user
                         AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                         if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                             Log.d("FoundOne",availableTimesListUserClass.getId());
@@ -168,15 +176,14 @@ public class MyPageFragment extends Fragment {
                         }
 //
                     }
-                    //Make Cards
-                    //Skapar kort med mina bokningar
-                    //TODO hämta storleken från databas
+
+                    //Calendar and formatting helpers
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat sdfclock = new SimpleDateFormat("hh:mm");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                     for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
-
+                        //Making a card for each appointment
                         date.setTimeInMillis(availableTimesListUserClasses.get(i).getTimestamp());
                         Date date1 = date.getTime();
 

@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.example.covidapp.Dashboard.Data;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentAdminAddAvailableTimesBinding;
@@ -102,6 +101,16 @@ public class AdminAddAvailableTimesFragment extends Fragment {
         return root;
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("Fragment paused");
+
+
+    }
+
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -156,7 +165,7 @@ public class AdminAddAvailableTimesFragment extends Fragment {
 
                 String uniqueID = UUID.randomUUID().toString();
                 Log.d("Date",String.valueOf(minute));
-                date.set(year,month,day,hour,minute);
+                date.set(year,month,day,hour,minute,0);
                 AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true,"","","","");
 //                calendars.add(date);
 //                calendarsInString.add(dateFormat.format(date.getTime()));
@@ -170,7 +179,7 @@ public class AdminAddAvailableTimesFragment extends Fragment {
 
         DatabaseReference ref = database.getReference("AvailableTimes");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
@@ -179,9 +188,10 @@ public class AdminAddAvailableTimesFragment extends Fragment {
                     Calendar date1 = Calendar.getInstance();
                     date1.setTimeInMillis(availableTimesListUserClass.getTimestamp());
                     Log.d("Found",date1.toString());
+                    timesfromDatabase.add(availableTimesListUserClass);
                 }
-                //ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
-                //listView.setAdapter(timesfromDatabaseadapter);
+                ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
+                listView.setAdapter(timesfromDatabaseadapter);
 
             }
 

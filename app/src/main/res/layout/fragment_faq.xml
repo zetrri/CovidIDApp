@@ -2,166 +2,192 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".faq.FaqFragment">
 
-    <!-- Textview med lite styling mest bara för att få den centrerad -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Om Covid - 19 - Coronavirus"
-        android:textAlignment="center">
-    </TextView>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textAlignment="center">
 
 
-        // linear layout för att få knapparna vertical
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            tools:context=".faq.FaqFragment"
+            tools:layout_editor_absoluteY="1dp">
 
-
-            // Button har id som är baserat på texten
 
             <Button
                 android:id="@+id/ButtonVaccin"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:text="Om vaccin mot covid-19" />
+                android:text="@string/faq_button_vaccin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/TextVaccin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonVaccin" />
 
             <Button
                 android:id="@+id/ButtonResor"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Covid 19 : Resor och covidbevis" />
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_button_resor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextVaccin" />
 
             <TextView
                 android:id="@+id/TextResor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonResor" />
 
             <Button
                 android:id="@+id/ButtonRisken"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Minska risken att du och andra får covid-19" />
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_button_risken"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextResor" />
 
             <TextView
                 android:id="@+id/TextRisken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonRisken" />
 
             <Button
                 android:id="@+id/ButtonCovid"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Covid-19" />
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_button_covid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextRisken" />
 
             <TextView
                 android:id="@+id/TextCovid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonCovid" />
 
             <Button
                 android:id="@+id/ButtonMunskydd"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Så använder du munskydd" />
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_button_munskydd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextCovid" />
 
             <TextView
                 android:id="@+id/TextMunskydd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonMunskydd" />
 
             <Button
                 android:id="@+id/ButtonGoraSjalv"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Vad kan jag göra själv om jag får covid-19?" />
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_button_gorasjalv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextMunskydd" />
 
             <TextView
                 android:id="@+id/TextGoraSjalv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonGoraSjalv" />
 
             <Button
                 android:id="@+id/ButtonMaBattre"
-                android:layout_width="wrap_content"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="Så kan jag må bättre efter covid-19" />
+                android:text="@string/faq_button_mabattre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextGoraSjalv" />
 
             <TextView
                 android:id="@+id/TextMaBattre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ButtonMaBattre" />
 
-            <Button
-                android:id="@+id/ButtonBarn"
+
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
-                android:text="För barn: Om corona och covid-19" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
 
-            <TextView
-                android:id="@+id/TextBarn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="2mm"
-                android:paddingRight="2mm"
-                android:text="" />
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 

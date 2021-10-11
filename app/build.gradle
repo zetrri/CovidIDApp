@@ -46,6 +46,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-tasks:17.2.1'
+    implementation files('libs\\MPAndroidChart-v3.0.1.jar')
+    implementation files('libs\\poi-3.12-android-a.jar')
+    implementation files('libs\\poi-ooxml-schemas-3.12-20150511-a.jar')
+    implementation files('libs\\slf4j-api-1.7.12.jar')
+    implementation files('libs\\xlsx-streamer-2.2.0.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
