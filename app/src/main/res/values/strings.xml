@@ -18,6 +18,7 @@
     <string name="menu_faq">FAQ</string>
     <string name="menu_login">Logga In</string>
 
+    <integer name="files_downloaded">0</integer>
     <integer name="logged_in">0</integer>
 
     <string name="menu_gallery">Gallery</string>

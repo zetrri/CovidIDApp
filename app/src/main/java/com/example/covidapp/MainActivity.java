@@ -1,6 +1,9 @@
 package com.example.covidapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -20,11 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.covidapp.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
 
+public class MainActivity extends AppCompatActivity {
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
-
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_my_page, R.id.nav_dashboard, R.id.nav_faq, R.id.nav_login)
+                R.id.nav_my_page, R.id.nav_dashboard, R.id.nav_faq, R.id.nav_login,R.id.nav_admin_menu)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -70,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
 //            }
 //        });
+
+
     }
 
 
@@ -82,9 +87,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+
+                return true;
+            case R.id.OtherItem:
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_admin_add_available_times);
+                return true;
+            case R.id.TestDriveAdmin:
+                NavController navController2 = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                navController2.navigate(R.id.ConnectedTimesFragment);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    protected void onStop() {
+        File file1 = new File(getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
+        File file2 = new File(getExternalFilesDir("Download"), "v37-leveranser-av-covid-vaccin-till-och-med-vecka-39.xlsx");
+        if(file1.exists()){
+            Log.i("info", "Deleting file " + file1);
+            file1.delete();
+        }if(file2.exists()){
+            Log.i("info", "Deleting file " + file2);
+            file2.delete();
+        }
+        super.onStop();
+    }
+
 }
