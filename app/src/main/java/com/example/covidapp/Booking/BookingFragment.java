@@ -135,6 +135,7 @@ public class BookingFragment extends Fragment {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //Getting data from database
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                     if (!countieslist.contains(availableTimesListUserClass.getCounty())) countieslist.add(availableTimesListUserClass.getCounty());
@@ -146,22 +147,29 @@ public class BookingFragment extends Fragment {
                     datelist.add(calendar.getTime());
                     availableTimesListUserClassArrayList.add(availableTimesListUserClass);
                 }
-
+                //Arrayadapters
                 ArrayAdapter<String> countieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countieslist);
                 ArrayAdapter<String> citieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, citieslist);
                 ArrayAdapter<String> clinicslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, clinicslist);
                 ArrayAdapter<String> vaccinelistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vaccinelist);
                 ArrayAdapter<Date> timeadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, datelist);
+
+                //Binding
                 Spinner county_dropdown = binding.dropdownCounty;
                 Spinner city_dropdown = binding.dropdownCity;
                 Spinner clinic_dropdown = binding.dropdownClinic;
                 Spinner vaccine_dropdown = binding.dropdownVaccine;
                 Button button = binding.button; //Boka knapp
+                RadioGroup radioGroup = binding.radGroup1;
+                CalendarView Kalender = binding.calendarView;
+                TextView error = binding.errormessage;
+
+                //set adapters
                 vaccine_dropdown.setAdapter(vaccinelistadapter);
                 county_dropdown.setAdapter(countieslistadapter);
                 city_dropdown.setAdapter(citieslistadapter);
                 clinic_dropdown.setAdapter(clinicslistadapter);
-                RadioGroup radioGroup = binding.radGroup1;
+
                 SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                 for (int i=0; i<datelist.size(); i++){
                     RadioButton newRadioButton = new RadioButton(getActivity());
@@ -169,21 +177,24 @@ public class BookingFragment extends Fragment {
                     newRadioButton.setId(View.generateViewId());
                     radioGroup.addView(newRadioButton);
                 }
-                CalendarView Kalender = binding.calendarView;
-                TextView error = binding.errormessage;
+
                 Kalender.setFirstDayOfWeek(2);
                 Kalender.setMinDate(Kalender.getDate());
+                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                         choosedYear = year; //sparar år
                         choosedDay = day; //Sparar månad
                         choosedMonth = month; //sparar dag
+                        Calendar date2 = Calendar.getInstance();
+                        date2.set(year,month,day);
+                        Toast.makeText(getActivity().getBaseContext(),sdf.format(date2.getTimeInMillis()),Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                //när man trycker på boka vaccin
 
+                //buton book appointment
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
