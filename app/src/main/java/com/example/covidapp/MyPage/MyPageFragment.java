@@ -241,6 +241,7 @@ public class MyPageFragment extends Fragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new_card.removeAllViews();
+                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                 deleteCard(test_text.getText().toString());
 
                                                 // TODO remove information from database
