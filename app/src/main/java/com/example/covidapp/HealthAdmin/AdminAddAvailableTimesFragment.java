@@ -101,6 +101,16 @@ public class AdminAddAvailableTimesFragment extends Fragment {
         return root;
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("Fragment paused");
+
+
+    }
+
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -169,7 +179,7 @@ public class AdminAddAvailableTimesFragment extends Fragment {
 
         DatabaseReference ref = database.getReference("AvailableTimes");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){

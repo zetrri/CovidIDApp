@@ -1,5 +1,6 @@
 package com.example.covidapp.Booking;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -163,6 +164,9 @@ public class BookingFragment extends Fragment {
                 RadioGroup radioGroup = binding.radGroup1;
                 CalendarView Kalender = binding.calendarView;
                 TextView error = binding.errormessage;
+                EditText text_allergies = (EditText) binding.editTextAllergies;
+                EditText text_medicines = (EditText) binding.editTextMedicine;
+                EditText text_comments = (EditText) binding.editTextComments;
 
                 //set adapters
                 vaccine_dropdown.setAdapter(vaccinelistadapter);
@@ -171,15 +175,11 @@ public class BookingFragment extends Fragment {
                 clinic_dropdown.setAdapter(clinicslistadapter);
 
                 SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
-                for (int i=0; i<datelist.size(); i++){
-                    RadioButton newRadioButton = new RadioButton(getActivity());
-                    newRadioButton.setText(sdfclock.format(datelist.get(i)));
-                    newRadioButton.setId(View.generateViewId());
-                    radioGroup.addView(newRadioButton);
-                }
-
+                Activity activity = getActivity();
                 Kalender.setFirstDayOfWeek(2);
-                Kalender.setMinDate(Kalender.getDate());
+
+                //Todo:Limit choosable days from today only
+                //Kalender.setMinDate(Kalender.getDate());
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -190,11 +190,26 @@ public class BookingFragment extends Fragment {
                         Calendar date2 = Calendar.getInstance();
                         date2.set(year,month,day);
                         Toast.makeText(getActivity().getBaseContext(),sdf.format(date2.getTimeInMillis()),Toast.LENGTH_SHORT).show();
+
+                        //Set appointments only for today
+                        String currdate = sdf.format(date2.getTimeInMillis());
+                        radioGroup.removeAllViews();
+                        for (int i=0; i<availableTimesListUserClassArrayList.size(); i++){
+                            if (currdate.equals(sdf.format(availableTimesListUserClassArrayList.get(i).getTimestamp()))){
+                                RadioButton newRadioButton = new RadioButton(activity);
+                                newRadioButton.setText(sdfclock.format(availableTimesListUserClassArrayList.get(i).getTimestamp()));
+                                newRadioButton.setId(View.generateViewId());
+                                radioGroup.addView(newRadioButton);
+                            }
+
+
+                        }
                     }
                 });
 
 
-                //buton book appointment
+
+                //button book appointment
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -208,17 +223,18 @@ public class BookingFragment extends Fragment {
                         }
 
                         booking.time = (String) radioButton.getText(); //tiden som är vald
+
                         //Separera timma och minut
                         String[] STRstr = booking.time.split(":");
                         Log.d("Vald tid",STRstr[0].toString()+ STRstr[1].toString());
+
                         //Skapar en "date" variabel
                         Calendar date = Calendar.getInstance();
                         date.set(choosedYear,choosedMonth,choosedDay,Integer.parseInt(STRstr[0]),Integer.parseInt(STRstr[1]),0);
                         System.out.println(choosedDay+" "+choosedMonth+" "+choosedYear+" "+STRstr[0]+" "+STRstr[1]);
                         Log.d("hour and minute",STRstr[0]+":"+STRstr[1]);
-                        EditText text_allergies = (EditText) binding.editTextAllergies;
-                        EditText text_medicines = (EditText) binding.editTextMedicine;
-                        EditText text_comments = (EditText) binding.editTextComments;
+
+                        //get data from all textfields
                         booking.allergy = text_allergies.getText().toString(); //sträng med allergier
                         booking.meds = text_medicines.getText().toString(); // sträng med mediciner
                         booking.message = text_comments.getText().toString(); // sträng med kommentarer
@@ -226,16 +242,18 @@ public class BookingFragment extends Fragment {
                         booking.city = city_dropdown.getSelectedItem().toString();
                         booking.county = county_dropdown.getSelectedItem().toString();
                         booking.vaccine = vaccine_dropdown.getSelectedItem().toString();
-                        Log.d("Selected",booking.city);
-                        String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
 
+                        Log.d("Selected",booking.city);
+
+                        //Combine all info and put in alert window
+                        String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Din bokning")
                                 .setMessage(information+"\n\nVill du bekräfta?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
-                                        // TODO spara informationen i en databas och gå till min sida
+                                        //save booking to firebase
                                         ConnectUserWithTime(booking,date,availableTimesListUserClassArrayList);
                                     }
                                 })
@@ -471,7 +489,7 @@ public class BookingFragment extends Fragment {
                 Log.d("TAG", key.getTimestamp().toString());
             }
 
-            //Log.d("TAG","HEHOPP");
+            //Dedug  help
             //System.out.println(sdf.format(date.getTimeInMillis())+ sdfclock.format(date.getTimeInMillis()));
             //Log.d("timestampinkey", key.getTimestamp().toString() );
             //Log.d("timestampininchoosed", String.valueOf(date.getTimeInMillis()));
