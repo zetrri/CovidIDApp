@@ -108,7 +108,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextVaccin.getText() == ""  ){
-                    TextVaccin.setText(getString(R.string.faq_vaccin));
+                    TextVaccin.setText(getString(R.string.faq_vaccin_swe));
                 }
                 else{
                     //System.out.println("Test");
@@ -121,7 +121,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextResor.getText() == ""  ){
-                    TextResor.setText(getString(R.string.faq_resor));
+                    TextResor.setText(getString(R.string.faq_resor_swe));
                 }
                 else{
                     TextResor.setText(null);
@@ -133,7 +133,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextRisken.getText() == ""  ){
-                    TextRisken.setText(getString(R.string.faq_risken));
+                    TextRisken.setText(getString(R.string.faq_risken_swe));
                 }
                 else{
                     //System.out.println("Test");
@@ -146,7 +146,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextCovid.getText() == ""  ){
-                    TextCovid.setText(R.string.faq_covid);
+                    TextCovid.setText(R.string.faq_covid_swe);
                 }
                 else{
                     //System.out.println("Test");
@@ -159,7 +159,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextMunskydd.getText() == ""  ){
-                    TextMunskydd.setText(getString(R.string.faq_munskydd));
+                    TextMunskydd.setText(getString(R.string.faq_munskydd_swe));
                 }
                 else{
                     //System.out.println("Test");
@@ -172,7 +172,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextGoraSjalv.getText() == ""  ){
-                     TextGoraSjalv.setText(R.string.faq_gorasjalv);
+                     TextGoraSjalv.setText(R.string.faq_gorasjalv_swe);
                 }
                 else{
                     //System.out.println("Test");
@@ -185,7 +185,7 @@ public class FaqFragment extends Fragment {
             @Override
             public void onClick(View v){
                 if(TextMaBattre.getText() == ""  ){
-                    TextMaBattre.setText(R.string.faq_mabattre);
+                    TextMaBattre.setText(R.string.faq_mabattre_swe);
                 }
                 else{
                     //System.out.println("Test");

@@ -33,12 +33,8 @@ import com.example.covidapp.databinding.ActivityMainBinding;
 
 import java.io.File;
 
-
-    private Boolean isLoggedIn = false;
-
-
 public class MainActivity extends AppCompatActivity {
-
+    private Boolean isLoggedIn = false;
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
     private AppBarConfiguration mAppBarConfiguration;

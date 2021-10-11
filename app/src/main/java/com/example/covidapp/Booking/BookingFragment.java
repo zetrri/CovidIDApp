@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.covidapp.Dashboard.Data;
+
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentBookingBinding;
@@ -179,7 +179,7 @@ public class BookingFragment extends Fragment {
                 Kalender.setFirstDayOfWeek(2);
 
                 //Todo:Limit choosable days from today only
-                //Kalender.setMinDate(Kalender.getDate());
+                Kalender.setMinDate(Kalender.getDate());
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override

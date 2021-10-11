@@ -173,6 +173,7 @@ public class MyPageFragment extends Fragment {
                         if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                             Log.d("FoundOne",availableTimesListUserClass.getId());
                             availableTimesListUserClasses.add(availableTimesListUserClass);
+
                         }
 //
                     }
@@ -210,6 +211,19 @@ public class MyPageFragment extends Fragment {
                         vaccin_text.setText( (String) ("Vaccin: " + availableTimesListUserClasses.get(i).getVaccine())); //ska vara vaccine
                         linear_layout1.addView(vaccin_text);
 
+                        TextView test_text = new TextView(getActivity());
+                        test_text.setTextSize(15);
+                        test_text.setText(availableTimesListUserClasses.get(i).getId());
+                        test_text.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text);
+
+                        TextView test_text2 = new TextView(getActivity());
+                        test_text2.setTextSize(15);
+                        test_text2.setText(String.valueOf(i));
+                        test_text2.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text2);
+
+
                         LinearLayout linear_layout2 = new LinearLayout(getActivity());
                         linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
                         linear_layout2.setPadding(0,0,0,16);
@@ -218,47 +232,51 @@ public class MyPageFragment extends Fragment {
                         Button buttonAvboka = new Button(getActivity());
                         buttonAvboka.setText("Avboka");
                         linear_layout2.addView(buttonAvboka);
-//                        buttonAvboka.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                new AlertDialog.Builder(getActivity())
-//                                        .setTitle("Avboka")
-//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
-//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                new_card.removeAllViews();
-//                                                // TODO remove information from database
-//                                            }
-//                                        })
-//                                        .setNegativeButton(android.R.string.no, null)
-//                                        .show();
-//
-//                            }
-//                        });
+                        buttonAvboka.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Avboka")
+                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new_card.removeAllViews();
+                                                deleteCard(test_text.getText().toString());
+
+                                                // TODO remove information from database
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+
+                            }
+                        });
 
                         Button buttonOmboka = new Button(getActivity());
                         buttonOmboka.setText("Omboka");
                         linear_layout2.addView(buttonOmboka);
-//                        buttonOmboka.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                new AlertDialog.Builder(getActivity())
-//                                        .setTitle("Omboka")
-//                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
-//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                new_card.removeAllViews();
-//
-//
-//                                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
-//
-//                                                // TODO remove information from database
-//                                            }
-//                                        })
-//                                        .setNegativeButton(android.R.string.no, null)
-//                                        .show();
-//                            }
-//                        });
+                        buttonOmboka.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Omboka")
+                                        .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new_card.removeAllViews();
+                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                deleteCard(test_text.getText().toString());
+                                                View view2 = getView();
+                                                Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
+
+
+                                                // TODO remove information from database
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+                            }
+                        });
 
                         linear_layout1.addView(linear_layout2);
                         new_card.addView(linear_layout1);
@@ -274,6 +292,25 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+
+    }
+    private void deleteCard(String id)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("BookedTimes");
+        ref.child(id).removeValue();
+    }
+    private void gettimeback(AvailableTimesListUserClass item)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("AvailableTimes");
+        item.setAvailable(true);
+        item.setBookedBy("");
+        item.setAllergies("");
+        item.setComments("");
+        item.setVaccine("");
+        item.setMedication("");
+        ref.child(item.getId()).setValue(item);
 
     }
 

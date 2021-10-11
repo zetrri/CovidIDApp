@@ -29,7 +29,7 @@
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:text="@string/faq_button_vaccin"
+                android:text="@string/faq_button_vaccin_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
-                android:text="@string/faq_button_resor"
+                android:text="@string/faq_button_resor_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextVaccin" />
@@ -73,7 +73,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
-                android:text="@string/faq_button_risken"
+                android:text="@string/faq_button_risken_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextResor" />
@@ -95,7 +95,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
-                android:text="@string/faq_button_covid"
+                android:text="@string/faq_button_covid_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextRisken" />
@@ -117,7 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
-                android:text="@string/faq_button_munskydd"
+                android:text="@string/faq_button_munskydd_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
-                android:text="@string/faq_button_gorasjalv"
+                android:text="@string/faq_button_gorasjalv_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextMunskydd" />
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2mm"
-                android:text="@string/faq_button_mabattre"
+                android:text="@string/faq_button_mabattre_swe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
