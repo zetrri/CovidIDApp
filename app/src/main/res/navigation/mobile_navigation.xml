@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_my_page">
-
+    app:startDestination="@+id/nav_login">
 
     <fragment
         android:id="@+id/nav_my_page"
@@ -139,8 +138,5 @@
             android:id="@+id/action_nav_user_reg_to_nav_login"
             app:destination="@id/nav_login" />
     </fragment>
-
-
-
 
 </navigation>

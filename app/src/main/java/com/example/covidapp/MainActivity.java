@@ -1,6 +1,11 @@
 package com.example.covidapp;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.os.Build;
 import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,12 +13,15 @@ import android.view.View;
 import android.view.Menu;
 
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.covidapp.LogIn.LoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,7 +33,12 @@ import com.example.covidapp.databinding.ActivityMainBinding;
 
 import java.io.File;
 
+
+    private Boolean isLoggedIn = false;
+
+
 public class MainActivity extends AppCompatActivity {
+
     Button buttonDashboard,buttonfaq,buttonUserLogin,buttonMainscreen2,buttonMyPage,buttonMyAppointments,buttonpassport,buttonuserreg,buttonquestresp, logout, buttonadminaddtimes;
     private FirebaseAuth firebaseAuth;
     private AppBarConfiguration mAppBarConfiguration;
@@ -47,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         binding.appBarMain.fab.hide();
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -62,22 +74,41 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-//        //test logout
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        drawer.get.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                firebaseAuth.signOut();
-//                // startActivity(new Intent(MainActivity.this, MainActivity.class));
-//                Log.i("Error", "User successfully logged out!"); //logging
-//                Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
-//            }
-//        });
 
+        loggedOut();
+
+        binding.navView.getMenu().findItem(R.id.nav_login).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(isLoggedIn) {
+                    loggedOut();
+                }
+            return false;
+            }
+        });
 
     }
 
+    //Changes the drawer menu and sets isLoggedIn to false
+    public void loggedIn() {
+        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logout");
+        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
+        binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
+        binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
+        isLoggedIn = true;
+    }
 
+    //Logs out the user, changes the drawer menu and sets isLoggedIn to false
+    private void loggedOut() {
+        FirebaseAuth.getInstance().signOut();
+        Log.i("Error", "User successfully logged out!"); //logging
+        Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
+        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Login");
+        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
+        binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+        binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(false);
+        isLoggedIn = false;
+    }
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
