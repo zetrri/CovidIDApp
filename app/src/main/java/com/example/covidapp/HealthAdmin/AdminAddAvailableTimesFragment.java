@@ -154,9 +154,9 @@ public class AdminAddAvailableTimesFragment extends Fragment {
                 hour = timePicker.getHour();
 
                 String uniqueID = UUID.randomUUID().toString();
-                Log.d("Unique ID",uniqueID);
-                date.set(year,month,day,hour,minute);
-                AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true);
+                Log.d("Date",String.valueOf(minute));
+                date.set(year,month,day,hour,minute,0);
+                AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true,"","","","");
 //                calendars.add(date);
 //                calendarsInString.add(dateFormat.format(date.getTime()));
 //
@@ -178,11 +178,10 @@ public class AdminAddAvailableTimesFragment extends Fragment {
                     Calendar date1 = Calendar.getInstance();
                     date1.setTimeInMillis(availableTimesListUserClass.getTimestamp());
                     Log.d("Found",date1.toString());
+                    timesfromDatabase.add(availableTimesListUserClass);
                 }
-
-
-                //ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
-                //listView.setAdapter(timesfromDatabaseadapter);
+                ArrayAdapter<AvailableTimesListUserClass> timesfromDatabaseadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, timesfromDatabase);
+                listView.setAdapter(timesfromDatabaseadapter);
 
             }
 
