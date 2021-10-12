@@ -162,6 +162,7 @@ public class MyPageFragment extends Fragment {
                 FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
                 //if user not logged in
                 if ( firebaseAuth1.getCurrentUser() == null){
+                    Navigation.findNavController(view).navigate(R.id.nav_login);
                     return;
                 }
                 //If logged in

@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Display;
@@ -15,8 +17,17 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentPassportBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -81,11 +92,8 @@ public class PassportFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TEMP manuel inläggning av data
-        account[2] = "199708281111";
-        account[3] = "Anton";
-        account[4] = "Weiberg";
-
+        TextView text_forNamn = binding.textViewName;
+        TextView text_personNr = binding.textViewPersonNr;
         ImageView qr_image = binding.imageViewQrCode;
 
         Point p = new Point();
@@ -93,23 +101,43 @@ public class PassportFragment extends Fragment {
         Display display = window_manager.getDefaultDisplay();
         display.getSize(p);
 
-        //Skapar en QR kod och toppar in den i en bitmap
-        QRGEncoder qrgEncoder = new QRGEncoder(account[2], null, QRGContents.Type.TEXT, (300 * 3 / 4));
-        try {
-            Bitmap qr_bitmap = qrgEncoder.encodeAsBitmap();
-            qr_image.setImageBitmap(qr_bitmap);
-        } catch (Exception e){
-            Log.e("Error", e.toString());
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            String UID = currentUser.getUid();
+            DatabaseReference myRef = database.getReference("User").child(UID);
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    RegClass regClass = snapshot.getValue(RegClass.class);
+                    QRGEncoder qrgEncoder = new QRGEncoder(regClass.getUserID(), null, QRGContents.Type.TEXT, (300 * 3 / 4));
+                    try {
+                        Bitmap qr_bitmap = qrgEncoder.encodeAsBitmap();
+                        qr_image.setImageBitmap(qr_bitmap);
+                    } catch (Exception e){
+                        Log.e("Error", e.toString());
+                    }
+
+
+                    //TEMP manuel inläggning av data
+
+                    String text = "Personnummer: " + regClass.getPersnr();
+                    text_personNr.setText(text);
+
+
+                    text = "Namn: " + regClass.getFirstname() + " " + regClass.getLastname();
+                    text_forNamn.setText(text);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
 
-
-        //TEMP manuel inläggning av data
-        TextView text_personNr = binding.textViewPersonNr;
-        String text = "Person nummer: " + account[2];
-        text_personNr.setText(text);
-
-        TextView text_forNamn = binding.textViewName;
-        text = "Namn: " + account[3] + " " + account[4];
-        text_forNamn.setText(text);
     }
+
 }
