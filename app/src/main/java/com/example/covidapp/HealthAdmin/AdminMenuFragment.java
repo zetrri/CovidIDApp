@@ -1,8 +1,10 @@
 package com.example.covidapp.HealthAdmin;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -11,9 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentAdminMenuBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +32,10 @@ import com.example.covidapp.databinding.FragmentAdminMenuBinding;
 public class AdminMenuFragment extends Fragment {
 
     private FragmentAdminMenuBinding binding;
-
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference usersRef;
+    private TextView registered_users;
+    private int countUsers = 0;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,12 +87,17 @@ public class AdminMenuFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayout eCatalog = binding.Catalog;
+//        LinearLayout eCatalog = binding.Catalog;
         LinearLayout eDashboard = binding.Dashboard;
-        LinearLayout eSecDose = binding.SecDose;
+//        LinearLayout eSecDose = binding.SecDose;
         LinearLayout eQuestionnaire = binding.Questionnaire;
-        LinearLayout eTimeLine = binding.TimeLine;
-        LinearLayout eHealthPass = binding.HealthPass;
+//        LinearLayout eTimeLine = binding.TimeLine;
+//        LinearLayout eHealthPass = binding.HealthPass;
+        firebaseAuth = FirebaseAuth.getInstance();
+        //making a reference to the child node "User"
+        usersRef = FirebaseDatabase.getInstance().getReference().child("User");
+
+        registered_users = binding.eUserReg;
 
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
@@ -88,26 +105,25 @@ public class AdminMenuFragment extends Fragment {
         //Removes keyboard if up
 
         //Listeners, replace activity when implemented.
-        /*
-       eCatalog.setOnClickListener(new View.OnClickListener() {
+
+       /*eCatalog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View view) {
                Intent intent = new Intent(getBaseContext(), ReplaceWithActivity.class);
                startActivity(intent);
            }
-       });
+       });*/
         eDashboard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
-                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_admin_appointments);
             }
         });
-        eSecDose.setOnClickListener(new View.OnClickListener() {
+        /*eSecDose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
                 startActivity(intent);
             }
-        });
-        */
+        });*/
+
         eQuestionnaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -127,6 +143,30 @@ public class AdminMenuFragment extends Fragment {
                 startActivity(intent);
             }
         });*/
+
+        //Total registered users
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    // count number of children for User child
+                    countUsers = (int) snapshot.getChildrenCount();
+                    // converting back to string and displaying
+                    registered_users.setText("Total registrerande nu: " + Integer.toString(countUsers)); // displays amount of remaining attempts
+                    registered_users.setTextColor(Color.parseColor("#228B22"));
+                }
+                else{
+                    registered_users.setText("0 Registered Users.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
+
 
 }

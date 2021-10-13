@@ -312,7 +312,6 @@ public class MyPageFragment extends Fragment {
         item.setVaccine("");
         item.setMedication("");
         ref.child(item.getId()).setValue(item);
-
     }
 
     private void createCard(){}

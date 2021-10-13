@@ -1,6 +1,8 @@
-package com.example.covidapp.HealthAdmin;
 
-import java.util.Calendar;
+
+        package com.example.covidapp.HealthAdmin;
+
+        import java.util.Calendar;
 
 public class AvailableTimesListUserClass {
     String city;
@@ -125,5 +127,3 @@ public class AvailableTimesListUserClass {
         return getTimestamp().toString();
     }
 }
-
-
