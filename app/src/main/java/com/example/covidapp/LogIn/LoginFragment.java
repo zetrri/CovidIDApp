@@ -197,7 +197,7 @@ public class LoginFragment extends Fragment {
             {
                 counter = 5; // sets remaining attempts to 5
                 eLogin.setEnabled(true); //enabling login
-                eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
+                eAttemptsInfo.setText("Återstående försök: " + counter); // displays amount of remaining attempts
             }
         };
         cTimer.start();

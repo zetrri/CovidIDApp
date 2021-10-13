@@ -4,263 +4,204 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
-    tools:context=".HealthAdmin.AdminMenuFragment">// purple background for top half
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="Health Administrators"
-        android:textColor="#FFF"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    // Textview on health administrators
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:src="@drawable/illustration"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-    // Top half image
+    tools:context=".MyPage.MyPageFragment">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_adminmenu"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent">
-
+        android:padding="20sp"
+        >
+        <!-- Top menu-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="24dp">
-
-            <LinearLayout
-                android:id="@+id/Catalog"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_catalog"
-                    android:orientation="vertical">
-                    <ImageView
-
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_injection_svgrepo_com"
-                        android:layout_width="30dp"
-                        android:layout_height="40dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:text="Product Catalog"
-                        android:textColor="#FFFFFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
-            </LinearLayout>
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/Dashboard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.33"
                 android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView_dashboard"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_dashboard"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_statistics_svgrepo_com"
-                        android:layout_width="30dp"
-                        android:layout_height="40dp"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_date_svgrepo_com" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="0dp"
-                        android:text="Dash - board"
-                        android:textColor="#FFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Bokningar" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/SecDose"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_secdose"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_painkiller_pain_injection_injury_svgrepo_com"
-                        android:layout_width="30dp"
-                        android:layout_height="35dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:text="Second Dose Schedule"
-                        android:textColor="#FFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="24dp">
 
             <LinearLayout
                 android:id="@+id/Questionnaire"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.33"
                 android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView_questionnaire"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_questionnaire"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_questions_info_svgrepo_com" />
 
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_questions_info_svgrepo_com"
-                        android:layout_width="30dp"
-                        android:layout_height="40dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Frågeformulär" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:text="Questionnaire"
-                        android:textColor="#FFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/TimeLine"
+                android:id="@+id/notifications"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.33"
                 android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView_catalog"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_timeline"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_kindergarden_children_and_teacher_svgrepo_com"
-                        android:layout_width="30dp"
-                        android:layout_height="35dp"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_injection_svgrepo_com" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:text="Timeline Age Groups"
-                        android:textColor="#FFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/HealthPass"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_passport"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:src="@drawable/ic_passport_svgrepo_com__2_"
-                        android:layout_width="30dp"
-                        android:layout_height="35dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="0dp"
-                        android:text="Digital Health Passport"
-                        android:textColor="#FFF"
-                        android:textSize="23sp" />
-                </LinearLayout>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Produktkatalog" />
             </LinearLayout>
 
         </LinearLayout>
+        <!-- Top menu2-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/schedule_vaccination"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/imageView_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_kindergarden_children_and_teacher_svgrepo_com" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Schema planering för vaccination" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Second_dose_schedule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/imageView_second_dose"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_painkiller_pain_injection_injury_svgrepo_com" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Schema för andra dos" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/notifications1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/imageView_catalog1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_injection_svgrepo_com" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Platshållare" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+
+                <TextView
+                    android:id="@+id/eUserReg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Total registrerande nu: " />
+
+
+                <LinearLayout
+                    android:id="@+id/containerbookings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-    // Bottom half layouts
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
