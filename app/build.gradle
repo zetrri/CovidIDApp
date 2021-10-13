@@ -28,6 +28,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 }
 
@@ -51,6 +52,7 @@ dependencies {
     implementation files('libs\\poi-ooxml-schemas-3.12-20150511-a.jar')
     implementation files('libs\\slf4j-api-1.7.12.jar')
     implementation files('libs\\xlsx-streamer-2.2.0.jar')
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

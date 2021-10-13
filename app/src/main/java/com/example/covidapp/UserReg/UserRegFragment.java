@@ -221,7 +221,7 @@ public class UserRegFragment extends Fragment {
                         myRef.setValue(regClass);
                         Toast.makeText(getActivity().getBaseContext(), "Successfully registered!",Toast.LENGTH_LONG).show();
                         Navigation.findNavController(view).navigate(R.id.nav_login);
-                        ((MainActivity)getActivity()).loggedIn();
+//                        ((MainActivity)getActivity()).onUserLogin();
 
                     } else {
                         // If sign in fails, display a message to the user.

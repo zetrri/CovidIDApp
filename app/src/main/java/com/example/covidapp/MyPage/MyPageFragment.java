@@ -141,12 +141,7 @@ public class MyPageFragment extends Fragment {
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //test logout
-
-                firebaseAuth.signOut();
-                // startActivity(new Intent(MainActivity.this, MainActivity.class));
-                Log.i("Error", "User successfully logged out!"); //logging
-                Toast.makeText(getActivity().getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
+                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_notifications);
             }
         });
 
