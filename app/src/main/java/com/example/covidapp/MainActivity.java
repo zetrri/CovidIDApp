@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     //Changes the drawer menu and sets isLoggedIn to false
     public void onUserLogin() {
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
-        binding.navView.getMenu().findItem(R.id.nav_my_page).setTitle("Min sida");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
@@ -103,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
     //Changes drawer menu items shown for admin login
     public void onAdminLogin() {
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
-        binding.navView.getMenu().findItem(R.id.nav_my_page).setTitle("Admin menu");
-        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
+        binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
         isLoggedIn = true;
@@ -127,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLogout() {
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga in");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
+        binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(false);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(false);
     }
