@@ -320,7 +320,6 @@ public class AdminAppointmentsFragment extends Fragment {
 
                                 }
                             });
-
                             linear_layout1.addView(linear_layout2);
                             new_card.addView(linear_layout1);
                             container.addView(new_card);
