@@ -17,9 +17,9 @@ public class AvailableTimesListUserClass {
     String medication;
     String comments;
     String vaccine;
-
+    Boolean isApproved;
     public AvailableTimesListUserClass(){}
-    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput,String vaccineinput) {
+    public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput,String vaccineinput, Boolean isApprovedboolean) {
         this.city = city;
         this.county = county;
         this.clinic = clinic;
@@ -31,6 +31,7 @@ public class AvailableTimesListUserClass {
         this.medication = medicationinput;
         this.comments = commentsinput;
         this.vaccine = vaccineinput;
+        this.isApproved = isApprovedboolean;
     }
 
     public String getVaccine() {
@@ -121,6 +122,13 @@ public class AvailableTimesListUserClass {
         this.clinic = clinic;
     }
 
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
+    }
 
     @Override
     public String toString(){

@@ -520,6 +520,7 @@ public class BookingFragment extends Fragment {
             Userclass.setBookedBy(UID);
             Userclass.setAvailable(false);
             Userclass.setId(UUID.randomUUID().toString());
+            Userclass.setApproved(false);
             DatabaseReference myRef = database.getReference("BookedTimes").child(Userclass.getId());
             myRef.setValue(Userclass);
 

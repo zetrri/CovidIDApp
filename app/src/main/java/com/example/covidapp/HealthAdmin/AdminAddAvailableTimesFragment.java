@@ -166,7 +166,7 @@ public class AdminAddAvailableTimesFragment extends Fragment {
                 String uniqueID = UUID.randomUUID().toString();
                 Log.d("Date",String.valueOf(minute));
                 date.set(year,month,day,hour,minute,0);
-                AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true,"","","","");
+                AvailableTimesListUserClass availableTimesListUserClass = new AvailableTimesListUserClass(City,County,Clinic,date.getTimeInMillis(),uniqueID,"",true,"","","","", false);
 //                calendars.add(date);
 //                calendarsInString.add(dateFormat.format(date.getTime()));
 //
