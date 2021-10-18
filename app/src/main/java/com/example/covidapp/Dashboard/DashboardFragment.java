@@ -157,9 +157,10 @@ public class DashboardFragment extends Fragment {
             jsonBundle.putSerializable("jsonDownloader", jsonDownloader);
 
             //När JSON filen är klar så byter den automatiskt fragment till covid_cases
-            //FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            //ft.replace(R.id.cardView, fragment_covid_cases).commit();
-            //current_fragment = fragment_covid_cases;
+            fragment_covid_cases.setArguments(jsonBundle);
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(R.id.cardView, fragment_covid_cases).commit();
+            current_fragment = "fragment_covid_cases";
         }
         catch (Exception e){
             excelDownloader = new ExcelDownloader();
@@ -175,7 +176,7 @@ public class DashboardFragment extends Fragment {
                     excelBundle.putSerializable("excelDownloader", excelDownloader);
 
                     //Om någon har klickat på en annan knapp än "sjukdomsfall" och har loading screenen uppe så laddar den upp den sidan.
-                    Log.i("Dashboard:", Boolean.toString(isAdded()));
+                   // Log.i("Dashboard:", Boolean.toString(isAdded()));
                     FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                     switch (current_fragment){
                         case "fragment_covid_cases": break;
