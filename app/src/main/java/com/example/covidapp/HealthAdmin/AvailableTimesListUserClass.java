@@ -18,6 +18,7 @@ public class AvailableTimesListUserClass {
     String comments;
     String vaccine;
 
+
     public AvailableTimesListUserClass(){}
     public AvailableTimesListUserClass(String city, String county, String clinic, Long date,String thisid,String bookedByUser,Boolean isAvailableboolean,String allergiesinput,String medicationinput, String commentsinput,String vaccineinput) {
         this.city = city;
