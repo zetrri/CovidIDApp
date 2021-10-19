@@ -130,6 +130,8 @@ public class PassportFragment extends Fragment {
 
                             text_personNr.setText("Personnummer: " + regClass.getPersnr());
                             text_forNamn.setText("Namn: " + regClass.getFirstname() + " " + regClass.getLastname());
+                            textViewID.setText("ID: "+regClass.getUserID());
+                            textViewDos2.setText("ID: "+regClass.getDosTwo());
 
                         }
                     }

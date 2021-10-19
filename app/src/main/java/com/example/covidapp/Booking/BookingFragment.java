@@ -362,8 +362,12 @@ public class BookingFragment extends Fragment {
                 RegClass regClass = dataSnapshot1.getValue(RegClass.class);
                 if (regClass.getDosOne() == 0){
                     regClass.setDosOne(bookeddate);
+                    myRef.removeValue();
+                    myRef.setValue(regClass);
                 }else if ( regClass.getDosTwo()==0){
                     regClass.setDosTwo(bookeddate);
+                    myRef.removeValue();
+                    myRef.setValue(regClass);
                 }
 
             }
