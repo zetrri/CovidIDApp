@@ -113,7 +113,7 @@ public class BookingFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO Se till att endast tider den dagen visas, inte tider för alla dagar
+
         ArrayList<String> countieslist = new ArrayList<>();
         ArrayList<String> citieslist = new ArrayList<>();
         ArrayList<String> clinicslist = new ArrayList<>();
@@ -124,7 +124,7 @@ public class BookingFragment extends Fragment {
         vaccinelist.add("Moderna");
         vaccinelist.add("NovaVax");
         vaccinelist.add("AstraZenica");
-        final long days22=1900800000;
+
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
 
@@ -178,7 +178,8 @@ public class BookingFragment extends Fragment {
                 Activity activity = getActivity();
                 Kalender.setFirstDayOfWeek(2);
 
-
+                // Todo: HÄR HAR VI ÄNDRAT SABINA NEDANFÖR
+                final long days22=1900800000;
                 userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -193,10 +194,7 @@ public class BookingFragment extends Fragment {
                         else Kalender.setMinDate(Kalender.getDate());
                     }
                 });
-
-                //Todo:Limit choosable days from today only
-
-
+                // Todo: HÄR HAR VI ÄNDRAT SABINA OVANFÖR
 
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -362,6 +360,7 @@ public class BookingFragment extends Fragment {
             myRef3.removeValue();
 
         }
+        // Todo: HÄR HAR VI ÄNDRAT SABINA NEDANFÖR
         DatabaseReference myRef = database.getReference("User").child(currentUser.getUid());
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -383,6 +382,7 @@ public class BookingFragment extends Fragment {
             }
 
         });
+        // Todo: HÄR HAR VI ÄNDRAT SABINA OVANFÖR
 
     }
 }

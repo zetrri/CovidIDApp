@@ -127,8 +127,9 @@ public class MyPageFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
         DatabaseReference userref = database.getReference("User").child(firebaseAuth1.getUid());
-
-
+        Calendar calendar = Calendar.getInstance();
+        final long todaysdate = calendar.getTimeInMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
         passport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,14 +143,30 @@ public class MyPageFragment extends Fragment {
                         RegClass tempregclass = dataSnapshot1.getValue(RegClass.class);
                         final long dos2 = tempregclass.getDosTwo();
                         final long dos1 = tempregclass.getDosTwo();
-                        if (dos2!=0 && dos1!=0 )Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
+
+                        if (dos2!=0 && dos1!=0 ){
+                            if (todaysdate>=(dos2+1209600000))
+                            {
+                                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
+                            }else{
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Vaccinpass")
+                                        .setMessage("Ditt vaccinpass är tillgängligt den "+ sdf.format(dos2+1209600000))
+                                        .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        })
+                                        .show();
+
+                            }
+                        }
                         else {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Vaccinpass")
                                     .setMessage("Du har inte uppfyllt kraven för att få ett vaccinpass än")
                                     .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-
                                         }
                                     })
                                     .show();
@@ -367,6 +384,23 @@ public class MyPageFragment extends Fragment {
 
 
     }
+
+    private void deletefromuser(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference userref = database.getReference("User").child(firebaseAuth.getCurrentUser().getUid());
+        userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot2= task.getResult();
+                RegClass user = dataSnapshot2.getValue(RegClass.class);
+                userref.removeValue();
+                userref.setValue(user);
+            }
+        });
+
+    }
+
     private void deleteCard(String id)
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
