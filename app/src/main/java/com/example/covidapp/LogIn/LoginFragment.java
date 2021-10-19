@@ -122,6 +122,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         //binding variable to xml layout
         eEmail = binding.etEmail;
         ePassword = binding.etPassword;
@@ -205,6 +206,9 @@ public class LoginFragment extends Fragment {
     //Getting the current user, if logged in
     private void getUser(View view){
 
+        //Changes drawer menu items shown
+//        ((MainActivity)getActivity()).onLogout();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -217,15 +221,16 @@ public class LoginFragment extends Fragment {
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                             DataSnapshot snapshot= task.getResult();
                             RegClass regClass = snapshot.getValue(RegClass.class);
-                            ((MainActivity)getActivity()).loggedIn();
                             if (regClass.getAdmin()==false){
                                 Log.d("Admin","not an admin");
                                 View view = getView();
+                                ((MainActivity)getActivity()).onUserLogin();
                                 Navigation.findNavController(view).navigate(R.id.nav_my_page);
                             }
                             else{
                                 Log.d("Admin","is an admin");
                                 View view2 = getView();
+                                ((MainActivity)getActivity()).onAdminLogin();
                                 Navigation.findNavController(view2).navigate(R.id.nav_admin_menu);
                             }
                         }
@@ -254,7 +259,6 @@ public class LoginFragment extends Fragment {
                     editor.putInt("1", R.integer.logged_in);
                     editor.apply();
                     getUser(view);
-                    ((MainActivity)getActivity()).loggedIn();
                 }
                 //wrong credentials
                 else

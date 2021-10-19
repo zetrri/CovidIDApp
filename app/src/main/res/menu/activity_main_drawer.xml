@@ -9,6 +9,10 @@
             android:icon="@drawable/user"
             android:title="@string/menu_mypage" />
         <item
+            android:id="@+id/nav_admin_menu"
+            android:icon="@drawable/user"
+            android:title="@string/admin_menu" />
+        <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/dashboard2"
             android:title="@string/menu_dashboard" />

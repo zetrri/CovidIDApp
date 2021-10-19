@@ -71,7 +71,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        loggedOut();
+        onLogout();
+//        loggedOut();
+//        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga in");
+//        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
+//        binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+//        binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(false);
 
         binding.navView.getMenu().findItem(R.id.nav_login).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -86,24 +91,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Changes the drawer menu and sets isLoggedIn to false
-    public void loggedIn() {
-        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logout");
+    public void onUserLogin() {
+        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
         isLoggedIn = true;
     }
 
-    //Logs out the user, changes the drawer menu and sets isLoggedIn to false
+    //Changes drawer menu items shown for admin login
+    public void onAdminLogin() {
+        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
+        binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(true);
+        binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
+        binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
+        isLoggedIn = true;
+    }
+
+    //Logs out the user, changes the drawer menu items and sets isLoggedIn to false
     private void loggedOut() {
         FirebaseAuth.getInstance().signOut();
         Log.i("Error", "User successfully logged out!"); //logging
-        Toast.makeText(getBaseContext(), "You are now logged out!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
-        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Login");
+        Toast.makeText(getBaseContext(), "Du är nu utloggad!", Toast.LENGTH_SHORT).show(); // print that the user logged out.
+        onLogout();
+//        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga in");
+//        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
+//        binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+//        binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(false);
+        isLoggedIn = false;
+    }
+
+    //Changes the drawer menu items
+    public void onLogout() {
+        binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga in");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
+        binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(false);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(false);
-        isLoggedIn = false;
     }
 
         @Override

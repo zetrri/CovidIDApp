@@ -17,7 +17,9 @@
         <action
             android:id="@+id/action_nav_my_page_to_nav_booking"
             app:destination="@id/nav_booking" />
-
+        <action
+            android:id="@+id/action_nav_my_page_to_nav_notifications"
+            app:destination="@+id/nav_notifications"/>
     </fragment>
 
     <fragment
@@ -29,6 +31,13 @@
         <action
             android:id="@+id/action_nav_booking_to_nav_my_page"
             app:destination="@id/nav_my_page" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.example.covidapp.Notifications.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" >
     </fragment>
 
     <fragment
