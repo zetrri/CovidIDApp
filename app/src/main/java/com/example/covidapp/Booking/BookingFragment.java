@@ -2,9 +2,11 @@ package com.example.covidapp.Booking;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.covidapp.ClinicsClass;
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
@@ -41,49 +45,29 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.PrimitiveIterator;
+import java.util.UUID;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BookingFragment extends Fragment {
-
-    BookingFragment this_obj = this;
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
-    private String[] cities;
-    private String[] clinics;
+    private ArrayList<ClinicsClass> all_clinicsClass = new ArrayList<>();
     private int choosedDay,choosedMonth,choosedYear,choosedHour,choosedMinute;
     private FragmentBookingBinding binding;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<AvailableTimesListUserClass> availableTimes_clinic = new ArrayList<>();
+    private SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+    private SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
 
     public BookingFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BookingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static BookingFragment newInstance(String param1, String param2) {
         BookingFragment fragment = new BookingFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,22 +75,13 @@ public class BookingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBookingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
-
-//        return inflater.inflate(R.layout.fragment_booking, container, false);
     }
 
     @Override
@@ -118,67 +93,115 @@ public class BookingFragment extends Fragment {
         ArrayList<String> citieslist = new ArrayList<>();
         ArrayList<String> clinicslist = new ArrayList<>();
         ArrayList<String> vaccinelist = new ArrayList<>();
-        ArrayList<AvailableTimesListUserClass> availableTimesListUserClassArrayList = new ArrayList<>();
+        ArrayList<AvailableTimesListUserClass> all_availableTimes = new ArrayList<>();
         ArrayList<Date> datelist = new ArrayList<>();
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
-        vaccinelist.add("NovaVax");
-        vaccinelist.add("AstraZenica");
-        final long days22=1900800000;
+
+        //Binding
+        Spinner county_dropdown = binding.dropdownCounty;
+        Spinner city_dropdown = binding.dropdownCity;
+        Spinner clinic_dropdown = binding.dropdownClinic;
+        Spinner vaccine_dropdown = binding.dropdownVaccine;
+        Button button = binding.button; //Boka knapp
+        RadioGroup radioGroup = binding.radGroup1;
+        CalendarView Kalender = binding.calendarView;
+        TextView error = binding.errormessage;
+        EditText text_allergies = (EditText) binding.editTextAllergies;
+        EditText text_medicines = (EditText) binding.editTextMedicine;
+        EditText text_comments = (EditText) binding.editTextComments;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-
-        DatabaseReference ref = database.getReference("AvailableTimes");
+        DatabaseReference availableTimesref = database.getReference("AvailableTimes");
         FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userref = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        availableTimesref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Getting data from database
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                    AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
-                    if (!countieslist.contains(availableTimesListUserClass.getCounty())) countieslist.add(availableTimesListUserClass.getCounty());
-                    if (!citieslist.contains(availableTimesListUserClass.getCity())) citieslist.add(availableTimesListUserClass.getCity());
-                    if (!clinicslist.contains(availableTimesListUserClass.getClinic())) clinicslist.add(availableTimesListUserClass.getClinic());
+                //Getting available times data from database
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                    all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
 
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(availableTimesListUserClass.getTimestamp());
-                    datelist.add(calendar.getTime());
-                    availableTimesListUserClassArrayList.add(availableTimesListUserClass);
-                }
-                //Arrayadapters
-                ArrayAdapter<String> countieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countieslist);
-                ArrayAdapter<String> citieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, citieslist);
-                ArrayAdapter<String> clinicslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, clinicslist);
+                //Creating the dropdown menu's from database
+                DatabaseReference clinicsRef = database.getReference("Kliniker");
+                clinicsRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
+                            all_clinicsClass.add(dataSnapshot1.getValue(ClinicsClass.class));
+                        }
+
+                        //add counties to dropdown
+                        for(ClinicsClass clinicsClass : all_clinicsClass){
+                            if(!countieslist.contains(clinicsClass.getCounty()))
+                                countieslist.add(clinicsClass.getCounty());
+                        }
+                        ArrayAdapter<String> countieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countieslist);
+                        county_dropdown.setAdapter(countieslistadapter);
+                        county_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                String county_selected = (String) adapterView.getItemAtPosition(i);
+
+                                //add cities to dropdown
+                                citieslist.clear();
+                                for(ClinicsClass clinicsClass : all_clinicsClass){
+                                    if(clinicsClass.getCounty().equals(county_selected) && !citieslist.contains(clinicsClass.getCity()))
+                                        citieslist.add(clinicsClass.getCity());
+                                }
+                                ArrayAdapter<String> citieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, citieslist);
+                                city_dropdown.setAdapter(citieslistadapter);
+                                city_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                        String citiy_selected = (String) adapterView.getItemAtPosition(i);
+
+                                        //add clinics to dropdown
+                                        clinicslist.clear();
+                                        for(ClinicsClass clinicsClass : all_clinicsClass){
+                                            if(clinicsClass.getCity().equals(citiy_selected))
+                                                clinicslist.add(clinicsClass.getClinic());
+                                        }
+                                        ArrayAdapter<String> clinicslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, clinicslist);
+                                        clinic_dropdown.setAdapter(clinicslistadapter);
+                                        clinic_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                            @Override
+                                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                                String clinic_selected = (String) adapterView.getItemAtPosition(i);
+
+                                                //add times for the clinic
+                                                availableTimes_clinic.clear();
+                                                for(AvailableTimesListUserClass temp : all_availableTimes){
+                                                    Log.i("!!!!", clinic_selected + " " + temp.getClinic());
+                                                    if(temp.getClinic().equals(clinic_selected)) {
+                                                        Log.i("!!!!", "adding" + temp.getTimestamp());
+                                                        availableTimes_clinic.add(temp);
+                                                    }
+                                                }
+                                                uppdateRadioButtons(radioGroup);
+                                            }
+                                            @Override
+                                            public void onNothingSelected(AdapterView<?> adapterView) { }
+                                        });
+                                    }
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> adapterView) { }
+                                });
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) { }
+                        });
+                    }
+                });
+
+                //vaccine dropdown
                 ArrayAdapter<String> vaccinelistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vaccinelist);
-                ArrayAdapter<Date> timeadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, datelist);
-
-                //Binding
-                Spinner county_dropdown = binding.dropdownCounty;
-                Spinner city_dropdown = binding.dropdownCity;
-                Spinner clinic_dropdown = binding.dropdownClinic;
-                Spinner vaccine_dropdown = binding.dropdownVaccine;
-                Button button = binding.button; //Boka knapp
-                RadioGroup radioGroup = binding.radGroup1;
-                CalendarView Kalender = binding.calendarView;
-                TextView error = binding.errormessage;
-                EditText text_allergies = (EditText) binding.editTextAllergies;
-                EditText text_medicines = (EditText) binding.editTextMedicine;
-                EditText text_comments = (EditText) binding.editTextComments;
-
-                //set adapters
                 vaccine_dropdown.setAdapter(vaccinelistadapter);
-                county_dropdown.setAdapter(countieslistadapter);
-                city_dropdown.setAdapter(citieslistadapter);
-                clinic_dropdown.setAdapter(clinicslistadapter);
 
-                SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
-                Activity activity = getActivity();
                 Kalender.setFirstDayOfWeek(2);
 
-
+                final long days22=1900800000;
                 userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -186,46 +209,24 @@ public class BookingFragment extends Fragment {
                         RegClass usergetearlist = dataSnapshot1.getValue(RegClass.class);
                         if (usergetearlist.getDosOne() != 0){
                             Log.d("Dos1wasnotnull","Dos1wasnotnull");
-                          Kalender.setMinDate(usergetearlist.getDosOne()+days22);
-                          long temp = usergetearlist.getDosOne()+days22;
+                            Kalender.setMinDate(usergetearlist.getDosOne()+days22);
+                            long temp = usergetearlist.getDosOne()+days22;
                             Log.d("Dos1wasnotnull",String.valueOf(temp));
                         }
                         else Kalender.setMinDate(Kalender.getDate());
                     }
                 });
 
-                //Todo:Limit choosable days from today only
-
-
-
-                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                         choosedYear = year; //sparar år
                         choosedDay = day; //Sparar månad
                         choosedMonth = month; //sparar dag
-                        Calendar date2 = Calendar.getInstance();
-                        date2.set(year,month,day);
-                        Toast.makeText(getActivity().getBaseContext(),sdf.format(date2.getTimeInMillis()),Toast.LENGTH_SHORT).show();
 
-                        //Set appointments only for today
-                        String currdate = sdf.format(date2.getTimeInMillis());
-                        radioGroup.removeAllViews();
-                        for (int i=0; i<availableTimesListUserClassArrayList.size(); i++){
-                            if (currdate.equals(sdf.format(availableTimesListUserClassArrayList.get(i).getTimestamp()))){
-                                RadioButton newRadioButton = new RadioButton(activity);
-                                newRadioButton.setText(sdfclock.format(availableTimesListUserClassArrayList.get(i).getTimestamp()));
-                                newRadioButton.setId(View.generateViewId());
-                                radioGroup.addView(newRadioButton);
-                            }
-
-
-                        }
+                        uppdateRadioButtons(radioGroup);
                     }
                 });
-
-
 
                 //button book appointment
                 button.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +273,7 @@ public class BookingFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
                                         //save booking to firebase
-                                        ConnectUserWithTime(booking,date,availableTimesListUserClassArrayList);
+                                        ConnectUserWithTime(booking,date,availableTimes_clinic);
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, null)
@@ -293,6 +294,33 @@ public class BookingFragment extends Fragment {
 
         });
 
+    }
+
+    //uppdates the radio buttons with the available times
+    private void uppdateRadioButtons(RadioGroup radioGroup){
+        Activity activity = getActivity();
+        Calendar date2 = Calendar.getInstance();
+        date2.set(choosedYear,choosedMonth,choosedDay);
+        Toast.makeText(getActivity().getBaseContext(),sdf.format(date2.getTimeInMillis()),Toast.LENGTH_SHORT).show();
+
+        //Set appointments only for today
+        String currdate = sdf.format(date2.getTimeInMillis());
+
+        Log.i("!!!!", "HELLO");
+        radioGroup.removeAllViews();
+
+        Collections.sort(availableTimes_clinic);
+
+        for(AvailableTimesListUserClass temp : availableTimes_clinic) {
+
+            Log.i("!!!!", currdate + " " + temp.getTimestamp());
+            if (currdate.equals(sdf.format(temp.getTimestamp()))) {
+                RadioButton newRadioButton = new RadioButton(activity);
+                newRadioButton.setText(sdfclock.format(temp.getTimestamp()));
+                newRadioButton.setId(View.generateViewId());
+                radioGroup.addView(newRadioButton);
+            }
+        }
     }
 
     private AvailableTimesListUserClass getNewAppointment(){
@@ -379,10 +407,7 @@ public class BookingFragment extends Fragment {
                     myRef.removeValue();
                     myRef.setValue(regClass);
                 }
-
             }
-
         });
-
     }
 }
