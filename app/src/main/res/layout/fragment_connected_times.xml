@@ -7,21 +7,141 @@
     tools:context=".HealthAdmin.ConnectedTimesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/listviewInConnectedTimes"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttoninConnectedTimes"></ListView>
 
-    <Button
-        android:id="@+id/buttoninConnectedTimes"
+    <TextView
+        android:id="@+id/textViewValidatePersinput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:paddingHorizontal="16sp"
+        android:paddingTop="16sp"
+        android:text=""
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/textViewValidatePersonnummer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidateNameinput" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16sp"
+        android:paddingVertical="16sp"
+        android:text="Kontrollera validitet av pass"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16sp"
+        android:textSize="16sp"
+        android:paddingHorizontal="16sp"
+        android:text="Id att validera: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/space"></TextView>
+
+    <EditText
+        android:id="@+id/editTextIDtoVailidate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="16sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/space"></EditText>
+
+    <androidx.legacy.widget.Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="10sp"
+
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"></androidx.legacy.widget.Space>
+
+    <ImageView
+        android:id="@+id/imageView_error"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_baseline_error_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextIDtoVailidate" />
+
+    <TextView
+        android:id="@+id/textViewValidateName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingHorizontal="16sp"
+        android:paddingTop="16sp"
+        android:text="Namn: "
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonValidateID"></TextView>
+
+    <TextView
+        android:id="@+id/textViewValidatePersonnummer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16sp"
+        android:paddingTop="16sp"
+        android:visibility="gone"
+        android:text="Personnummer: "
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidateName"></TextView>
+
+    <TextView
+        android:id="@+id/textViewValidateNameinput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16sp"
+        android:paddingTop="16sp"
+        android:visibility="gone"
+        android:text="gfdsgdfs"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewValidateName"
+        app:layout_constraintStart_toEndOf="@+id/textViewValidatePersonnummer" />
+
+    <ImageView
+        android:id="@+id/imageViewCheckmark"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_baseline_check_circle_outline_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidatePersinput" />
+
+    <Button
+        android:id="@+id/buttonValidateID"
+        android:layout_width="0dp"
+        android:layout_marginRight="16sp"
+        android:layout_height="wrap_content"
+        android:text="Validera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textviewComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16sp"
+        android:text=""
+        android:textStyle="bold"
+        android:paddingTop="16sp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidatePersinput" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

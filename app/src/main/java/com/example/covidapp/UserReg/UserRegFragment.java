@@ -206,6 +206,7 @@ public class UserRegFragment extends Fragment {
                     String TAG = "Registartion";
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
+                        long longg = 0;
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         RegClass regClass = new RegClass();
@@ -217,6 +218,8 @@ public class UserRegFragment extends Fragment {
                         regClass.setLastname(lastname);
                         regClass.setUserID(user.getUid());
                         regClass.setAdmin(admin);
+                        regClass.setDosTwo(longg);
+                        regClass.setDosOne(longg);
                         DatabaseReference myRef = database.getReference("User").child(user.getUid());
                         myRef.setValue(regClass);
                         Toast.makeText(getActivity().getBaseContext(), "Successfully registered!",Toast.LENGTH_LONG).show();

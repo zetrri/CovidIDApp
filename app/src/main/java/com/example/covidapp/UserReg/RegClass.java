@@ -9,9 +9,11 @@ public class RegClass {
     String Phonenr;
     String UserID;
     Boolean admin;
+    long dosOne;
+    long dosTwo;
 
     public RegClass(){}
-    public RegClass(String mail, String firstname, String lastname, String adress, String persnr, String phonenr, String userID, Boolean isAdmin) {
+    public RegClass(String mail, String firstname, String lastname, String adress, String persnr, String phonenr, String userID, Boolean isAdmin,long dos1input, long dos2input) {
         Mail = mail;
         Firstname = firstname;
         Lastname = lastname;
@@ -20,6 +22,24 @@ public class RegClass {
         Phonenr = phonenr;
         UserID = userID;
         admin = isAdmin;
+        this.dosOne = dos1input;
+        this.dosTwo = dos2input;
+    }
+
+    public long getDosOne() {
+        return dosOne;
+    }
+
+    public void setDosOne(long dos1input) {
+        this.dosOne = dos1input;
+    }
+
+    public long getDosTwo() {
+        return dosTwo;
+    }
+
+    public void setDosTwo(long dos2input) {
+        this.dosTwo = dos2input;
     }
 
     public Boolean getAdmin() {
