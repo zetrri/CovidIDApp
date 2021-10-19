@@ -14,15 +14,6 @@ public class AvailableTimesListUserClass implements Comparable<AvailableTimesLis
     String medication;
     String comments;
     String vaccine;
-
-    public Boolean getApproved() {
-        return isApproved;
-    }
-
-    public void setApproved(Boolean approved) {
-        isApproved = approved;
-    }
-
     Boolean isApproved;
 
     public AvailableTimesListUserClass(){}
@@ -127,6 +118,14 @@ public class AvailableTimesListUserClass implements Comparable<AvailableTimesLis
 
     public void setClinic(String clinic) {
         this.clinic = clinic;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override
