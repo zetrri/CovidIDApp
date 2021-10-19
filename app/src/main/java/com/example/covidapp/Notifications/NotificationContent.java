@@ -33,7 +33,7 @@ public class NotificationContent {
      */
     public static final Map<String, NotificationClass> ITEM_MAP = new HashMap<String, NotificationClass>();
 
-    private static final int COUNT = 1;
+    private static final int COUNT = 5;
     private int counter = 0;
 
     static {
