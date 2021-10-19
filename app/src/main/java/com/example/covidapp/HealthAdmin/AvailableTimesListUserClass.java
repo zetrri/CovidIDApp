@@ -1,10 +1,7 @@
+package com.example.covidapp.HealthAdmin;
+import java.util.Comparator;
 
-
-        package com.example.covidapp.HealthAdmin;
-
-        import java.util.Calendar;
-
-public class AvailableTimesListUserClass {
+public class AvailableTimesListUserClass implements Comparable<AvailableTimesListUserClass> {
     String city;
     String county;
     String clinic;
@@ -134,5 +131,10 @@ public class AvailableTimesListUserClass {
     @Override
     public String toString(){
         return getTimestamp().toString();
+    }
+
+    @Override
+    public int compareTo(AvailableTimesListUserClass availableTimesListUserClass) {
+        return timestamp.compareTo(availableTimesListUserClass.timestamp);
     }
 }
