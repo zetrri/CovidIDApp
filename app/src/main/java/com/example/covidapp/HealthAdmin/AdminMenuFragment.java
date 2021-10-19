@@ -87,7 +87,7 @@ public class AdminMenuFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        LinearLayout eCatalog = binding.Catalog;
+        LinearLayout eCatalog = binding.Catalog;
         LinearLayout eDashboard = binding.Dashboard;
 //        LinearLayout eSecDose = binding.SecDose;
         LinearLayout eQuestionnaire = binding.Questionnaire;
@@ -106,12 +106,11 @@ public class AdminMenuFragment extends Fragment {
 
         //Listeners, replace activity when implemented.
 
-       /*eCatalog.setOnClickListener(new View.OnClickListener() {
+       eCatalog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View view) {
-               Intent intent = new Intent(getBaseContext(), ReplaceWithActivity.class);
-               startActivity(intent);
+               Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_admin_catalog);
            }
-       });*/
+       });
         eDashboard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_admin_appointments);

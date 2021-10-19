@@ -379,9 +379,7 @@ public class BookingFragment extends Fragment {
                     myRef.removeValue();
                     myRef.setValue(regClass);
                 }
-
             }
-
         });
 
     }
