@@ -70,5 +70,6 @@
     <string name="faq_mabattre">"It is common to need to recover from an infection. This also applies to covid-19. How you need to recover depends on how you feel. Here you get advice on what you can do yourself and when you may need to seek care. Continuing to have symptoms after covid-19 can be called having postcovid."</string>
     <string name="faq_button_mabattre_swe">"Så kan jag må bättre efter covid_19"</string>
     <string name="faq_button_mabattre">"So can i feel better after covid-19</string>
+    <string name="no_new_notifications">No new notifications</string>
 
 </resources>

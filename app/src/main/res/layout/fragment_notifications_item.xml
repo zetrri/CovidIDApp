@@ -43,7 +43,7 @@
     android:background="@drawable/border" >
 
     <ImageView
-        android:id="@+id/sender"
+        android:id="@+id/sender_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_margin="@dimen/text_margin"
@@ -54,28 +54,93 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/sender"
+        android:text="Admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="48dp"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:paddingStart="16dp"
+        android:textSize="14sp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:layout_constraintStart_toEndOf="@id/sender_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constrainedWidth="true"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="12dp"
         android:text="You have been scheduled to recieve your second dose of the Pfizer vaccine on 2021-11-15 10:30 at Adolfbergs Vårdcentral"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="14sp"
+        android:gravity="start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/sender"
+        app:layout_constraintStart_toEndOf="@id/sender_icon"
         app:layout_constraintTop_toBottomOf="@+id/notification_date"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0" />
+
+<!--    android:paddingHorizontal="48dp"-->
+
 
     <TextView
         android:id="@+id/notification_date"
         android:text="2021-10-12 10:05"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="12dp"
+        android:paddingEnd="16dp"
         android:textSize="14sp"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:minHeight="86dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:background="@drawable/border" >-->
+
+
+<!--        <ImageView-->
+<!--                android:id="@+id/sender"-->
+<!--                android:layout_width="32dp"-->
+<!--                android:layout_height="32dp"-->
+<!--                android:layout_margin="@dimen/text_margin"-->
+
+<!--                android:src="@drawable/user"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.5"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/content"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constrainedWidth="true"-->
+<!--        android:text="You have been scheduled to recieve your second dose of the Pfizer vaccine on 2021-11-15 10:30 at Adolfbergs Vårdcentral"-->
+<!--        android:textAppearance="?attr/textAppearanceListItem"-->
+<!--        android:textSize="14sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/sender"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.5" />-->
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

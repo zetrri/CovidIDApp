@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.covidapp.R;
 import com.example.covidapp.Notifications.placeholder.PlaceholderContent;
+import com.example.covidapp.Notifications.NotificationContent;
 
 /**
  * A fragment representing a list of Items.
@@ -65,7 +66,7 @@ public class NotificationsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(NotificationContent.ITEMS));
         }
         return view;
     }
