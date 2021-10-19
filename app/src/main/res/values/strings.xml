@@ -71,5 +71,7 @@
     <string name="faq_button_mabattre_swe">"Så kan jag må bättre efter covid_19"</string>
     <string name="faq_button_mabattre">"So can i feel better after covid-19</string>
     <string name="no_new_notifications">No new notifications</string>
+    <string name="second_dose_text">Du kan nu boka en tid för din andra dos av vaccin.</string>
+    <string name="system">System</string>
 
 </resources>
