@@ -169,11 +169,8 @@ public class MyPageFragment extends Fragment {
                         if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                             Log.d("FoundOne",availableTimesListUserClass.getId());
                             availableTimesListUserClasses.add(availableTimesListUserClass);
-
                         }
-//
                     }
-
                     //Calendar and formatting helpers
                     Calendar date = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -248,7 +245,6 @@ public class MyPageFragment extends Fragment {
 
                             }
                         });
-
                         Button buttonOmboka = new Button(getActivity());
                         buttonOmboka.setText("Omboka");
                         linear_layout2.addView(buttonOmboka);
@@ -265,7 +261,6 @@ public class MyPageFragment extends Fragment {
                                                 deleteCard(test_text.getText().toString());
                                                 View view2 = getView();
                                                 Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
-
 
                                                 // TODO remove information from database
                                             }
@@ -307,6 +302,7 @@ public class MyPageFragment extends Fragment {
         item.setComments("");
         item.setVaccine("");
         item.setMedication("");
+        item.setApproved(false);
         ref.child(item.getId()).setValue(item);
     }
 

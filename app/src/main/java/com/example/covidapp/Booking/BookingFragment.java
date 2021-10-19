@@ -518,6 +518,16 @@ public class BookingFragment extends Fragment {
         else{
             String UID = currentUser.getUid();
             Userclass.setBookedBy(UID);
+            if(booking.allergy.equals("") && booking.meds.equals("") && booking.message.equals(""))
+            {
+                //Approved if nothing is entered.
+                Userclass.setApproved(true);
+            }
+            else
+            {
+                Userclass.setApproved(false);
+            }
+
             Userclass.setAvailable(false);
             Userclass.setId(UUID.randomUUID().toString());
             DatabaseReference myRef = database.getReference("BookedTimes").child(Userclass.getId());
