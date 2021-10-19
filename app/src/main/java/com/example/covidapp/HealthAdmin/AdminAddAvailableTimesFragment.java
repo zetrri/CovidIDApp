@@ -2,6 +2,7 @@ package com.example.covidapp.HealthAdmin;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.widget.TimePicker;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentAdminAddAvailableTimesBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,8 +27,11 @@ import android.widget.Toast;
 import com.example.covidapp.Booking.Booking;
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentMyPageBinding;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -119,12 +123,40 @@ public class MyPageFragment extends Fragment {
         LinearLayout passport = binding.passport;
         LinearLayout bookappointment = binding.bookappointment;
         LinearLayout notifications = binding.notifications;
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+        DatabaseReference userref = database.getReference("User").child(firebaseAuth1.getUid());
+
+
+
         passport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Intent intent = new Intent(getActivity().getBaseContext(), PassportMainActivity.class);
 //                startActivity(intent);
-                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
+                userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        DataSnapshot dataSnapshot1= task.getResult();
+                        RegClass tempregclass = dataSnapshot1.getValue(RegClass.class);
+                        final long dos2 = tempregclass.getDosTwo();
+                        final long dos1 = tempregclass.getDosTwo();
+                        if (dos2!=0 && dos1!=0 )Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
+                        else {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Vaccinpass")
+                                    .setMessage("Du har inte uppfyllt kraven för att få ett vaccinpass än")
+                                    .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                });
+
             }
         });
         bookappointment.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +164,54 @@ public class MyPageFragment extends Fragment {
             public void onClick(View view) {
 //                Intent intent = new Intent(getActivity().getBaseContext(), BookingMainActivity.class);
 //                startActivity(intent);
-                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+//                Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+                userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        DataSnapshot dataSnapshot1= task.getResult();
+                        RegClass tempregclass = dataSnapshot1.getValue(RegClass.class);
+                        String temp = tempregclass.getPersnr();
+                        final String temp1 = temp.substring(0,8);
+                        final long dos2 = tempregclass.getDosTwo();
+
+                        DatabaseReference reference = database.getReference("Minbookingage");
+                        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                DataSnapshot dataSnapshot2= task.getResult();
+                                long minage = (dataSnapshot2.getValue(long.class));
+
+                                if(dos2!=0){
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("Boka tid")
+                                            .setMessage("Du har redan tagit eller bokat tid för dos 1 och dos 2")
+                                            .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .show();
+
+                                }else if (Long.parseLong(temp1)<minage){
+                                    Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
+                                    Log.d("testtest","fårboka");
+                                }else {Log.d("testtest","fårejboka");
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("Boka tid")
+                                            .setMessage("Din åldersgrupp får inte boka tid för vaccin ännu")
+                                            .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .show();}
+                            }
+                        });
+
+                    }
+
+                });
+
             }
         });
 
@@ -147,14 +226,17 @@ public class MyPageFragment extends Fragment {
 
         LinearLayout container = binding.containerbookings;
 
+
+
+
         //Getting bookings from firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+
         DatabaseReference ref = database.getReference("BookedTimes");
         ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+                //FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
                 //if user not logged in
                 if ( firebaseAuth1.getCurrentUser() == null){
                     Navigation.findNavController(view).navigate(R.id.nav_login);
@@ -237,7 +319,6 @@ public class MyPageFragment extends Fragment {
                                                 gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                 deleteCard(test_text.getText().toString());
 
-                                                // TODO remove information from database
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -262,7 +343,7 @@ public class MyPageFragment extends Fragment {
                                                 View view2 = getView();
                                                 Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
 
-                                                // TODO remove information from database
+
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)

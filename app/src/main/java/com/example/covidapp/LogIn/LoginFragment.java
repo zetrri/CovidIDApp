@@ -216,9 +216,10 @@ public class LoginFragment extends Fragment {
         if(currentUser != null){
             String UID = currentUser.getUid();
                     DatabaseReference myRef = database.getReference("User").child(UID);
-                    myRef.addValueEventListener(new ValueEventListener() {
+                    myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            DataSnapshot snapshot= task.getResult();
                             RegClass regClass = snapshot.getValue(RegClass.class);
                             if (regClass.getAdmin()==false){
                                 Log.d("Admin","not an admin");
@@ -232,11 +233,6 @@ public class LoginFragment extends Fragment {
                                 ((MainActivity)getActivity()).onAdminLogin();
                                 Navigation.findNavController(view2).navigate(R.id.nav_admin_menu);
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
                 }

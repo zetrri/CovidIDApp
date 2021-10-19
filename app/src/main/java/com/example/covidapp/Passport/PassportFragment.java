@@ -21,6 +21,8 @@ import com.example.covidapp.MainActivity;
 import com.example.covidapp.R;
 import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentPassportBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -94,6 +96,8 @@ public class PassportFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView text_forNamn = binding.textViewName;
         TextView text_personNr = binding.textViewPersonNr;
+        TextView textViewID = binding.textViewID;
+        TextView textViewDos2 = binding.textViewDose2;
         ImageView qr_image = binding.imageViewQrCode;
 
         Point p = new Point();
@@ -107,10 +111,13 @@ public class PassportFragment extends Fragment {
         if(currentUser != null){
             String UID = currentUser.getUid();
             DatabaseReference myRef = database.getReference("User").child(UID);
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    RegClass regClass = snapshot.getValue(RegClass.class);
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    DataSnapshot dataSnapshot1= task.getResult();
+
+                        //getting all appointments booked by the user
+                        RegClass regClass = dataSnapshot1.getValue(RegClass.class);
                     QRGEncoder qrgEncoder = new QRGEncoder(regClass.getUserID(), null, QRGContents.Type.TEXT, (300 * 3 / 4));
                     try {
                         Bitmap qr_bitmap = qrgEncoder.encodeAsBitmap();
@@ -118,24 +125,19 @@ public class PassportFragment extends Fragment {
                     } catch (Exception e){
                         Log.e("Error", e.toString());
                     }
+                        if (regClass.getUserID().equals(UID)){
+                            Log.d("BOOKEDBY",regClass.getFirstname().toString());
 
+                            text_personNr.setText("Personnummer: " + regClass.getPersnr());
+                            text_forNamn.setText("Namn: " + regClass.getFirstname() + " " + regClass.getLastname());
+                            textViewID.setText("ID: "+regClass.getUserID());
+                            textViewDos2.setText("ID: "+regClass.getDosTwo());
 
-                    //TEMP manuel inläggning av data
+                        }
+                    }
 
-                    String text = "Personnummer: " + regClass.getPersnr();
-                    text_personNr.setText(text);
-
-
-                    text = "Namn: " + regClass.getFirstname() + " " + regClass.getLastname();
-                    text_forNamn.setText(text);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
             });
+
         }
 
     }
