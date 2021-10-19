@@ -6,9 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Passport.PassportFragment">
-    android:padding="20dp">
 
     <TextView
+        android:id="@+id/textViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16sp"
+        android:text="ID: "
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDose2" />
+
+    <TextView
+        android:id="@+id/textViewDose2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16sp"
+        android:text="Dos 2 datum: "
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <TextView
+
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,15 +53,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
+        android:layout_marginHorizontal="16sp"
         android:id="@+id/textViewPersonNr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Person nummer: "
+        android:text="Personnummer: "
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@+id/imageViewQrCode"
         tools:layout_editor_absoluteX="20dp" />
 
     <TextView
+        android:layout_marginHorizontal="16sp"
         android:id="@+id/textViewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

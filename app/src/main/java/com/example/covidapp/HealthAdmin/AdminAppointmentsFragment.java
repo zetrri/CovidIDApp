@@ -154,7 +154,10 @@ public class AdminAppointmentsFragment extends Fragment {
                             if (!countieslist.contains(availableTimesListUserClass.getCounty())) countieslist.add(availableTimesListUserClass.getCounty());
                             if (!citieslist.contains(availableTimesListUserClass.getCity())) citieslist.add(availableTimesListUserClass.getCity());
                             if (!clinicslist.contains(availableTimesListUserClass.getClinic())) clinicslist.add(availableTimesListUserClass.getClinic());
-                            availableTimesListUserClasses.add(availableTimesListUserClass);
+                            if (!availableTimesListUserClass.getApproved().equals(false)) {
+                                Log.d("FoundOne", availableTimesListUserClass.getId());
+                                availableTimesListUserClasses.add(availableTimesListUserClass);
+                            }
                         }
                         //Arrayadapters
                         ArrayAdapter<String> countieslistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countieslist);
