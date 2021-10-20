@@ -121,13 +121,12 @@ public class BookingFragment extends Fragment {
         FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userref = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        availableTimesref.addListenerForSingleValueEvent(new ValueEventListener() {
+        availableTimesref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Getting available times data from database
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
                     all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
-
+                }
                 //Creating the dropdown menu's from database
                 DatabaseReference clinicsRef = database.getReference("Kliniker");
                 clinicsRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -293,15 +292,10 @@ public class BookingFragment extends Fragment {
                     }
                 });
 
+
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-
-
         });
+
 
     }
 
