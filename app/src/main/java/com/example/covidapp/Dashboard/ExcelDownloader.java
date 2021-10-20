@@ -112,11 +112,14 @@ public class ExcelDownloader implements Serializable {
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         downLoadId1=downloadManager.enqueue(request);
 
+/*
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int week = calendar.get(Calendar.WEEK_OF_YEAR) - 2;
+        int week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
         Log.i("ExcelDownloader", "Week = " + week);
         String covid_leveranser = "https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v" + Integer.toString(week-2) +"-leveranser-av-covid-vaccin-till-och-med-vecka-" + Integer.toString(week) + ".xlsx";
         Log.i("ExcelDownloader", covid_leveranser);
+         */
+        String covid_leveranser = "https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx";
 
         request=new DownloadManager.Request(Uri.parse(covid_leveranser));
         request.setTitle("Voyager2")
