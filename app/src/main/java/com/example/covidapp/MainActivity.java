@@ -13,14 +13,20 @@ import android.view.View;
 import android.view.Menu;
 
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.LogIn.LoginFragment;
+import com.example.covidapp.UserReg.RegClass;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,8 +36,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.covidapp.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Boolean isLoggedIn = false;
@@ -39,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Changes the drawer menu and sets isLoggedIn to false
     public void onUserLogin() {
+        user_loggedin();
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
@@ -101,8 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Changes drawer menu items shown for admin login
     public void onAdminLogin() {
+        user_loggedin();
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
         binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(true);
+        //temporary
+        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
         isLoggedIn = true;
@@ -123,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Changes the drawer menu items
     public void onLogout() {
+        user_loggedin();
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga in");
         binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(false);
         binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(false);
@@ -133,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main_activity3, menu);
         return true;
     }
@@ -178,5 +195,47 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onStop();
     }
+    protected void user_loggedin()
+    {
+        //set username
+        NavigationView navigationView1 = (NavigationView)findViewById(R.id.nav_view);
+        View headerView = navigationView1.getHeaderView(0);
+        TextView navUsername = (TextView)headerView.findViewById(R.id.user_id);
+        navUsername.setText("");
+        //set email
+        TextView navEmail = (TextView) headerView.findViewById(R.id.user_Email);
+        navEmail.setText("");
+        //getting user id/email from firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("User");
+        ArrayList<RegClass> regclass = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
+            FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (firebaseAuth1.getCurrentUser() == null) {
+                    return;
+                }
+                else{
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        RegClass regclasses = dataSnapshot1.getValue(RegClass.class);
+                        if (regclasses.getUserID().equals(firebaseAuth1.getUid())) {
+                            String UID = regclasses.getFirstname() + " " + regclasses.getLastname();
+
+                            navUsername.setText(UID);
+                        }
+                    }
+                    String EMAIL = firebaseAuth1.getCurrentUser().getEmail();
+
+                    navEmail.setText(EMAIL);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }

@@ -80,7 +80,6 @@ public class QuestionnaireResponseFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +192,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                         //date_time.setText(String.valueOf(date1.getDay())+"/"+String.valueOf(date1.getMonth())+"-"+date1.getYear());
                         date_time.setText(sdf.format(date1) + " " + sdfclock.format(date1));
                         date_time.setTextSize(20);
-                        date_time.setBackgroundColor(Color.parseColor("#228B22"));
+                        date_time.setBackgroundColor(Color.parseColor("#FF1A1A"));
                         date_time.setTextColor(Color.WHITE);
                         linear_layout1.addView(date_time);
 
@@ -294,7 +293,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                         linear_layout2.setGravity(Gravity.RIGHT);
 
                         Button buttonInformation = new Button(getActivity());
-                        buttonInformation.setText("Mer info");
+                        buttonInformation.setText("Värdera");
                         linear_layout2.addView(buttonInformation);
                         buttonInformation.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -303,23 +302,27 @@ public class QuestionnaireResponseFragment extends Fragment {
                                         .setTitle("Boknings information")
                                         //information retrived from firebase
                                         .setMessage("Datum: " + date_time.getText() + "\n"
-                                             //   + county_text.getText() + "\n"
-                                             //   + city_text.getText() + "\n"
+                                                //   + county_text.getText() + "\n"
+                                                //   + city_text.getText() + "\n"
                                                 + clinic_text.getText() + "\n"
-                                             //   + FirstName_text.getText() + "\n"
-                                             //   + LastName_text.getText() + "\n"
+                                                + FirstName_text.getText() + "\n"
+                                                + LastName_text.getText() + "\n"
                                                 + persnr_text.getText() + "\n"
-                                             //   + nummer_text.getText() + "\n"
+                                                + nummer_text.getText() + "\n"
                                                 + medication_text.getText() + "\n"
                                                 + allergies_text.getText() + "\n"
                                                 + comments_text.getText()).setPositiveButton("Godkänn", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        new_card.removeAllViews();
                                         approve_time(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                     }
                                 }).setNegativeButton("Neka", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        new_card.removeAllViews();
+                                        gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                        deleteCard(test_text.getText().toString());
 
                                     }
                                 }).setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
@@ -345,6 +348,12 @@ public class QuestionnaireResponseFragment extends Fragment {
         });
 
     }
+    private void deleteCard(String id)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("BookedTimes");
+        ref.child(id).removeValue();
+    }
     private void approve_time(AvailableTimesListUserClass item)
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -353,5 +362,17 @@ public class QuestionnaireResponseFragment extends Fragment {
         ref.child(item.getId()).setValue(item);
 
     }
-
+    private void gettimeback(AvailableTimesListUserClass item)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference("AvailableTimes");
+        item.setAvailable(true);
+        item.setBookedBy("");
+        item.setAllergies("");
+        item.setComments("");
+        item.setVaccine("");
+        item.setMedication("");
+        item.setApproved(false);
+        ref.child(item.getId()).setValue(item);
+    }
 }
