@@ -31,6 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
@@ -104,7 +106,7 @@ public class PassportFragment extends Fragment {
         WindowManager window_manager = (WindowManager) getActivity().getSystemService(getContext().WINDOW_SERVICE);
         Display display = window_manager.getDefaultDisplay();
         display.getSize(p);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -131,7 +133,7 @@ public class PassportFragment extends Fragment {
                             text_personNr.setText("Personnummer: " + regClass.getPersnr());
                             text_forNamn.setText("Namn: " + regClass.getFirstname() + " " + regClass.getLastname());
                             textViewID.setText("ID: "+regClass.getUserID());
-                            textViewDos2.setText("ID: "+regClass.getDosTwo());
+                            textViewDos2.setText("Datum dos 2: "+sdf.format(regClass.getDosTwo()));
 
                         }
                     }

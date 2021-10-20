@@ -88,7 +88,7 @@ public class BookingFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO Se till att endast tider den dagen visas, inte tider för alla dagar
+
         ArrayList<String> countieslist = new ArrayList<>();
         ArrayList<String> citieslist = new ArrayList<>();
         ArrayList<String> clinicslist = new ArrayList<>();
@@ -97,6 +97,7 @@ public class BookingFragment extends Fragment {
         ArrayList<Date> datelist = new ArrayList<>();
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
+
 
         //Binding
         Spinner county_dropdown = binding.dropdownCounty;
@@ -201,6 +202,7 @@ public class BookingFragment extends Fragment {
 
                 Kalender.setFirstDayOfWeek(2);
 
+
                 final long days22=1900800000;
                 userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -216,6 +218,9 @@ public class BookingFragment extends Fragment {
                         else Kalender.setMinDate(Kalender.getDate());
                     }
                 });
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -390,6 +395,7 @@ public class BookingFragment extends Fragment {
             myRef3.removeValue();
 
         }
+        // Todo: HÄR HAR VI ÄNDRAT SABINA NEDANFÖR
         DatabaseReference myRef = database.getReference("User").child(currentUser.getUid());
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -409,5 +415,6 @@ public class BookingFragment extends Fragment {
                 }
             }
         });
+
     }
 }
