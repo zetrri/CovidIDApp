@@ -1,13 +1,16 @@
 package com.example.covidapp.HealthAdmin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentAdminMenuBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,8 +39,15 @@ public class AdminMenuFragment extends Fragment {
     private FragmentAdminMenuBinding binding;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
+    private DatabaseReference pfizerRef;
+    private DatabaseReference modernaRef;
+
     private TextView registered_users;
+    private TextView registerd_pfizers;
+    private TextView registered_moderna;
     private int countUsers = 0;
+    private long countPfizer = 0;
+    private long countModerna = 0;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,11 +102,16 @@ public class AdminMenuFragment extends Fragment {
         LinearLayout eDashboard = binding.Dashboard;
         LinearLayout eQuestionnaire = binding.Questionnaire;
 //        LinearLayout eTimeLine = binding.TimeLine;
+        //använd denna leon för pass
+//        LinearLayout ePass = binding.verificationPass;
         firebaseAuth = FirebaseAuth.getInstance();
         //making a reference to the child node "User"
         usersRef = FirebaseDatabase.getInstance().getReference().child("User");
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         registered_users = binding.eUserReg;
+        registerd_pfizers = binding.ePfizer;
+        registered_moderna = binding.eModerna;
 
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
@@ -122,6 +139,12 @@ public class AdminMenuFragment extends Fragment {
                 Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
                 startActivity(intent);
             }
+        });
+        ePass.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_questionnaire_response);
+            }
         });*/
 
         //Total registered users
@@ -144,9 +167,54 @@ public class AdminMenuFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+        });
+
+        pfizerRef = FirebaseDatabase.getInstance().getReference().child("Pfizer");
+        pfizerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                countPfizer = (long) snapshot.getValue();
+                if (countPfizer != 0){
+                    registerd_pfizers.setText("Total Pfizers doser kvar: " + Long.toString(countPfizer)); // displays amount of remaining attempts
+                    registerd_pfizers.setTextColor(Color.parseColor("#228B22"));
+                }
+                else{
+                    registerd_pfizers.setText("0 Pfizers doses available.");
+                    registerd_pfizers.setTextColor(Color.parseColor("#ba160c"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+        modernaRef = FirebaseDatabase.getInstance().getReference().child("Moderna");
+        modernaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                countModerna = (long) snapshot.getValue();
+                if (countModerna != 0){
+
+                    countModerna = (long) snapshot.getValue();
+                    registered_moderna.setText("Total Moderna doser kvar: " + Long.toString(countModerna)); // displays amount of remaining attempts
+                    registered_moderna.setTextColor(Color.parseColor("#228B22"));
+                }
+                else{
+                    registered_moderna.setText("0 Moderna doser kvar!");
+                    registered_moderna.setTextColor(Color.parseColor("#ba160c"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
         });
 
     }
-
 
 }

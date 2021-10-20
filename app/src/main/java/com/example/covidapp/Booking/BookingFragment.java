@@ -3,6 +3,7 @@ package com.example.covidapp.Booking;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,9 @@ public class BookingFragment extends Fragment {
     private ArrayList<AvailableTimesListUserClass> availableTimes_clinic = new ArrayList<>();
     private SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
     private SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+
+    private DatabaseReference ref;
+    private long countVaccine;
 
     public BookingFragment() {
         // Required empty public constructor
@@ -194,6 +198,35 @@ public class BookingFragment extends Fragment {
                         });
                     }
                 });
+                //gets current amount of vaccines
+                /*
+                pfizerRef = FirebaseDatabase.getInstance().getReference().child("Moderna");
+                pfizerRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        countPfizer = (long) snapshot.getValue();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });
+
+                modernaRef = FirebaseDatabase.getInstance().getReference().child("Moderna");
+                modernaRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        countModerna = (long) snapshot.getValue();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });*/
 
                 //vaccine dropdown
                 ArrayAdapter<String> vaccinelistadapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vaccinelist);
@@ -228,6 +261,7 @@ public class BookingFragment extends Fragment {
                     }
                 });
 
+                Log.d("Selected",booking.city);
                 //button book appointment
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -262,21 +296,55 @@ public class BookingFragment extends Fragment {
                         booking.county = county_dropdown.getSelectedItem().toString();
                         booking.vaccine = vaccine_dropdown.getSelectedItem().toString();
 
-                        Log.d("Selected",booking.city);
 
+                        ref = FirebaseDatabase.getInstance().getReference().child(booking.vaccine);
+
+                        ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                countVaccine = (long) snapshot.getValue();
+                                Log.d("Vaccine amount", String.valueOf(countVaccine));
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+
+                        });
                         //Combine all info and put in alert window
+
                         String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
                         new AlertDialog.Builder(getActivity())
+
                                 .setTitle("Din bokning")
                                 .setMessage(information+"\n\nVill du bekräfta?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
-                                        //save booking to firebase
-                                        ConnectUserWithTime(booking,date,availableTimes_clinic);
+                                        if(countVaccine == 0){
+                                            new AlertDialog.Builder(getActivity())
+                                                    .setTitle("Ett problem uppstod!")
+                                                    .setMessage(booking.vaccine + " :är just nu slut" + "\nBoka annat vaccin eller va vänlig och vänta.")
+                                                    .setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    }).show();
+                                        }
+                                        else{
+                                            Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
+                                            //save booking to firebase
+                                            ConnectUserWithTime(booking,date,availableTimes_clinic);
+                                        }
                                     }
                                 })
-                                .setNegativeButton(android.R.string.no, null)
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                })
                                 .show();
 
                         //Create new class and import to database
@@ -306,14 +374,14 @@ public class BookingFragment extends Fragment {
         //Set appointments only for today
         String currdate = sdf.format(date2.getTimeInMillis());
 
-        Log.i("!!!!", "HELLO");
+        //Log.i("!!!!", "HELLO");
         radioGroup.removeAllViews();
 
         Collections.sort(availableTimes_clinic);
 
         for(AvailableTimesListUserClass temp : availableTimes_clinic) {
 
-            Log.i("!!!!", currdate + " " + temp.getTimestamp());
+            //Log.i("!!!!", currdate + " " + temp.getTimestamp());
             if (currdate.equals(sdf.format(temp.getTimestamp()))) {
                 RadioButton newRadioButton = new RadioButton(activity);
                 newRadioButton.setText(sdfclock.format(temp.getTimestamp()));
@@ -360,6 +428,7 @@ public class BookingFragment extends Fragment {
         Userclass.setClinic(booking.clinic);
         //Userclass.setTimestamp(date.getTimeInMillis());
         Userclass.setVaccine(booking.vaccine);
+
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
