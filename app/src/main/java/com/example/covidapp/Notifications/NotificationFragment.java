@@ -99,6 +99,7 @@ public class NotificationFragment extends Fragment {
         binding.notificationCard.setVisibility(View.INVISIBLE);
         binding.notificationTextview.setVisibility(View.VISIBLE);
 
+        //Checks if two weeks has passed since the first dose was administered
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference reference = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -108,11 +109,14 @@ public class NotificationFragment extends Fragment {
                 RegClass regClass = dataSnapshot1.getValue(RegClass.class);
                 regClass.getDosOne();
                 Calendar calendar = Calendar.getInstance();
-                long twoWeeksLater = regClass.getDosOne() + 1209600000; //- 1296000000;
-                if (twoWeeksLater <= calendar.getTimeInMillis() && regClass.getDosTwo() == 0) {
+                final long dos1 = regClass.getDosOne();
+                final long dos2 = regClass.getDosTwo();
+                final long twoWeeks = 1209600000;
+                final long currentTime = calendar.getTimeInMillis();
+                if (dos1 + twoWeeks <= currentTime && dos2 == 0) {
                     binding.notificationCard.setVisibility(View.VISIBLE);
                     binding.notificationTextview.setVisibility(View.INVISIBLE);
-                    calendar.setTimeInMillis(twoWeeksLater);
+                    calendar.setTimeInMillis(dos1 + twoWeeks);
                     Date date = calendar.getTime();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                     SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
