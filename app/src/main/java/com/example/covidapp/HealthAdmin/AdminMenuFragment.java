@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -101,9 +102,9 @@ public class AdminMenuFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayout eDashboard = binding.Dashboard;
         LinearLayout eQuestionnaire = binding.Questionnaire;
-//        LinearLayout eTimeLine = binding.TimeLine;
+        LinearLayout eTimeLine = binding.TimeLine;
         //använd denna leon för pass
-//        LinearLayout ePass = binding.verificationPass;
+        LinearLayout ePass = binding.verificationPass;
         firebaseAuth = FirebaseAuth.getInstance();
         //making a reference to the child node "User"
         usersRef = FirebaseDatabase.getInstance().getReference().child("User");
@@ -120,6 +121,7 @@ public class AdminMenuFragment extends Fragment {
 
         //Listeners, replace activity when implemented.
 
+
         eDashboard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_admin_appointments);
@@ -134,18 +136,17 @@ public class AdminMenuFragment extends Fragment {
             }
         });
 
-/*        eTimeLine.setOnClickListener(new View.OnClickListener() {
+        eTimeLine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ReplaceWithActivity..class);
-                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_admin_adminAgeGroup);
+                //HÄR SKA TIMELINE VARA
             }
         });
         ePass.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_questionnaire_response);
+                Navigation.findNavController(view).navigate(R.id.ConnectedTimesFragment);
             }
-        });*/
+        });
 
         //Total registered users
         usersRef.addValueEventListener(new ValueEventListener() {

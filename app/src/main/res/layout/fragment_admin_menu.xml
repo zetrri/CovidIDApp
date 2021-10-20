@@ -96,7 +96,7 @@
                     android:text="Pass validering" />
             </LinearLayout>
                  <LinearLayout
-                     android:id="@+id/schedule_vaccination"
+                     android:id="@+id/TimeLine"
                      android:layout_width="0dp"
                      android:layout_height="wrap_content"
                      android:layout_weight="0.33"
