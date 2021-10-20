@@ -42,13 +42,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.PrimitiveIterator;
 import java.util.UUID;
 
@@ -270,7 +274,7 @@ public class BookingFragment extends Fragment {
                         Log.d("Selected",booking.city);
 
                         //Combine all info and put in alert window
-                        String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
+                        String information = "Datum: " + choosedDay + "/" + (int)(choosedMonth+1) + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Din bokning")
                                 .setMessage(information+"\n\nVill du bekräfta?")
