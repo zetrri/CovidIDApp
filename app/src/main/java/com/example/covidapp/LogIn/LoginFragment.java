@@ -239,7 +239,6 @@ public class LoginFragment extends Fragment {
 
         }
 
-
     private boolean validate(String name, String password) //Admin method for checking if user & password matches
     {
         ProgressDialog.setMessage("Verification in progress . . . ");

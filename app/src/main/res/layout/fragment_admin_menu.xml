@@ -66,35 +66,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/Catalog"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true">
-
-                <ImageView
-                    android:id="@+id/imageView_catalog"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_injection_svgrepo_com" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Produktkatalog" />
-            </LinearLayout>
-
-        </LinearLayout>
-        <!-- Top menu2-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
                 android:id="@+id/schedule_vaccination"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -114,56 +85,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Schema planering för vaccination" />
+                    android:text="Produktkatalog" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/Second_dose_schedule"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true">
-
-                <ImageView
-                    android:id="@+id/imageView_second_dose"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_painkiller_pain_injection_injury_svgrepo_com" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Schema för andra dos" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/notifications1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true">
-
-                <ImageView
-                    android:id="@+id/imageView_catalog1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_injection_svgrepo_com" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Platshållare" />
-            </LinearLayout>
+        </LinearLayout>
+        <!-- Top menu2-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         </LinearLayout>
         <ScrollView
