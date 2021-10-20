@@ -43,13 +43,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.PrimitiveIterator;
 import java.util.UUID;
 
@@ -92,7 +96,7 @@ public class BookingFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO Se till att endast tider den dagen visas, inte tider för alla dagar
+
         ArrayList<String> countieslist = new ArrayList<>();
         ArrayList<String> citieslist = new ArrayList<>();
         ArrayList<String> clinicslist = new ArrayList<>();
@@ -101,6 +105,7 @@ public class BookingFragment extends Fragment {
         ArrayList<Date> datelist = new ArrayList<>();
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
+
 
         //Binding
         Spinner county_dropdown = binding.dropdownCounty;
@@ -120,13 +125,12 @@ public class BookingFragment extends Fragment {
         FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userref = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        availableTimesref.addListenerForSingleValueEvent(new ValueEventListener() {
+        availableTimesref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Getting available times data from database
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
                     all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
-
+                }
                 //Creating the dropdown menu's from database
                 DatabaseReference clinicsRef = database.getReference("Kliniker");
                 clinicsRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -234,6 +238,7 @@ public class BookingFragment extends Fragment {
 
                 Kalender.setFirstDayOfWeek(2);
 
+
                 final long days22=1900800000;
                 userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -249,6 +254,9 @@ public class BookingFragment extends Fragment {
                         else Kalender.setMinDate(Kalender.getDate());
                     }
                 });
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 
                 Kalender.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -314,7 +322,11 @@ public class BookingFragment extends Fragment {
                         });
                         //Combine all info and put in alert window
 
+
                         String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
+
+                        String information = "Datum: " + choosedDay + "/" + (int)(choosedMonth+1) + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
+
                         new AlertDialog.Builder(getActivity())
 
                                 .setTitle("Din bokning")
@@ -352,15 +364,10 @@ public class BookingFragment extends Fragment {
                     }
                 });
 
+
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-
-
         });
+
 
     }
 
@@ -459,6 +466,7 @@ public class BookingFragment extends Fragment {
             myRef3.removeValue();
 
         }
+        // Todo: HÄR HAR VI ÄNDRAT SABINA NEDANFÖR
         DatabaseReference myRef = database.getReference("User").child(currentUser.getUid());
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -478,5 +486,6 @@ public class BookingFragment extends Fragment {
                 }
             }
         });
+
     }
 }
