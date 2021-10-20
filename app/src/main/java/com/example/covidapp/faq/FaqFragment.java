@@ -1,5 +1,6 @@
 package com.example.covidapp.faq;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,45 +15,18 @@ import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentBookingBinding;
 import com.example.covidapp.databinding.FragmentFaqBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FaqFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FaqFragment extends Fragment {
-
     TextView TextVaccin, TextResor, TextRisken, TextCovid, TextMunskydd, TextGoraSjalv, TextMaBattre, TextBarn;
     Button ButtonVaccin, ButtonResor, ButtonRisken, ButtonCovid, ButtonMunskydd, ButtonGoraSjalv, ButtonMaBattre, ButtonBarn ;
-
     private FragmentFaqBinding binding;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public FaqFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FaqFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FaqFragment newInstance(String param1, String param2) {
         FaqFragment fragment = new FaqFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,16 +34,10 @@ public class FaqFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFaqBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
@@ -102,16 +70,18 @@ public class FaqFragment extends Fragment {
         ButtonMaBattre = binding.ButtonMaBattre;
 
 
-
+        Drawable up_arrow = getResources().getDrawable(R.drawable.up_arrow);
+        Drawable down_arrow = getResources().getDrawable(R.drawable.down_arrow);
 
         ButtonVaccin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 if(TextVaccin.getText() == ""  ){
                     TextVaccin.setText(getString(R.string.faq_vaccin_swe));
+                    ButtonVaccin.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonVaccin.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextVaccin.setText(null);
                 }
             }
@@ -122,8 +92,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextResor.getText() == ""  ){
                     TextResor.setText(getString(R.string.faq_resor_swe));
+                    ButtonResor.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
+                    ButtonResor.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextResor.setText(null);
                 }
             }
@@ -134,9 +106,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextRisken.getText() == ""  ){
                     TextRisken.setText(getString(R.string.faq_risken_swe));
+                    ButtonRisken.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonRisken.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextRisken.setText(null);
                 }
             }
@@ -147,9 +120,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextCovid.getText() == ""  ){
                     TextCovid.setText(R.string.faq_covid_swe);
+                    ButtonCovid.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonCovid.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextCovid.setText(null);
                 }
             }
@@ -160,9 +134,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextMunskydd.getText() == ""  ){
                     TextMunskydd.setText(getString(R.string.faq_munskydd_swe));
+                    ButtonMunskydd.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonMunskydd.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextMunskydd.setText(null);
                 }
             }
@@ -173,9 +148,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextGoraSjalv.getText() == ""  ){
                      TextGoraSjalv.setText(R.string.faq_gorasjalv_swe);
+                     ButtonGoraSjalv.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonGoraSjalv.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextGoraSjalv.setText(null);
                 }
             }
@@ -186,9 +162,10 @@ public class FaqFragment extends Fragment {
             public void onClick(View v){
                 if(TextMaBattre.getText() == ""  ){
                     TextMaBattre.setText(R.string.faq_mabattre_swe);
+                    ButtonMaBattre.setCompoundDrawablesWithIntrinsicBounds(null, null, up_arrow, null);
                 }
                 else{
-                    //System.out.println("Test");
+                    ButtonMaBattre.setCompoundDrawablesWithIntrinsicBounds(null, null, down_arrow, null);
                     TextMaBattre.setText(null);
                 }
             }

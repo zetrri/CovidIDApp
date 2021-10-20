@@ -11,6 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="20dp"
         android:textAlignment="center">
 
 
@@ -23,13 +24,12 @@
 
             <Button
                 android:id="@+id/ButtonVaccin"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text="@string/faq_button_vaccin_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,20 +38,18 @@
                 android:id="@+id/TextVaccin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonVaccin" />
 
             <Button
                 android:id="@+id/ButtonResor"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:text="@string/faq_button_resor_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextVaccin" />
@@ -60,20 +58,18 @@
                 android:id="@+id/TextResor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonResor" />
 
             <Button
                 android:id="@+id/ButtonRisken"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:text="@string/faq_button_risken_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextResor" />
@@ -82,20 +78,18 @@
                 android:id="@+id/TextRisken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonRisken" />
 
             <Button
                 android:id="@+id/ButtonCovid"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:text="@string/faq_button_covid_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextRisken" />
@@ -104,22 +98,19 @@
                 android:id="@+id/TextCovid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonCovid" />
 
             <Button
                 android:id="@+id/ButtonMunskydd"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:text="@string/faq_button_munskydd_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextCovid" />
 
@@ -127,20 +118,18 @@
                 android:id="@+id/TextMunskydd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonMunskydd" />
 
             <Button
                 android:id="@+id/ButtonGoraSjalv"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:layout_marginTop="16dp"
                 android:text="@string/faq_button_gorasjalv_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextMunskydd" />
@@ -149,21 +138,18 @@
                 android:id="@+id/TextGoraSjalv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonGoraSjalv" />
 
             <Button
                 android:id="@+id/ButtonMaBattre"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="2mm"
                 android:text="@string/faq_button_mabattre_swe"
+                android:drawableRight="@drawable/down_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextGoraSjalv" />
 
@@ -171,21 +157,10 @@
                 android:id="@+id/TextMaBattre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="35dp"
-                android:paddingRight="35dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ButtonMaBattre" />
-
-
-
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="20dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
