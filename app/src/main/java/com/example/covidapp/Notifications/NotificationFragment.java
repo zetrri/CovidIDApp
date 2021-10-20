@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.covidapp.HealthAdmin.AvailableTimesListUserClass;
 import com.example.covidapp.R;
+import com.example.covidapp.UserReg.RegClass;
 import com.example.covidapp.databinding.FragmentNotificationBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -98,146 +99,26 @@ public class NotificationFragment extends Fragment {
         binding.notificationCard.setVisibility(View.INVISIBLE);
         binding.notificationTextview.setVisibility(View.VISIBLE);
 
-
-        //Getting bookings from firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-        DatabaseReference reference = database.getReference("BookedTimes");
-        ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference reference = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
-                //if user not logged in
-                if ( firebaseAuth1.getCurrentUser() == null){
-                    Navigation.findNavController(view).navigate(R.id.nav_login);
-                    return;
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot1 = task.getResult();
+                RegClass regClass = dataSnapshot1.getValue(RegClass.class);
+                regClass.getDosOne();
+                Calendar calendar = Calendar.getInstance();
+                long twoWeeksLater = regClass.getDosOne() + 1209600000; //- 1296000000;
+                if (twoWeeksLater <= calendar.getTimeInMillis() && regClass.getDosTwo() == 0) {
+                    binding.notificationCard.setVisibility(View.VISIBLE);
+                    binding.notificationTextview.setVisibility(View.INVISIBLE);
+                    calendar.setTimeInMillis(twoWeeksLater);
+                    Date date = calendar.getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+                    binding.notificationDate.setText(sdf.format(date) + " " + sdfclock.format(date));
                 }
-                //If logged in
-                else {
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
-                        //getting all appointments booked by the user
-                        AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
-                        if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())) {
-                            Log.d("FoundOne", availableTimesListUserClass.getId());
-                            availableTimesListUserClasses.add(availableTimesListUserClass);
-                            Calendar calendar = Calendar.getInstance();
-//                            System.out.println(availableTimesListUserClass.getTimestamp() + 1209600000);
-//                            System.out.println(calendar.getTimeInMillis());
-                            long twoWeeksLater = availableTimesListUserClass.getTimestamp() + 1209600000;
-                            if(twoWeeksLater <= calendar.getTimeInMillis()) {
-                                binding.notificationCard.setVisibility(View.VISIBLE);
-                                binding.notificationTextview.setVisibility(View.INVISIBLE);
-
-//                                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-//                                SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
-                                calendar.setTimeInMillis(twoWeeksLater);
-                                Date date = calendar.getTime();
-
-//                                CardView new_card = new CardView(getActivity());
-//                                new_card.setId(i+1);
-//                                LinearLayout linear_layout1 = new LinearLayout(getActivity());
-//                                linear_layout1.setOrientation(LinearLayout.VERTICAL);
-//                                TextView date_time = new TextView(getActivity());
-
-                                //date_time.setText(String.valueOf(date1.getDay())+"/"+String.valueOf(date1.getMonth())+"-"+date1.getYear());
-//                                date_time.setText(sdf.format(date1) +" "+sdfclock.format(date1));
-//                                date_time.setTextSize(20);
-//                                date_time.setBackgroundColor(0xFF6200EE);
-//                                date_time.setTextColor(Color.WHITE);
-//                                linear_layout1.addView(date_time);
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                                SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
-                                binding.notificationDate.setText(sdf.format(date) +" "+sdfclock.format(date));
-                            }
-//                            else {
-//                                binding.notificationCard.setVisibility(View.INVISIBLE);
-//                                binding.notificationTextview.setVisibility(View.VISIBLE);
-//                            }
-                        }
-                    }
-//
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("The read failed: " + error.getCode());
             }
         });
     }
 }
-
-
-//        if(true) {
-//            binding.notificationCard.setVisibility(View.INVISIBLE);
-//            binding.notificationTextview.setVisibility(View.VISIBLE);
-//        }
-//        else {
-//            binding.notificationCard.setVisibility(View.VISIBLE);
-//            binding.notificationTextview.setVisibility(View.INVISIBLE);
-//        }
-//
-//
-//        //Getting bookings from firebase
-//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-//        DatabaseReference ref = database.getReference("BookedTimes");
-//        ArrayList<AvailableTimesListUserClass> availableTimesListUserClasses =new ArrayList<>();
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
-//                //if user not logged in
-//                if ( firebaseAuth1.getCurrentUser() == null){
-//                    Navigation.findNavController(view).navigate(R.id.nav_login);
-//                    return;
-//                }
-//                //If logged in
-//                else {
-//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//
-//                        //getting all appointments booked by the user
-//                        AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
-//                        if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())) {
-//                            Log.d("FoundOne", availableTimesListUserClass.getId());
-//                            availableTimesListUserClasses.add(availableTimesListUserClass);
-//                            Calendar calendar = Calendar.getInstance();
-//                            if(availableTimesListUserClass.getTimestamp() + 1209600000 >= calendar.getTimeInMillis()) {
-//                                binding.notificationCard.setVisibility(View.INVISIBLE);
-//                                binding.notificationTextview.setVisibility(View.VISIBLE);
-//                            }
-//                            else {
-//                                binding.notificationCard.setVisibility(View.INVISIBLE);
-//                                binding.notificationTextview.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-//                        }
-////
-//                    }
-//                }
-//
-//                    FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
-//                    DatabaseReference reference = database.getReference("BookedTimes");
-//                    reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                        @Override
-//                        public void onComplete(@NotNull Task<DataSnapshot> task) {
-//                            FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
-//                            //if user not logged in
-//                            if ( firebaseAuth1.getCurrentUser() == null){
-//                                Navigation.findNavController(view).navigate(R.id.nav_login);
-//                                return;
-//                            }
-//                            //If logged in
-//                            else {
-//                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//
-//                                    //getting all appointments booked by the user
-//                                    AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
-//                                    if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())) {
-//
-//                                    }
-////
-//                                }
-//                            }
-//                        }
-//                    });
