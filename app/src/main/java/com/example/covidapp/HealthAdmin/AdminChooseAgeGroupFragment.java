@@ -87,7 +87,7 @@ public class AdminChooseAgeGroupFragment extends Fragment {
                 choosed = editTextYear.getText().toString()+editTextMonth.getText().toString()+editTextDay.getText().toString();
                 FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                 database.getReference("Minbookingage").removeValue();
-                database.getReference("Minbookingage").setValue(choosed);
+                database.getReference("Minbookingage").setValue(Integer.parseInt(choosed));
             }
         });
 

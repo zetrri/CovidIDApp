@@ -323,7 +323,7 @@ public class BookingFragment extends Fragment {
                         //Combine all info and put in alert window
 
 
-                        String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
+                        //String information = "Datum: " + booking.date + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
 
                         String information = "Datum: " + choosedDay + "/" + (int)(choosedMonth+1) + "\nTid: " + booking.time + "\nVaccin: " + booking.vaccine + "\nKlinik: " + booking.clinic + " " + booking.city;
 
