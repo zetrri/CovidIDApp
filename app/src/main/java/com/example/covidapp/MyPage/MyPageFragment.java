@@ -52,7 +52,7 @@ import java.util.Date;
 public class MyPageFragment extends Fragment {
 
     private FragmentMyPageBinding binding;
-
+    int value=3;
     Booking[] Bookings = new Booking[2];
     MyPageFragment this_obj = this;
 
@@ -315,6 +315,11 @@ public class MyPageFragment extends Fragment {
                         test_text2.setVisibility(TextView.GONE);
                         linear_layout1.addView(test_text2);
 
+                        TextView test_text3 = new TextView(getActivity());
+                        test_text3.setTextSize(15);
+                        test_text3.setText(availableTimesListUserClasses.get(i).getTimestamp().toString());
+                        test_text3.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text3);
 
                         LinearLayout linear_layout2 = new LinearLayout(getActivity());
                         linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
@@ -332,13 +337,61 @@ public class MyPageFragment extends Fragment {
                                         .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                new_card.removeAllViews();
-                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
-                                                deleteCard(test_text.getText().toString());
+                                                long tocheck = Long.parseLong(test_text3.getText().toString());
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+                                                DatabaseReference userref = database.getReference("User").child(firebaseAuth.getCurrentUser().getUid());
+                                                userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        DataSnapshot dataSnapshot2= task.getResult();
+                                                        RegClass user = dataSnapshot2.getValue(RegClass.class);
+                                                        //if the booking is a dose 1 booking
+                                                        if (user.getDosOne()==tocheck){
+                                                            //if the user also have a dose 2 booking
+                                                            if (user.getDosTwo()!=0){
+                                                                new AlertDialog.Builder(getActivity())
+                                                                        .setTitle("Avboka")
+                                                                        .setMessage("Du kan inte avboka dos1 innan dos 2 är avbokad")
+                                                                        .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                return;
+                                                                            }
+                                                                        }).show();
+
+                                                            }
+                                                            //no dose 2, cancelation is accepted
+                                                            else{
+                                                                deletefromuser(1);
+                                                                new_card.removeAllViews();
+                                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                                deleteCard(test_text.getText().toString());
+                                                            }
+                                                            System.out.println("Dos is"+"1");
+                                                        }
+                                                        else if (user.getDosTwo()==tocheck){
+                                                            deletefromuser(2);
+                                                            new_card.removeAllViews();
+                                                            gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                            deleteCard(test_text.getText().toString());
+                                                            System.out.println("Dos is"+"2");
+                                                        }
+                                                        else System.out.println("Dos is"+"Error");
+
+                                                    }
+                                                });
+
+                                                //
 
                                             }
                                         })
-                                        .setNegativeButton(android.R.string.no, null)
+                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                //
+
+                                            }
+                                        })
                                         .show();
 
                             }
@@ -354,11 +407,63 @@ public class MyPageFragment extends Fragment {
                                         .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill omboka denna tid?")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                new_card.removeAllViews();
-                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
-                                                deleteCard(test_text.getText().toString());
-                                                View view2 = getView();
-                                                Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
+                                                long tocheck = Long.parseLong(test_text3.getText().toString());
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+                                                DatabaseReference userref = database.getReference("User").child(firebaseAuth.getCurrentUser().getUid());
+                                                userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        DataSnapshot dataSnapshot2= task.getResult();
+                                                        RegClass user = dataSnapshot2.getValue(RegClass.class);
+                                                        //if the booking is a dose 1 booking
+                                                        if (user.getDosOne()==tocheck){
+                                                            //if the user also have a dose 2 booking
+                                                            if (user.getDosTwo()!=0){
+                                                                new AlertDialog.Builder(getActivity())
+                                                                        .setTitle("Avboka")
+                                                                        .setMessage("Du kan inte avboka dos1 innan dos 2 är avbokad")
+                                                                        .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                return;
+                                                                            }
+                                                                        }).show();
+
+                                                            }
+                                                            //no dose 2, cancelation is accepted
+                                                            else{
+                                                                deletefromuser(1);
+                                                                new_card.removeAllViews();
+                                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                                deleteCard(test_text.getText().toString());
+                                                                View view2 = getView();
+                                                                Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
+
+
+                                                            }
+                                                            System.out.println("Dos is"+"1");
+                                                        }
+                                                        else if (user.getDosTwo()==tocheck){
+                                                            deletefromuser(2);
+                                                            new_card.removeAllViews();
+                                                            gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                            deleteCard(test_text.getText().toString());
+                                                            View view2 = getView();
+                                                            Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
+
+                                                            System.out.println("Dos is"+"2");
+                                                        }
+                                                        else System.out.println("Dos is"+"Error");
+
+                                                    }
+                                                });
+
+
+//                                                new_card.removeAllViews();
+//                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+//                                                deleteCard(test_text.getText().toString());
+//                                                View view2 = getView();
+//                                                Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
 
 
                                             }
@@ -385,7 +490,7 @@ public class MyPageFragment extends Fragment {
 
     }
 
-    private void deletefromuser(){
+    private void deletefromuser(int dos){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference userref = database.getReference("User").child(firebaseAuth.getCurrentUser().getUid());
@@ -395,7 +500,16 @@ public class MyPageFragment extends Fragment {
                 DataSnapshot dataSnapshot2= task.getResult();
                 RegClass user = dataSnapshot2.getValue(RegClass.class);
                 userref.removeValue();
+                if (dos==1){
+                    user.setDosOne(0);
+                }else if (dos==2){
+                    user.setDosTwo(0);
+                }else{
+                    userref.setValue(user);
+                    return;
+                }
                 userref.setValue(user);
+
             }
         });
 
