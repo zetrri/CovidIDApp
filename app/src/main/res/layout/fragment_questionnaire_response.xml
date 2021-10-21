@@ -78,24 +78,6 @@
                     android:layout_height="match_parent" >
 
                     <TextView
-                        android:id="@+id/text_vaccine"
-                        android:layout_width="0dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="0.3"
-                        android:text="Vaccin" />
-
-                    <Spinner
-                        android:id="@+id/dropdown_vaccine"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:spinnerMode="dropdown" />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <TextView
                         android:id="@+id/text_clinic"
                         android:layout_width="0dp"
                         android:layout_height="36dp"
@@ -104,6 +86,25 @@
 
                     <Spinner
                         android:id="@+id/dropdown_clinic"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7"
+                        android:spinnerMode="dropdown" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/text_vaccine"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="0.3"
+                        android:text="Vaccin" />
+
+                    <Spinner
+                        android:id="@+id/dropdown_vaccine"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
