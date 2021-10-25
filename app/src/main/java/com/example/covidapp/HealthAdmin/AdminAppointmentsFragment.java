@@ -178,10 +178,10 @@ public class AdminAppointmentsFragment extends Fragment {
                         clinic_dropdown.setAdapter(clinicslistadapter);
 
                         //get data from spinners (not used yet)
-                        booking.clinic = clinic_dropdown.getSelectedItem().toString();
-                        booking.city = city_dropdown.getSelectedItem().toString();
-                        booking.county = county_dropdown.getSelectedItem().toString();
-                        booking.vaccine = vaccine_dropdown.getSelectedItem().toString();
+//                        booking.clinic = clinic_dropdown.getSelectedItem().toString();
+//                        booking.city = city_dropdown.getSelectedItem().toString();
+//                        booking.county = county_dropdown.getSelectedItem().toString();
+//                        booking.vaccine = vaccine_dropdown.getSelectedItem().toString();
 
                         //Calendar and formatting helpers
                         Calendar date = Calendar.getInstance();

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_my_page"
         android:name="com.example.covidapp.MyPage.MyPageFragment"
-        android:label="@string/my_page"
+        android:label="@string/my_page_swe"
         tools:layout="@layout/fragment_my_page">
 
         <action
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/nav_booking"
         android:name="com.example.covidapp.Booking.BookingFragment"
-        android:label="@string/booking"
+        android:label="@string/booking_swe"
         tools:layout="@layout/fragment_booking" >
 
         <action
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/nav_notifications"
         android:name="com.example.covidapp.Notifications.NotificationFragment"
-        android:label="Notifications"
+        android:label="Notifikationer"
         tools:layout="@layout/fragment_notification" >
     </fragment>
 
@@ -72,6 +72,10 @@
             android:id="@+id/action_nav_admin_menu_to_admin_adminAgeGroup"
             app:destination="@+id/nav_chooseagegroup"
             />
+        <action
+            android:id="@+id/action_nav_admin_menu_to_nav_connected_times"
+            app:destination="@+id/nav_connected_times"
+            />
 
     </fragment>
 
@@ -94,13 +98,13 @@
     <fragment
         android:id="@+id/nav_questionnaire_response"
         android:name="com.example.covidapp.HealthAdmin.QuestionnaireResponseFragment"
-        android:label="@string/questionnaire_response"
+        android:label="@string/questionnaire_response_swe"
         tools:layout="@layout/fragment_questionnaire_response" />
 
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.covidapp.LogIn.LoginFragment"
-        android:label="@string/login"
+        android:label="@string/login_swe"
         tools:layout="@layout/fragment_login" >
 
         <action
@@ -123,7 +127,7 @@
     <fragment
         android:id="@+id/nav_password"
         android:name="com.example.covidapp.LogIn.PasswordFragment"
-        android:label="@string/Password"
+        android:label="@string/password_swe"
         tools:layout="@layout/fragment_password">
 
         <action
@@ -132,12 +136,10 @@
 
     </fragment>
 
-
-
     <fragment
         android:id="@+id/nav_passport"
         android:name="com.example.covidapp.Passport.PassportFragment"
-        android:label="@string/passport"
+        android:label="@string/passport_swe"
         tools:layout="@layout/fragment_passport" >
 
         <action
@@ -148,7 +150,7 @@
     <fragment
         android:id="@+id/nav_user_reg"
         android:name="com.example.covidapp.UserReg.UserRegFragment"
-        android:label="@string/user_reg"
+        android:label="@string/user_reg_swe"
         tools:layout="@layout/fragment_user_reg" >
 
         <action
@@ -159,14 +161,21 @@
     <fragment
         android:id="@+id/nav_admin_appointments"
         android:name="com.example.covidapp.HealthAdmin.AdminAppointmentsFragment"
-        android:label="Admin Appointments"
+        android:label="Admin Bokningar"
         tools:layout="@layout/fragment_admin_appointments"
         />
     <fragment
         android:id="@+id/nav_chooseagegroup"
         android:name="com.example.covidapp.HealthAdmin.AdminChooseAgeGroupFragment"
-        android:label="Choose age group"
+        android:label="Välj Åldersgrupp"
         tools:layout="@layout/fragment_admin_choose_age_group"
+        />
+
+    <fragment
+        android:id="@+id/nav_connected_times"
+        android:name="com.example.covidapp.HealthAdmin.ConnectedTimesFragment"
+        android:label="Pass Validering"
+        tools:layout="@layout/fragment_connected_times"
         />
 
 </navigation>

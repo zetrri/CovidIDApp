@@ -1,7 +1,9 @@
 package com.example.covidapp.HealthAdmin;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,7 +14,15 @@ import android.widget.EditText;
 
 import com.example.covidapp.R;
 import com.example.covidapp.databinding.FragmentAdminChooseAgeGroupBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,26 +80,57 @@ public class AdminChooseAgeGroupFragment extends Fragment {
         return root;
     }
     EditText editTextYear,editTextMonth,editTextDay;
-    String choosed;
+    String selectedYear = "0";
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         editTextYear = binding.editTextNumberYear;
-         editTextMonth = binding.editTextNumberMonth;
-         editTextDay = binding.editTextNumberDay;
-         choosed = "0";
+//         editTextYear = binding.editTextNumberYear;
+//         editTextMonth = binding.editTextNumberMonth;
+//         editTextDay = binding.editTextNumberDay;
+
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference reference = database.getReference("Minbookingage");
+        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot2 = task.getResult();
+//                long minAge = (dataSnapshot2.getValue(long.class));
+                int minYear = (int) (dataSnapshot2.getValue(long.class) / 10000);
+                binding.ageGroupDatePicker.updateDate(minYear, 01, 01);
+                binding.currentAgeGroup.setText(getString(R.string.current_agegroup, minYear));
+            }
+        });
+        binding.ageGroupDatePicker.setMaxDate(Calendar.getInstance().getTimeInMillis());
+
+
+
+//         choosed = "0";
         Button buttonChange = binding.buttonChangeAgeMin;
 
         buttonChange.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                choosed = editTextYear.getText().toString()+editTextMonth.getText().toString()+editTextDay.getText().toString();
+//                choosed = editTextYear.getText().toString()+editTextMonth.getText().toString()+editTextDay.getText().toString();
+                int minYear = binding.ageGroupDatePicker.getYear();
+                selectedYear = (minYear) + "0101";
                 FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                 database.getReference("Minbookingage").removeValue();
-                database.getReference("Minbookingage").setValue(Integer.parseInt(choosed));
+                database.getReference("Minbookingage").setValue(Integer.parseInt(selectedYear));
+                binding.currentAgeGroup.setText(getString(R.string.current_agegroup, minYear));
             }
         });
+
+        binding.ageGroupDatePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
+        binding.ageGroupDatePicker.findViewById(Resources.getSystem().getIdentifier("month", "id", "android")).setVisibility(View.GONE);
+
+//        Date maxDate = new Date(2021, 1, 1);
+
+
+
+//        binding.ageGroupDatePicker.getChildAt(0).findViewById().setVisibility(View.INVISIBLE);
 
     }
 
