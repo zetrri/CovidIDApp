@@ -26,7 +26,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_page">My Page</string>
+    <string name="my_page_swe">Min Sida</string>
     <string name="booking">Booking</string>
+    <string name="booking_swe">Bokningar</string>
     <string name="dashboard">Dashboard</string>
     <string name="deaths_and_cases">Deaths and Cases</string>
     <string name="doses_age_product">Doses Age Product</string>
@@ -35,10 +37,15 @@
     <string name="faq">FAQ</string>
     <string name="admin_menu">Admin Menu</string>
     <string name="questionnaire_response">Questionnaire Response</string>
+    <string name="questionnaire_response_swe">Frågeformulär</string>
     <string name="login">Login</string>
+    <string name="login_swe">Logga In</string>
     <string name="passport">Passport</string>
+    <string name="passport_swe">Pass</string>
     <string name="user_reg">User Registration</string>
-    <string name="Password">Password</string>
+    <string name="user_reg_swe">Användar Registrering</string>
+    <string name="password">Password</string>
+    <string name="password_swe">Lösenord</string>
     <string name="admin_add_available_times">Admin Add Available Times</string>
     <string name="menu_logout">Logout</string>
 
@@ -73,5 +80,9 @@
     <string name="no_new_notifications">No new notifications</string>
     <string name="second_dose_text">Du kan nu boka en tid för din andra dos av vaccin.</string>
     <string name="system">System</string>
+    <string name="save_changes">Spara ändringar</string>
+    <string name="pick_agegroup">Välj åldersgrupp:</string>
+    <string name="current_agegroup">Nuvarande åldersgrupp: %1$d</string>
+    <string name="current_agegroup_none">Nuvarande åldersgrupp:</string>
 
 </resources>
