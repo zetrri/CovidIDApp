@@ -55,9 +55,8 @@ public class MyPageFragment extends Fragment {
     int value=3;
     Booking[] Bookings = new Booking[2];
     MyPageFragment this_obj = this;
-
     private FirebaseAuth firebaseAuth;
-
+    private DatabaseReference ref_vaccine;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -318,10 +317,17 @@ public class MyPageFragment extends Fragment {
                     test_text3.setVisibility(TextView.GONE);
                     linear_layout1.addView(test_text3);
 
+                    TextView test_text4 = new TextView(getActivity());
+                    test_text4.setTextSize(15);
+                    test_text4.setText(availableTimesListUserClasses.get(i).getVaccine());
+                    test_text4.setVisibility(TextView.GONE);
+                    linear_layout1.addView(test_text4);
+
                     LinearLayout linear_layout2 = new LinearLayout(getActivity());
                     linear_layout2.setOrientation(LinearLayout.HORIZONTAL);
                     linear_layout2.setPadding(0,0,0,16);
                     linear_layout2.setGravity(Gravity.RIGHT);
+
 
                     Button buttonAvboka = new Button(getActivity());
                     buttonAvboka.setText("Avboka");
@@ -333,7 +339,9 @@ public class MyPageFragment extends Fragment {
                                     .setTitle("Avboka")
                                     .setMessage("Datum: "+date_time.getText()+ "\n" + clinic_text.getText() + "\n\nÄr du säker på att du vill avboka denna tid?")
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        //gets vaccine count
                                         public void onClick(DialogInterface dialog, int which) {
+
                                             long tocheck = Long.parseLong(test_text3.getText().toString());
                                             FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                                             DatabaseReference userref = database.getReference("User").child(firebaseAuth.getCurrentUser().getUid());
@@ -363,6 +371,9 @@ public class MyPageFragment extends Fragment {
                                                             new_card.removeAllViews();
                                                             gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                             deleteCard(test_text.getText().toString());
+                                                            get_vaccineback(test_text4.getText().toString());
+
+
                                                         }
                                                         System.out.println("Dos is"+"1");
                                                     }
@@ -371,6 +382,7 @@ public class MyPageFragment extends Fragment {
                                                         new_card.removeAllViews();
                                                         gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                         deleteCard(test_text.getText().toString());
+                                                        get_vaccineback(test_text4.getText().toString());
                                                         System.out.println("Dos is"+"2");
                                                     }
                                                     else System.out.println("Dos is"+"Error");
@@ -433,9 +445,9 @@ public class MyPageFragment extends Fragment {
                                                             new_card.removeAllViews();
                                                             gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                             deleteCard(test_text.getText().toString());
+                                                            get_vaccineback(test_text4.getText().toString());
                                                             View view2 = getView();
                                                             Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
-
 
                                                         }
                                                         System.out.println("Dos is"+"1");
@@ -445,6 +457,7 @@ public class MyPageFragment extends Fragment {
                                                         new_card.removeAllViews();
                                                         gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                                         deleteCard(test_text.getText().toString());
+                                                        get_vaccineback(test_text4.getText().toString());
                                                         View view2 = getView();
                                                         Navigation.findNavController(view2).navigate(R.id.action_nav_my_page_to_nav_booking);
 
@@ -527,6 +540,25 @@ public class MyPageFragment extends Fragment {
         item.setApproved(false);
         ref.child(item.getId()).setValue(item);
     }
+    private void get_vaccineback(String vaccine)
+    {
 
+        ref_vaccine = FirebaseDatabase.getInstance().getReference().child(vaccine);
+
+        ref_vaccine.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long countVaccine = (long) snapshot.getValue();
+                Log.d("Vaccine amount", String.valueOf(countVaccine));
+                ref_vaccine.setValue(countVaccine+1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+    }
     private void createCard(){}
 }

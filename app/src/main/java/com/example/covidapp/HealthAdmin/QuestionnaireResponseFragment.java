@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -49,7 +50,8 @@ public class QuestionnaireResponseFragment extends Fragment {
 
     private FragmentQuestionnaireResponseBinding binding;
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
-
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference ref_vaccine;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -114,13 +116,12 @@ public class QuestionnaireResponseFragment extends Fragment {
         vaccinelist.add("AstraZenica");
 
 
-
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         LinearLayout container = binding.containerbookings;
-
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //Getting bookings from firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -219,6 +220,30 @@ public class QuestionnaireResponseFragment extends Fragment {
                         test_text2.setVisibility(TextView.GONE);
                         linear_layout1.addView(test_text2);
 
+                        TextView test_text3 = new TextView(getActivity());
+                        test_text3.setTextSize(15);
+                        test_text3.setText(availableTimesListUserClasses.get(i).getTimestamp().toString());
+                        test_text3.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text3);
+                        //used for dos 1 & dos 2
+                        TextView test_text4 = new TextView(getActivity());
+                        test_text4.setTextSize(15);
+                        test_text4.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text4);
+                        //used to store dos2 timestamp
+                        TextView test_text5 = new TextView(getActivity());
+                        test_text5.setTextSize(15);
+                        test_text5.setText(String.valueOf(0));
+                        test_text5.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text5);
+                        //used to store vaccine type
+                        TextView test_text6 = new TextView(getActivity());
+                        test_text6.setTextSize(15);
+                        test_text6.setText(availableTimesListUserClasses.get(i).getVaccine());
+                        test_text6.setVisibility(TextView.GONE);
+                        linear_layout1.addView(test_text6);
+
+
                         //TextViews for more information on cards
                         TextView allergies_text = new TextView(getActivity());
                         allergies_text.setTextSize(15);
@@ -262,23 +287,39 @@ public class QuestionnaireResponseFragment extends Fragment {
                         TextView person_text = new TextView(getActivity());
                         person_text.setTextSize(15);
 
+                        TextView dos_text = new TextView(getActivity());
+                        person_text.setTextSize(15);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                         DatabaseReference ref = database.getReference("User");
                         ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                long tocheck = Long.parseLong(test_text3.getText().toString());
                                 for (DataSnapshot dataSnapshot1: task.getResult().getChildren()){
 
                                     //getting all appointments booked by the user
                                     RegClass regClass = dataSnapshot1.getValue(RegClass.class);
                                     if (regClass.getUserID().equals(UID)){
+
                                         Log.d("BOOKEDBY",regClass.getFirstname().toString());
                                         FirstName_text.setText("Namn: " + regClass.getFirstname());
                                         persnr_text.setText("Personnummer: " + regClass.getPersnr());
                                         nummer_text.setText("Telefon: " + regClass.getPhonenr());
                                         LastName_text.setText("Efternamn: " + regClass.getPhonenr());
                                         person_text.setText("Namn: " + regClass.getFirstname() + ", " + "Efternamn: " + regClass.getLastname());
+                                        //setting dose 1 & 2 to be used in denial of appointments
+
+                                        if(regClass.getDosOne() == tocheck){
+                                            test_text5.setText(String.valueOf(regClass.getDosTwo()));
+                                            test_text4.setText(String.valueOf(1));
+                                            dos_text.setText("Dos: 1");
+                                        }
+                                        else {
+                                            test_text5.setText(String.valueOf(regClass.getDosTwo()));
+                                            test_text4.setText(String.valueOf(2));
+                                            dos_text.setText("Dos: 2");
+                                        }
                                     }
                                 }
 
@@ -298,6 +339,8 @@ public class QuestionnaireResponseFragment extends Fragment {
                         buttonInformation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                long dos = Long.parseLong(test_text4.getText().toString());
+                                long dos2 = Long.parseLong(test_text5.getText().toString());
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle("Boknings information")
                                         //information retrived from firebase
@@ -309,6 +352,8 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                 + LastName_text.getText() + "\n"
                                                 + persnr_text.getText() + "\n"
                                                 + nummer_text.getText() + "\n"
+                                                + vaccin_text.getText() + "\n"
+                                                + dos_text.getText() + "\n"
                                                 + medication_text.getText() + "\n"
                                                 + allergies_text.getText() + "\n"
                                                 + comments_text.getText()).setPositiveButton("Godkänn", new DialogInterface.OnClickListener() {
@@ -318,14 +363,83 @@ public class QuestionnaireResponseFragment extends Fragment {
                                         approve_time(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
                                     }
                                 }).setNegativeButton("Neka", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new_card.removeAllViews();
-                                        gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
-                                        deleteCard(test_text.getText().toString());
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                long tocheck = Long.parseLong(test_text3.getText().toString());
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+                                                DatabaseReference userref = database.getReference("User").child(UID);
+                                                userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        DataSnapshot dataSnapshot2= task.getResult();
+                                                        RegClass user = dataSnapshot2.getValue(RegClass.class);
+                                                        //if the booking is a dose 1 booking
+                                                        if (user.getDosOne() == tocheck) {
+                                                            if (user.getDosTwo() != 0) {
+                                                                new AlertDialog.Builder(getActivity())
+                                                                        .setTitle("Neka")
+                                                                        .setMessage("Du kan inte neka dos1 innan dos 2 är avbokad")
+                                                                        .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                return;
+                                                                            }
+                                                                        }).show();
+                                                                Log.d("error?", String.valueOf(dos2));
+                                                            } else {
 
+                                                                new_card.removeAllViews();
+                                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                                deleteCard(test_text.getText().toString());
+                                                                deletefromuser(1, UID);
+                                                                get_vaccineback(test_text6.getText().toString());
+                                                            }
+                                                        } else if (user.getDosTwo() == tocheck) {
+                                                            new_card.removeAllViews();
+                                                            gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                            deleteCard(test_text.getText().toString());
+                                                            deletefromuser(2, UID);
+                                                            get_vaccineback(test_text6.getText().toString());
+
+                                                        }
+                                                    }
+                                                });
+
+                                                //
+
+                                            }
+                                        }
+
+                                        /*{
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (dos == 1) {
+                                            if (dos2 != 0) {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle("Neka")
+                                                        .setMessage("Du kan inte neka dos1 innan dos 2 är avbokad")
+                                                        .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                return;
+                                                            }
+                                                        }).show();
+                                                Log.d("error?", String.valueOf(dos2));
+                                            } else {
+
+                                                new_card.removeAllViews();
+                                                gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                                deleteCard(test_text.getText().toString());
+                                                deletefromuser(1, UID);
+                                            }
+                                        } else if (dos2 == tocheck) {
+
+                                            new_card.removeAllViews();
+                                            gettimeback(availableTimesListUserClasses.get(Integer.parseInt(test_text2.getText().toString())));
+                                            deleteCard(test_text.getText().toString());
+                                            deletefromuser(2, UID);
+
+                                        }
                                     }
-                                }).setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
+                                }*/).setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
@@ -374,5 +488,46 @@ public class QuestionnaireResponseFragment extends Fragment {
         item.setMedication("");
         item.setApproved(false);
         ref.child(item.getId()).setValue(item);
+    }
+
+    private void deletefromuser(int dos, String UID){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference userref = database.getReference("User").child(UID);
+        userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot2= task.getResult();
+                RegClass user = dataSnapshot2.getValue(RegClass.class);
+                if (user.getUserID().equals(UID)) {
+                    if(dos == 1) {
+                        user.setDosOne(0);
+                    }
+                    else{
+                        user.setDosTwo(0);
+                    }
+                    userref.setValue(user);
+                }
+                }
+        });
+    }
+    private void get_vaccineback(String vaccine)
+    {
+        ref_vaccine = FirebaseDatabase.getInstance().getReference().child(vaccine);
+
+        ref_vaccine.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long countVaccine = (long) snapshot.getValue();
+                Log.d("Vaccine amount", String.valueOf(countVaccine));
+                ref_vaccine.setValue(countVaccine+1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
     }
 }
