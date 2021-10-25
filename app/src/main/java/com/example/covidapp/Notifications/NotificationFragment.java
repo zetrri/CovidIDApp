@@ -43,6 +43,9 @@ public class NotificationFragment extends Fragment {
 
     private FragmentNotificationBinding binding;
 
+    final static int TWENTYTHREE_DAYS = 1987200000;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -111,12 +114,11 @@ public class NotificationFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 final long dos1 = regClass.getDosOne();
                 final long dos2 = regClass.getDosTwo();
-                final long twoWeeks = 1209600000;
                 final long currentTime = calendar.getTimeInMillis();
-                if (dos1 + twoWeeks <= currentTime && dos2 == 0) {
+                if (dos1 + TWENTYTHREE_DAYS <= currentTime && dos1 != 0 && dos2 == 0) {
                     binding.notificationCard.setVisibility(View.VISIBLE);
                     binding.notificationTextview.setVisibility(View.INVISIBLE);
-                    calendar.setTimeInMillis(dos1 + twoWeeks);
+                    calendar.setTimeInMillis(dos1 + TWENTYTHREE_DAYS);
                     Date date = calendar.getTime();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                     SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
