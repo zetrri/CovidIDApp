@@ -295,7 +295,7 @@ public class MyPageFragment extends Fragment {
                     AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                     if(todayInMillis > availableTimesListUserClass.getTimestamp())
                         ref.child(dataSnapshot1.getKey()).removeValue(); // tar bort tider som är passerade från databasen
-                    if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
+                    else if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                         Log.d("FoundOne",availableTimesListUserClass.getId());
                         availableTimesListUserClasses.add(availableTimesListUserClass);
                     }
