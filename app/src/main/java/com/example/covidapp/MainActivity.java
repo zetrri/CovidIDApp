@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         user_loggedin();
         binding.navView.getMenu().findItem(R.id.nav_login).setTitle("Logga ut");
         binding.navView.getMenu().findItem(R.id.nav_admin_menu).setVisible(true);
-        //temporary
-        binding.navView.getMenu().findItem(R.id.nav_my_page).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
         binding.navView.getMenu().findItem(R.id.nav_faq).setVisible(true);
         isLoggedIn = true;
