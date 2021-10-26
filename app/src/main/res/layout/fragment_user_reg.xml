@@ -147,57 +147,33 @@
 
 
             <!-- Län -->
-            <TableRow
+            <EditText
+                android:id="@+id/editTextCounty"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:ems="10"
+                android:hint="Län"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
-                    android:text="Län:" />
-
-
-                <Spinner
-                    android:id="@+id/countySpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7"
-                    android:minHeight="48dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextDate"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </TableRow>
             <!-- Stad -->
-            <TableRow
+            <EditText
+                android:id="@+id/editTextCity"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10sp">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:ems="10"
+                android:hint="Stad"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
-                    android:text="Stad:" />
-
-                <Spinner
-                    android:id="@+id/stadSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7"
-                    android:minHeight="48dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/countySpinner"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </TableRow>
             <!-- Gata -->
             <EditText
                 android:id="@+id/editTextTextPersonGata"

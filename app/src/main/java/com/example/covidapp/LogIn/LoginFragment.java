@@ -263,6 +263,8 @@ public class LoginFragment extends Fragment {
                 else
                 {
                     Toast.makeText(getActivity().getBaseContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    ePassword.setText("");
+
                     counter--;
                     eAttemptsInfo.setText("Attempts remaining: " + counter); // displays amount of remaining attempts
                     ProgressDialog.dismiss();
