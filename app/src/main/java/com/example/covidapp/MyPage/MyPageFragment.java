@@ -55,6 +55,12 @@ public class MyPageFragment extends Fragment {
     int value=3;
     Booking[] Bookings = new Booking[2];
     MyPageFragment this_obj = this;
+
+
+    final static int TWO_WEEKS = 1209600000;
+    final static int TWENTYTHREE_DAYS = 1987200000;
+
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference ref_vaccine;
     // TODO: Rename parameter arguments, choose names that match
@@ -117,6 +123,8 @@ public class MyPageFragment extends Fragment {
         //Bookings[0] = new Booking("8/2-2021", "15:30", "Gripen", "Karlstad", "Värmland", "Modena", "birch pollen", "", "Doctor spooky", "199809291111", "Karl Johan");
         //Bookings[1] = new Booking("14/7-2021", "11:00", "Nolhaga", "Alingsås", "Västra Götaland", "Modena", "Potatoe", "Potato","", "193312031234", "Peter niklas");
 
+        //Checks if there is a new notification
+        newNotification();
 
         //Top menu listeners
         LinearLayout passport = binding.passport;
@@ -144,13 +152,13 @@ public class MyPageFragment extends Fragment {
                         final long dos1 = tempregclass.getDosTwo();
 
                         if (dos2!=0 && dos1!=0 ){
-                            if (todaysdate>=(dos2+1209600000))
+                            if (todaysdate>=(dos2+TWO_WEEKS))
                             {
                                 Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_passport);
                             }else{
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle("Vaccinpass")
-                                        .setMessage("Ditt vaccinpass är tillgängligt den "+ sdf.format(dos2+1209600000))
+                                        .setMessage("Ditt vaccinpass är tillgängligt den "+ sdf.format(dos2+TWO_WEEKS))
                                         .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
 
@@ -189,6 +197,8 @@ public class MyPageFragment extends Fragment {
                         String temp = tempregclass.getPersnr();
                         final String temp1 = temp.substring(0,8);
                         final long dos2 = tempregclass.getDosTwo();
+                        final long dos1 = tempregclass.getDosOne();
+                        final long currentTime = Calendar.getInstance().getTimeInMillis();
 
                         DatabaseReference reference = database.getReference("Minbookingage");
                         reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -197,17 +207,26 @@ public class MyPageFragment extends Fragment {
                                 DataSnapshot dataSnapshot2= task.getResult();
                                 long minage = (dataSnapshot2.getValue(long.class));
 
-                                if(dos2!=0){
+                                if(dos2!=0) {
                                     new AlertDialog.Builder(getActivity())
-                                            .setTitle("Boka tid")
-                                            .setMessage("Du har redan tagit eller bokat tid för dos 1 och dos 2")
-                                            .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
+                                    .setTitle("Boka tid")
+                                    .setMessage("Du har redan tagit eller bokat tid för dos 1 och dos 2")
+                                    .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                                }
-                                            })
-                                            .show();
+                                        }
+                                    })
+                                    .show();
+                                }else if (dos1 + TWENTYTHREE_DAYS > currentTime) {
+                                    new AlertDialog.Builder(getActivity())
+                                    .setTitle("Boka tid")
+                                    .setMessage("Du måste vänta 14 dagar efter du tagit dos 1 innan du boka dos 2")
+                                    .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
 
+                                        }
+                                    })
+                                    .show();
                                 }else if (Long.parseLong(temp1)<minage){
                                     Navigation.findNavController(view).navigate(R.id.action_nav_my_page_to_nav_booking);
                                     Log.d("testtest","fårboka");
@@ -545,6 +564,7 @@ public class MyPageFragment extends Fragment {
 
         ref_vaccine = FirebaseDatabase.getInstance().getReference().child(vaccine);
 
+    
         ref_vaccine.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -560,5 +580,27 @@ public class MyPageFragment extends Fragment {
 
         });
     }
+
+    //Checks if there is a new notification and changes the color of the image
+    private void newNotification() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference reference = database.getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot1 = task.getResult();
+                RegClass regClass = dataSnapshot1.getValue(RegClass.class);
+                regClass.getDosOne();
+                Calendar calendar = Calendar.getInstance();
+                final long dos1 = regClass.getDosOne();
+                final long dos2 = regClass.getDosTwo();
+                if (dos1 + TWENTYTHREE_DAYS <= calendar.getTimeInMillis() && dos1 != 0 && dos2 == 0) {
+                    binding.imageView7.setColorFilter(Color.argb(255, 255, 0, 0));
+                }
+            }
+        });
+    }
+
+
     private void createCard(){}
 }

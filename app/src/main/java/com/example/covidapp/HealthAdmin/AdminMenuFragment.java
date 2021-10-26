@@ -144,7 +144,8 @@ public class AdminMenuFragment extends Fragment {
         });
         ePass.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.ConnectedTimesFragment);
+                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_nav_connected_times);
+//                Navigation.findNavController(view).navigate(R.id.ConnectedTimesFragment);
             }
         });
 
