@@ -43,12 +43,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyPageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyPageFragment extends Fragment {
 
     private FragmentMyPageBinding binding;
@@ -56,40 +52,19 @@ public class MyPageFragment extends Fragment {
     Booking[] Bookings = new Booking[2];
     MyPageFragment this_obj = this;
 
-
     final static int TWO_WEEKS = 1209600000;
     final static int TWENTYTHREE_DAYS = 1987200000;
 
-
     private FirebaseAuth firebaseAuth;
     private DatabaseReference ref_vaccine;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public MyPageFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyPageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MyPageFragment newInstance(String param1, String param2) {
         MyPageFragment fragment = new MyPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,15 +72,10 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMyPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
@@ -126,6 +96,13 @@ public class MyPageFragment extends Fragment {
         //Checks if there is a new notification
         newNotification();
 
+        //Calendar and formatting helpers
+        Calendar date = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+        final long todaysdate = date.getTimeInMillis();
+        long todayInMillis = date.getTimeInMillis() + TimeZone.getDefault().getOffset(date.getTimeInMillis());
+
         //Top menu listeners
         LinearLayout passport = binding.passport;
         LinearLayout bookappointment = binding.bookappointment;
@@ -134,10 +111,8 @@ public class MyPageFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         FirebaseAuth firebaseAuth1 = FirebaseAuth.getInstance();
         DatabaseReference userref = database.getReference("User").child(firebaseAuth1.getUid());
-        Calendar calendar = Calendar.getInstance();
-        final long todaysdate = calendar.getTimeInMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
+        //passport knapp
         passport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,6 +158,8 @@ public class MyPageFragment extends Fragment {
 
             }
         });
+
+        //boka tid knapp
         bookappointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,19 +215,15 @@ public class MyPageFragment extends Fragment {
                                                 public void onClick(DialogInterface dialog, int which) {
 
                                                 }
-                                            })
-                                            .show();}
+                                            }).show();}
                             }
                         });
-
                     }
-
                 });
-
             }
         });
 
-        //Logout button
+        //notifications knapp
         firebaseAuth = FirebaseAuth.getInstance();
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,13 +234,15 @@ public class MyPageFragment extends Fragment {
 
         LinearLayout container = binding.containerbookings;
 
+        // lägger till kort för tider som är passerade
+        userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-
+            }
+        });
 
         //Getting bookings from firebase
-
-
-        //
         if ( firebaseAuth1.getCurrentUser() == null){
             Navigation.findNavController(view).navigate(R.id.nav_login);
             return;
@@ -280,18 +255,17 @@ public class MyPageFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
                     //getting all appointments booked by the user
                     AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
+                    if(todayInMillis > availableTimesListUserClass.getTimestamp())
+                        ref.child(dataSnapshot1.getKey()).removeValue(); // tar bort tider som är passerade från databasen
                     if (availableTimesListUserClass.getBookedBy().equals(firebaseAuth1.getUid())){
                         Log.d("FoundOne",availableTimesListUserClass.getId());
                         availableTimesListUserClasses.add(availableTimesListUserClass);
                     }
                 }
-                //Calendar and formatting helpers
-                Calendar date = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+
+                //Making a card for each appointment
                 for(int i = 0; i < availableTimesListUserClasses.size(); i++){
 
-                    //Making a card for each appointment
                     date.setTimeInMillis(availableTimesListUserClasses.get(i).getTimestamp());
                     Date date1 = date.getTime();
 
@@ -302,7 +276,7 @@ public class MyPageFragment extends Fragment {
                     TextView date_time = new TextView(getActivity());
 
                     //date_time.setText(String.valueOf(date1.getDay())+"/"+String.valueOf(date1.getMonth())+"-"+date1.getYear());
-                    date_time.setText(sdf.format(date1) +" "+sdfclock.format(date1));
+                    date_time.setText(" " + sdf.format(date1) +" "+sdfclock.format(date1));
                     date_time.setTextSize(20);
                     date_time.setBackgroundColor(0xFF6200EE);
                     date_time.setTextColor(Color.WHITE);
@@ -348,6 +322,7 @@ public class MyPageFragment extends Fragment {
                     linear_layout2.setGravity(Gravity.RIGHT);
 
 
+                    // Avboka en tid knapp
                     Button buttonAvboka = new Button(getActivity());
                     buttonAvboka.setText("Avboka");
                     linear_layout2.addView(buttonAvboka);
@@ -424,6 +399,8 @@ public class MyPageFragment extends Fragment {
 
                         }
                     });
+
+                    // Omboka en tid knapp
                     Button buttonOmboka = new Button(getActivity());
                     buttonOmboka.setText("Omboka");
                     linear_layout2.addView(buttonOmboka);
@@ -508,10 +485,7 @@ public class MyPageFragment extends Fragment {
                 }
             }
 
-
         });
-
-
 
     }
 
@@ -600,7 +574,6 @@ public class MyPageFragment extends Fragment {
             }
         });
     }
-
 
     private void createCard(){}
 }
