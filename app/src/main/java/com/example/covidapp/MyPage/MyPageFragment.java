@@ -197,7 +197,7 @@ public class MyPageFragment extends Fragment {
                                 }else if (dos1 + TWENTYTHREE_DAYS > currentTime) {
                                     new AlertDialog.Builder(getActivity())
                                     .setTitle("Boka tid")
-                                    .setMessage("Du måste vänta 14 dagar efter du tagit dos 1 innan du boka dos 2")
+                                    .setMessage("Du måste vänta 23 dagar efter du tagit dos 1 innan du boka dos 2")
                                     .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
 
@@ -238,7 +238,45 @@ public class MyPageFragment extends Fragment {
         userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot1= task.getResult();
+                RegClass tempregclass = dataSnapshot1.getValue(RegClass.class);
+                final long dos2 = tempregclass.getDosTwo();
+                final long dos1 = tempregclass.getDosOne();
 
+                //om dos 1 är tagen
+                if(dos1 > 0 && todayInMillis > dos1){
+                    CardView new_card = new CardView(getActivity());
+                    LinearLayout linear_layout1 = new LinearLayout(getActivity());
+                    linear_layout1.setOrientation(LinearLayout.VERTICAL);
+                    TextView date_time = new TextView(getActivity());
+
+                    date_time.setText(" Dos 1 togs " + sdf.format(dos1) +" "+sdfclock.format(dos1));
+                    date_time.setTextSize(20);
+                    date_time.setBackgroundColor(0xFF6200EE);
+                    date_time.setTextColor(Color.WHITE);
+                    linear_layout1.addView(date_time);
+                    linear_layout1.setPadding(0, 0, 0, 16);
+
+                    new_card.addView(linear_layout1);
+                    container.addView(new_card);
+                }
+                //om dos 2 är tagen
+                if(dos2 > 0 && todayInMillis > dos2){
+                    CardView new_card = new CardView(getActivity());
+                    LinearLayout linear_layout1 = new LinearLayout(getActivity());
+                    linear_layout1.setOrientation(LinearLayout.VERTICAL);
+                    TextView date_time = new TextView(getActivity());
+
+                    date_time.setText(" Dos 2 togs " + sdf.format(dos2) +" "+sdfclock.format(dos2));
+                    date_time.setTextSize(20);
+                    date_time.setBackgroundColor(0xFF6200EE);
+                    date_time.setTextColor(Color.WHITE);
+                    linear_layout1.addView(date_time);
+                    linear_layout1.setPadding(0, 0, 0, 16);
+
+                    new_card.addView(linear_layout1);
+                    container.addView(new_card);
+                }
             }
         });
 
