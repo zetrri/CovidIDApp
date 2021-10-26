@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".Passport.PassportFragment">
 
     <TextView
         android:id="@+id/textViewID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16sp"
         android:text="ID: "
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDose2" />
@@ -22,9 +22,8 @@
         android:id="@+id/textViewDose2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16sp"
         android:text="Dos 2 datum: "
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
@@ -35,11 +34,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="Covidbevis"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/purple_500"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewQrCode"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/purple_500"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPersonNr"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewQrCode" />
 
     <ImageView
 
@@ -50,20 +66,19 @@
         android:contentDescription="r_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/view1" />
 
     <TextView
-        android:layout_marginHorizontal="16sp"
         android:id="@+id/textViewPersonNr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Personnummer: "
+        android:paddingTop="20dp"
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewQrCode"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
         tools:layout_editor_absoluteX="20dp" />
 
     <TextView
-        android:layout_marginHorizontal="16sp"
         android:id="@+id/textViewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
