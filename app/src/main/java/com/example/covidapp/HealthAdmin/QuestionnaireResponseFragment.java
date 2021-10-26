@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -46,6 +47,9 @@ public class QuestionnaireResponseFragment extends Fragment {
 
     private FragmentQuestionnaireResponseBinding binding;
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference ref_vaccine;
 
     public QuestionnaireResponseFragment() {
         // Required empty public constructor
@@ -87,6 +91,9 @@ public class QuestionnaireResponseFragment extends Fragment {
 
         LinearLayout container = binding.containerbookings;
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
         //Getting bookings from firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference ref = database.getReference("BookedTimes");
@@ -116,6 +123,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                     Spinner county_dropdown = binding.dropdownCounty;
                     Spinner city_dropdown = binding.dropdownCity;
                     Spinner clinic_dropdown = binding.dropdownClinic;
+
                     ArrayList<ClinicsClass> all_clinicsClass = new ArrayList<>();
 
                     //Creating the dropdown menu's from database
@@ -126,6 +134,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                             for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
                                 all_clinicsClass.add(dataSnapshot1.getValue(ClinicsClass.class));
                             }
+
 
                             //counties dropdown
                             for(ClinicsClass clinicsClass : all_clinicsClass){
@@ -414,5 +423,46 @@ public class QuestionnaireResponseFragment extends Fragment {
         item.setMedication("");
         item.setApproved(false);
         ref.child(item.getId()).setValue(item);
+    }
+
+    private void deletefromuser(int dos, String UID){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference userref = database.getReference("User").child(UID);
+        userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot2= task.getResult();
+                RegClass user = dataSnapshot2.getValue(RegClass.class);
+                if (user.getUserID().equals(UID)) {
+                    if(dos == 1) {
+                        user.setDosOne(0);
+                    }
+                    else{
+                        user.setDosTwo(0);
+                    }
+                    userref.setValue(user);
+                }
+                }
+        });
+    }
+    private void get_vaccineback(String vaccine)
+    {
+        ref_vaccine = FirebaseDatabase.getInstance().getReference().child(vaccine);
+
+        ref_vaccine.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long countVaccine = (long) snapshot.getValue();
+                Log.d("Vaccine amount", String.valueOf(countVaccine));
+                ref_vaccine.setValue(countVaccine+1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
     }
 }

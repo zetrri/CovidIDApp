@@ -68,6 +68,7 @@ public class BookingFragment extends Fragment {
 
     private DatabaseReference ref;
     private long countVaccine;
+    private String countVaccineAfter;
 
     public BookingFragment() {
         // Required empty public constructor
@@ -336,7 +337,7 @@ public class BookingFragment extends Fragment {
                                         if(countVaccine == 0){
                                             new AlertDialog.Builder(getActivity())
                                                     .setTitle("Ett problem uppstod!")
-                                                    .setMessage(booking.vaccine + " :är just nu slut" + "\nBoka annat vaccin eller va vänlig och vänta.")
+                                                    .setMessage(booking.vaccine + ": är just nu slut" + "\nBoka annat vaccin eller va vänlig och vänta.")
                                                     .setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {
@@ -345,9 +346,12 @@ public class BookingFragment extends Fragment {
                                                     }).show();
                                         }
                                         else{
+
                                             Navigation.findNavController(view).navigate(R.id.action_nav_booking_to_nav_my_page);
                                             //save booking to firebase
                                             ConnectUserWithTime(booking,date,availableTimes_clinic);
+                                            //decrease vaccine
+                                            ref.setValue(countVaccine-1);
                                         }
                                     }
                                 })
