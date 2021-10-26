@@ -55,6 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PrimitiveIterator;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class BookingFragment extends Fragment {
@@ -107,6 +108,8 @@ public class BookingFragment extends Fragment {
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
 
+        Calendar today = Calendar.getInstance();
+        long todayInMillis = today.getTimeInMillis() + TimeZone.getDefault().getOffset(today.getTimeInMillis());
 
         //Binding
         Spinner county_dropdown = binding.dropdownCounty;
@@ -130,7 +133,11 @@ public class BookingFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
-                    all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
+                    AvailableTimesListUserClass child = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
+                    if(todayInMillis > child.getTimestamp())
+                        availableTimesref.child(dataSnapshot1.getKey()).removeValue();
+                    else
+                        all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
                 }
                 //Creating the dropdown menu's from database
                 DatabaseReference clinicsRef = database.getReference("Kliniker");
