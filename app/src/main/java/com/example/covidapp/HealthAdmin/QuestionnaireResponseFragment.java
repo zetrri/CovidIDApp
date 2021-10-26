@@ -248,6 +248,31 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                 test_text2.setVisibility(TextView.GONE);
                                                                 linear_layout1.addView(test_text2);
 
+                                                                TextView test_text3 = new TextView(getActivity());
+                                                                test_text3.setTextSize(15);
+                                                                test_text3.setText(chosen_clinic_bookedTimes.get(i).getTimestamp().toString());
+                                                                test_text3.setVisibility(TextView.GONE);
+                                                                linear_layout1.addView(test_text3);
+                                                                //used for dos 1 & dos 2
+                                                                TextView test_text4 = new TextView(getActivity());
+                                                                test_text4.setTextSize(15);
+                                                                test_text4.setVisibility(TextView.GONE);
+                                                                linear_layout1.addView(test_text4);
+                                                                //used to store dos2 timestamp
+                                                                TextView test_text5 = new TextView(getActivity());
+                                                                test_text5.setTextSize(15);
+                                                                test_text5.setText(String.valueOf(0));
+                                                                test_text5.setVisibility(TextView.GONE);
+                                                                linear_layout1.addView(test_text5);
+                                                                //used to store vaccine type
+                                                                TextView test_text6 = new TextView(getActivity());
+                                                                test_text6.setTextSize(15);
+                                                                test_text6.setText(chosen_clinic_bookedTimes.get(i).getVaccine());
+                                                                test_text6.setVisibility(TextView.GONE);
+                                                                linear_layout1.addView(test_text6);
+
+
+
                                                                 //TextViews for more information on cards
                                                                 TextView allergies_text = new TextView(getActivity());
                                                                 allergies_text.setTextSize(15);
@@ -291,6 +316,9 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                 TextView person_text = new TextView(getActivity());
                                                                 person_text.setTextSize(15);
 
+                                                                TextView dos_text = new TextView(getActivity());
+                                                                person_text.setTextSize(15);
+
 
                                                                 FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                                                                 DatabaseReference ref = database.getReference("User");
@@ -298,7 +326,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                                                                         for (DataSnapshot dataSnapshot1: task.getResult().getChildren()){
-
+                                                                            long tocheck = Long.parseLong(test_text3.getText().toString());
                                                                             //getting all appointments booked by the user
                                                                             RegClass regClass = dataSnapshot1.getValue(RegClass.class);
                                                                             if (regClass.getUserID().equals(UID)){
@@ -308,6 +336,17 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                                 nummer_text.setText("Telefon: " + regClass.getPhonenr());
                                                                                 LastName_text.setText("Efternamn: " + regClass.getLastname());
                                                                                 person_text.setText("Namn: " + regClass.getFirstname() + " " + regClass.getLastname());
+                                                                                //setting dose 1 & 2 to be used in denial of appointments
+                                                                                if(regClass.getDosOne() == tocheck){
+                                                                                    test_text5.setText(String.valueOf(regClass.getDosTwo()));
+                                                                                    test_text4.setText(String.valueOf(1));
+                                                                                    dos_text.setText("Dos: 1");
+                                                                                }
+                                                                                else {
+                                                                                    test_text5.setText(String.valueOf(regClass.getDosTwo()));
+                                                                                    test_text4.setText(String.valueOf(2));
+                                                                                    dos_text.setText("Dos: 2");
+                                                                                }
                                                                             }
                                                                         }
 
@@ -325,6 +364,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                 buttonInformation.setText("Värdera");
                                                                 linear_layout2.addView(buttonInformation);
                                                                 buttonInformation.setOnClickListener(new View.OnClickListener() {
+                                                                    long dos2 = Long.parseLong(test_text5.getText().toString());
                                                                     @Override
                                                                     public void onClick(View view) {
                                                                         new AlertDialog.Builder(getActivity())
@@ -338,6 +378,8 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                                         + LastName_text.getText() + "\n"
                                                                                         + persnr_text.getText() + "\n"
                                                                                         + nummer_text.getText() + "\n"
+                                                                                        + vaccin_text.getText() + "\n"
+                                                                                        + dos_text.getText() + "\n"
                                                                                         + medication_text.getText() + "\n"
                                                                                         + allergies_text.getText() + "\n"
                                                                                         + comments_text.getText()).setPositiveButton("Godkänn", new DialogInterface.OnClickListener() {
@@ -347,14 +389,52 @@ public class QuestionnaireResponseFragment extends Fragment {
                                                                                 approve_time(chosen_clinic_bookedTimes.get(Integer.parseInt(test_text2.getText().toString())));
                                                                             }
                                                                         }).setNegativeButton("Neka", new DialogInterface.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                new_card.removeAllViews();
-                                                                                gettimeback(chosen_clinic_bookedTimes.get(Integer.parseInt(test_text2.getText().toString())));
-                                                                                deleteCard(test_text.getText().toString());
+                                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                                        long tocheck = Long.parseLong(test_text3.getText().toString());
+                                                                                        FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
+                                                                                        DatabaseReference userref = database.getReference("User").child(UID);
+                                                                                        userref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                                                                DataSnapshot dataSnapshot2= task.getResult();
+                                                                                                RegClass user = dataSnapshot2.getValue(RegClass.class);
+                                                                                                //if the booking is a dose 1 booking
+                                                                                                if (user.getDosOne() == tocheck) {
+                                                                                                    if (user.getDosTwo() != 0) {
+                                                                                                        new AlertDialog.Builder(getActivity())
+                                                                                                                .setTitle("Neka")
+                                                                                                                .setMessage("Du kan inte neka dos1 innan dos 2 är avbokad")
+                                                                                                                .setPositiveButton("Tillbaka", new DialogInterface.OnClickListener() {
+                                                                                                                    @Override
+                                                                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                                                        return;
+                                                                                                                    }
+                                                                                                                }).show();
+                                                                                                        Log.d("error?", String.valueOf(dos2));
+                                                                                                    } else {
 
-                                                                            }
-                                                                        }).setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
+                                                                                                        new_card.removeAllViews();
+                                                                                                        gettimeback(chosen_clinic_bookedTimes.get(Integer.parseInt(test_text2.getText().toString())));
+                                                                                                        deleteCard(test_text.getText().toString());
+                                                                                                        deletefromuser(1, UID);
+                                                                                                        get_vaccineback(test_text6.getText().toString());
+                                                                                                    }
+                                                                                                } else if (user.getDosTwo() == tocheck) {
+                                                                                                    new_card.removeAllViews();
+                                                                                                    gettimeback(chosen_clinic_bookedTimes.get(Integer.parseInt(test_text2.getText().toString())));
+                                                                                                    deleteCard(test_text.getText().toString());
+                                                                                                    deletefromuser(2, UID);
+                                                                                                    get_vaccineback(test_text6.getText().toString());
+
+                                                                                                }
+                                                                                            }
+                                                                                        });
+
+                                                                                        //
+
+                                                                                    }
+                                                                                }
+                                                                        ).setNeutralButton("Gå tillbaka", new DialogInterface.OnClickListener() {
                                                                             @Override
                                                                             public void onClick(DialogInterface dialog, int which) {
 
@@ -443,7 +523,7 @@ public class QuestionnaireResponseFragment extends Fragment {
                     }
                     userref.setValue(user);
                 }
-                }
+            }
         });
     }
     private void get_vaccineback(String vaccine)
