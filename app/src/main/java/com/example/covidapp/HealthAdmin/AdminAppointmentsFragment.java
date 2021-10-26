@@ -46,10 +46,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class AdminAppointmentsFragment extends Fragment {
     private Booking booking = new Booking("", "", "", "", "", "", "", "", "", "", "");
@@ -91,6 +96,9 @@ public class AdminAppointmentsFragment extends Fragment {
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
 
+        Calendar today = Calendar.getInstance();
+        long todayInMillis = today.getTimeInMillis() + TimeZone.getDefault().getOffset(today.getTimeInMillis());
+
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -115,12 +123,17 @@ public class AdminAppointmentsFragment extends Fragment {
                     //If logged in
                     else {
                         //counts children under "Booked times"(Not used)
+                        int id = 0;
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             //adding all booking information into class
                             AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                             if (!availableTimesListUserClass.getApproved().equals(false)) {
                                 Log.d("FoundOne", availableTimesListUserClass.getId());
-                                all_bookedTimes.add(availableTimesListUserClass);
+                                Log.i("!!!!", todayInMillis + " " + availableTimesListUserClass.timestamp);
+                                if(todayInMillis > availableTimesListUserClass.timestamp)
+                                    ref.child(dataSnapshot1.getKey()).removeValue();
+                                else
+                                    all_bookedTimes.add(availableTimesListUserClass);
                             }
                         }
 
