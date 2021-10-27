@@ -115,14 +115,24 @@ public class NotificationFragment extends Fragment {
                 final long dos1 = regClass.getDosOne();
                 final long dos2 = regClass.getDosTwo();
                 final long currentTime = calendar.getTimeInMillis();
-                if (dos1 + TWENTYTHREE_DAYS <= currentTime && dos1 != 0 && dos2 == 0) {
+                if (dos1 == 1 || dos2 == 1 || dos1 + TWENTYTHREE_DAYS <= currentTime && dos1 != 0 && dos2 == 0) {
                     binding.notificationCard.setVisibility(View.VISIBLE);
                     binding.notificationTextview.setVisibility(View.INVISIBLE);
-                    calendar.setTimeInMillis(dos1 + TWENTYTHREE_DAYS);
-                    Date date = calendar.getTime();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
-                    binding.notificationDate.setText(sdf.format(date) + " " + sdfclock.format(date));
+                    if(dos1 == 1 || dos2 == 1) {
+                        binding.message.setText("Din bokade tid har blivit nekad av en administratör. Var vänlig boka en ny tid.");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                        SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+                        binding.notificationDate.setText(sdf.format(currentTime) + " " + sdfclock.format(currentTime));
+                    }
+                    else {
+                        binding.message.setText("Du kan nu boka en tid för din andra dos av vaccin.");
+                        calendar.setTimeInMillis(dos1 + TWENTYTHREE_DAYS);
+                        Date date = calendar.getTime();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                        SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
+                        binding.notificationDate.setText(sdf.format(date) + " " + sdfclock.format(date));
+                    }
+
                 }
             }
         });

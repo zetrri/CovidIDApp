@@ -516,10 +516,10 @@ public class QuestionnaireResponseFragment extends Fragment {
                 RegClass user = dataSnapshot2.getValue(RegClass.class);
                 if (user.getUserID().equals(UID)) {
                     if(dos == 1) {
-                        user.setDosOne(0);
+                        user.setDosOne(1);
                     }
                     else{
-                        user.setDosTwo(0);
+                        user.setDosTwo(1);
                     }
                     userref.setValue(user);
                 }

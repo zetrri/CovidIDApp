@@ -207,6 +207,18 @@ public class MyPageFragment extends Fragment {
                                 DataSnapshot dataSnapshot2= task.getResult();
                                 long minage = (dataSnapshot2.getValue(long.class));
 
+                                if(dos2 == 1) {
+                                    tempregclass.setDosTwo(0);
+                                    userref.removeValue();
+                                    userref.setValue(tempregclass);
+                                }
+                                else if(dos1 == 1) {
+                                    tempregclass.setDosOne(0);
+                                    userref.removeValue();
+                                    userref.setValue(tempregclass);
+                                }
+
+
                                 if(dos2!=0) {
                                     new AlertDialog.Builder(getActivity())
                                     .setTitle("Boka tid")
@@ -594,7 +606,7 @@ public class MyPageFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 final long dos1 = regClass.getDosOne();
                 final long dos2 = regClass.getDosTwo();
-                if (dos1 + TWENTYTHREE_DAYS <= calendar.getTimeInMillis() && dos1 != 0 && dos2 == 0) {
+                if (dos1 == 1 || dos2 == 1 || dos1 + TWENTYTHREE_DAYS <= calendar.getTimeInMillis() && dos1 != 0 && dos2 == 0) {
                     binding.imageView7.setColorFilter(Color.argb(255, 255, 0, 0));
                 }
             }
