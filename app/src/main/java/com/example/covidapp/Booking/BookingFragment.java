@@ -189,9 +189,7 @@ public class BookingFragment extends Fragment {
                                                 //add times for the clinic
                                                 availableTimes_clinic.clear();
                                                 for(AvailableTimesListUserClass temp : all_availableTimes){
-                                                    Log.i("!!!!", clinic_selected + " " + temp.getClinic());
                                                     if(temp.getClinic().equals(clinic_selected)) {
-                                                        Log.i("!!!!", "adding" + temp.getTimestamp());
                                                         availableTimes_clinic.add(temp);
                                                     }
                                                 }

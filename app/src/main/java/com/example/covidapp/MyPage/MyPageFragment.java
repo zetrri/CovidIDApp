@@ -182,7 +182,7 @@ public class MyPageFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 DataSnapshot dataSnapshot2= task.getResult();
-                                long minage = (dataSnapshot2.getValue(long.class));
+                                long minage = (dataSnapshot2.getValue(long.class)) + 10000; //kollade från 0101 året som är valt -> ingen född efter 0101 det valda året kan vaccinera sig
 
                                 if(dos2!=0) {
                                     new AlertDialog.Builder(getActivity())
