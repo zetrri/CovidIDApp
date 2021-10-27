@@ -21,12 +21,10 @@
                 android:id="@+id/text_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Boka Vaccinering"
-                tools:layout_editor_absoluteX="151dp"
-                tools:layout_editor_absoluteY="16dp" />
+                android:text="Boka Vaccinering" />
 
             <!-- Allergier -->
-            <EditText
+            <!--<EditText
                 android:id="@+id/editText_allergies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +32,7 @@
                 android:inputType="textPersonName"
                 android:hint="Allergier"
                 tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="46dp" />
+                tools:layout_editor_absoluteY="46dp" />-->
 
             <!-- Mediciner -->
             <EditText
@@ -43,9 +41,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Mediciner"
-                tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="91dp" />
+                android:hint="Mediciner" />
 
             <!-- Kommentar -->
             <EditText
@@ -55,9 +51,14 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:hint="Kommentarer"
-                tools:layout_editor_absoluteX="103dp"
-                tools:layout_editor_absoluteY="148dp" />
+                android:hint="Kommentarer" />
+
+            <!-- Allergier -->
+            <CheckBox
+                android:id="@+id/editText_allergies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Har du några allergier?"/>
 
             <!-- vaccin, län, stad, klinik -->
             <TableLayout

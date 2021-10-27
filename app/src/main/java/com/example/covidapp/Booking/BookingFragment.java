@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -120,7 +121,7 @@ public class BookingFragment extends Fragment {
         RadioGroup radioGroup = binding.radGroup1;
         CalendarView Kalender = binding.calendarView;
         TextView error = binding.errormessage;
-        EditText text_allergies = (EditText) binding.editTextAllergies;
+        CheckBox text_allergies = (CheckBox) binding.editTextAllergies;
         EditText text_medicines = (EditText) binding.editTextMedicine;
         EditText text_comments = (EditText) binding.editTextComments;
 
@@ -302,7 +303,11 @@ public class BookingFragment extends Fragment {
                         Log.d("hour and minute",STRstr[0]+":"+STRstr[1]);
 
                         //get data from all textfields
-                        booking.allergy = text_allergies.getText().toString(); //sträng med allergier
+                        if(text_allergies.isChecked())
+                            booking.allergy = "true";
+                        else
+                            booking.allergy = "";
+                        //booking.allergy = text_allergies.isChecked(); //sträng med allergier
                         booking.meds = text_medicines.getText().toString(); // sträng med mediciner
                         booking.message = text_comments.getText().toString(); // sträng med kommentarer
                         booking.clinic = clinic_dropdown.getSelectedItem().toString();
