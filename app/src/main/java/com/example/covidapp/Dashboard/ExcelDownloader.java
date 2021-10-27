@@ -199,13 +199,9 @@ public class ExcelDownloader implements Serializable {
         remove_flag=1;
 
         File file1 = new File(activity.getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
-        File file2 = new File(activity.getExternalFilesDir("Download"), "v37-leveranser-av-covid-vaccin-till-och-med-vecka-39.xlsx");
         if(file1.exists()){
             Log.i("info", "Deleting file " + file1);
             file1.delete();
-        }if(file2.exists()){
-            Log.i("info", "Deleting file " + file2);
-            file2.delete();
         }
 
         activity.unregisterReceiver(onComplete);
