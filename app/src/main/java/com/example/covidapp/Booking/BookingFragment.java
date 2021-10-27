@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -55,6 +56,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PrimitiveIterator;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class BookingFragment extends Fragment {
@@ -107,6 +109,8 @@ public class BookingFragment extends Fragment {
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
 
+        Calendar today = Calendar.getInstance();
+        long todayInMillis = today.getTimeInMillis() + TimeZone.getDefault().getOffset(today.getTimeInMillis());
 
         //Binding
         Spinner county_dropdown = binding.dropdownCounty;
@@ -117,7 +121,7 @@ public class BookingFragment extends Fragment {
         RadioGroup radioGroup = binding.radGroup1;
         CalendarView Kalender = binding.calendarView;
         TextView error = binding.errormessage;
-        EditText text_allergies = (EditText) binding.editTextAllergies;
+        CheckBox text_allergies = (CheckBox) binding.editTextAllergies;
         EditText text_medicines = (EditText) binding.editTextMedicine;
         EditText text_comments = (EditText) binding.editTextComments;
 
@@ -130,7 +134,11 @@ public class BookingFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 for(DataSnapshot dataSnapshot1: task.getResult().getChildren()){
-                    all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
+                    AvailableTimesListUserClass child = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
+                    if(todayInMillis > child.getTimestamp())
+                        availableTimesref.child(dataSnapshot1.getKey()).removeValue();
+                    else
+                        all_availableTimes.add(dataSnapshot1.getValue(AvailableTimesListUserClass.class));
                 }
                 //Creating the dropdown menu's from database
                 DatabaseReference clinicsRef = database.getReference("Kliniker");
@@ -182,9 +190,7 @@ public class BookingFragment extends Fragment {
                                                 //add times for the clinic
                                                 availableTimes_clinic.clear();
                                                 for(AvailableTimesListUserClass temp : all_availableTimes){
-                                                    Log.i("!!!!", clinic_selected + " " + temp.getClinic());
                                                     if(temp.getClinic().equals(clinic_selected)) {
-                                                        Log.i("!!!!", "adding" + temp.getTimestamp());
                                                         availableTimes_clinic.add(temp);
                                                     }
                                                 }
@@ -297,7 +303,11 @@ public class BookingFragment extends Fragment {
                         Log.d("hour and minute",STRstr[0]+":"+STRstr[1]);
 
                         //get data from all textfields
-                        booking.allergy = text_allergies.getText().toString(); //sträng med allergier
+                        if(text_allergies.isChecked())
+                            booking.allergy = "true";
+                        else
+                            booking.allergy = "";
+                        //booking.allergy = text_allergies.isChecked(); //sträng med allergier
                         booking.meds = text_medicines.getText().toString(); // sträng med mediciner
                         booking.message = text_comments.getText().toString(); // sträng med kommentarer
                         booking.clinic = clinic_dropdown.getSelectedItem().toString();

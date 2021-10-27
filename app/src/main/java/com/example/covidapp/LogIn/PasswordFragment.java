@@ -109,8 +109,6 @@ public class PasswordFragment extends Fragment {
                             //the email is sent,
                             if(task.isSuccessful()){
                                 Toast.makeText(getActivity().getBaseContext(), "Password reset email sent!", Toast.LENGTH_SHORT).show();
-                                getActivity().finish();
-
 
                                 Navigation.findNavController(view).navigate(R.id.action_nav_password_to_nav_login);
                             }

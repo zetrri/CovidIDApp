@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class QuestionnaireResponseFragment extends Fragment {
 
@@ -85,6 +86,9 @@ public class QuestionnaireResponseFragment extends Fragment {
         vaccinelist.add("Pfizer");
         vaccinelist.add("Moderna");
 
+        Calendar today = Calendar.getInstance();
+        long todayInMillis = today.getTimeInMillis() + TimeZone.getDefault().getOffset(today.getTimeInMillis());
+
         //Removes keyboard if up
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -116,7 +120,10 @@ public class QuestionnaireResponseFragment extends Fragment {
                         AvailableTimesListUserClass availableTimesListUserClass = dataSnapshot1.getValue(AvailableTimesListUserClass.class);
                         if (availableTimesListUserClass.getApproved().equals(false)) {
                             Log.d("FoundOne", availableTimesListUserClass.getId());
-                            all_bookedTimes.add(availableTimesListUserClass);
+                            if(todayInMillis > availableTimesListUserClass.timestamp)
+                                ref.child(dataSnapshot1.getKey()).removeValue();
+                            else
+                                all_bookedTimes.add(availableTimesListUserClass);
                         }
                     }
                     //Binding

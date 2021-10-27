@@ -28,44 +28,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserRegFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserRegFragment extends Fragment {
-
     private FragmentUserRegBinding binding;
     String [] account = new String[9];
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public UserRegFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserRegFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserRegFragment newInstance(String param1, String param2) {
         UserRegFragment fragment = new UserRegFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,16 +46,10 @@ public class UserRegFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUserRegBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
@@ -91,18 +58,6 @@ public class UserRegFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Spinner countySpinner = binding.countySpinner;
-        Spinner stadSpinner = binding.stadSpinner;
-
-
-
-        /* Temp Förbereder  */
-        String[] counties = new String[] {"Värmland län", "Örebro län", "Västra Götaland"};
-
-        String[] staderVarmland = new String[] {"Karlstad", "Arvika", "Kil"};
-
-        countySpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, counties));
-        stadSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staderVarmland));
 
         /* Skapar konto  */
         binding.skapaButton.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +68,8 @@ public class UserRegFragment extends Fragment {
                 errorMessageText.setText("");
 
                 /* Kollar fel */
-                if(!checkPersonNummer(errorMessageText) || !checkPassword(errorMessageText) || !checkName(errorMessageText) || !checkEmail(errorMessageText) ||
-                        !checkMobileNumber(errorMessageText) || !checkStreetAddress(errorMessageText) ){
+                if(!checkEmail(errorMessageText) || !checkPassword(errorMessageText) || !checkPersonNummer(errorMessageText) || !checkName(errorMessageText) ||
+                        !checkMobileNumber(errorMessageText) || !checkCounty(errorMessageText) || !checkCity(errorMessageText) || !checkStreetAddress(errorMessageText) ){
                     return;
                 }
                 else{
@@ -138,11 +93,11 @@ public class UserRegFragment extends Fragment {
                     input = binding.editTextPhone;
                     account[5] = input.getText().toString();
                     //Län
-                    Spinner spinner = binding.countySpinner;
-                    account[6] = spinner.getSelectedItem().toString();
+                    input = binding.editTextCounty;
+                    account[6] = input.getText().toString();
                     //Stad
-                    spinner = binding.stadSpinner;
-                    account[7] = spinner.getSelectedItem().toString();
+                    input = binding.editTextCity;
+                    account[7] = input.getText().toString();
                     //Gata
                     input = binding.editTextTextPersonGata;
                     account[8] = input.getText().toString();
@@ -196,11 +151,9 @@ public class UserRegFragment extends Fragment {
         String street = accounttoadd[8];
         Boolean admin = false;
 
-
         FirebaseAuth mAuth;
         mAuth = FirebaseAuth.getInstance();
 
-        //
         mAuth.createUserWithEmailAndPassword(accounttoadd[0], accounttoadd[1])
                 .addOnCompleteListener(getActivity(), (OnCompleteListener<AuthResult>) task -> {
                     String TAG = "Registartion";
@@ -375,6 +328,40 @@ public class UserRegFragment extends Fragment {
             Log.i("FEL", "Gatu adress fel format");
             input.requestFocus();
             errorMessageText.setText("Vänligen skriv i gatu address");
+            return false;
+        }
+        return true;
+    }
+
+    /*  Kollar fel i län
+     *  Pre: TextView där error ska visas
+     *  Post: True om den är i rätt format, False om den är i fel format
+     */
+    private boolean checkCounty(TextView errorMessageText){
+        EditText input = binding.editTextCounty;
+        String input_value = input.getText().toString();
+
+        if(input_value.trim().isEmpty()){
+            Log.i("FEL", "län fel format");
+            input.requestFocus();
+            errorMessageText.setText("Vänligen skriv i län");
+            return false;
+        }
+        return true;
+    }
+
+    /*  Kollar fel i stad
+     *  Pre: TextView där error ska visas
+     *  Post: True om den är i rätt format, False om den är i fel format
+     */
+    private boolean checkCity(TextView errorMessageText){
+        EditText input = binding.editTextCity;
+        String input_value = input.getText().toString();
+
+        if(input_value.trim().isEmpty()){
+            Log.i("FEL", "stad fel format");
+            input.requestFocus();
+            errorMessageText.setText("Vänligen skriv i stad");
             return false;
         }
         return true;
