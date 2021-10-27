@@ -26,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +55,7 @@ public class ExcelDownloader implements Serializable {
             public void onReceive(Context ctxt, Intent intent) {
                 counter++;
                 Log.i("ExcelDownloader", counter +" Downloads completed!");
-                if (counter == 2) {
+                if (counter == 1) {
                     if(remove_flag==1) return;
                     Log.i("ExcelDownloader", "ALL " + counter + "DOWNLOADS FINISHED, STARTING POI WORK");
                     File file1 = new File(activity.getExternalFilesDir("Download"), "Folkhalsomyndigheten_Covid19_Vaccine.xlsx");
@@ -72,10 +73,13 @@ public class ExcelDownloader implements Serializable {
                         fileInputStream.close();
                         workbook.close();
 
-                        fileInputStream = new FileInputStream(file2);
+                        //fileInputStream = new FileInputStream(file2);
+                        InputStream fileInputStream1 = ctxt.getAssets().open("v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx");
                         Log.i("info", "Reading from Excel " + file2);
-                        workbook = new XSSFWorkbook(fileInputStream);
+                        workbook = new XSSFWorkbook(fileInputStream1);
                         dosesDistributed(workbook.getSheet("Antal doser av vaccin"), dosesDistributedArray);
+
+
 
 
                     } catch (IOException e) {
@@ -106,27 +110,11 @@ public class ExcelDownloader implements Serializable {
         counter=0;
         downloadManager= (DownloadManager) activity.getSystemService(activity.DOWNLOAD_SERVICE);
         DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://fohm.maps.arcgis.com/sharing/rest/content/items/fc749115877443d29c2a49ea9eca77e9/data"));
-        request.setTitle("Voyager1")
+        request.setTitle("Download1")
                 .setDescription("File is downloading...")
                 .setDestinationInExternalFilesDir(activity, "Download", "Folkhalsomyndigheten_Covid19_Vaccine.xlsx")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         downLoadId1=downloadManager.enqueue(request);
-
-/*
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
-        Log.i("ExcelDownloader", "Week = " + week);
-        String covid_leveranser = "https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v" + Integer.toString(week-2) +"-leveranser-av-covid-vaccin-till-och-med-vecka-" + Integer.toString(week) + ".xlsx";
-        Log.i("ExcelDownloader", covid_leveranser);
-         */
-        String covid_leveranser = "https://www.folkhalsomyndigheten.se/contentassets/ad481fe4487f4e6a8d1bcd95a370bc1a/v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx";
-
-        request=new DownloadManager.Request(Uri.parse(covid_leveranser));
-        request.setTitle("Voyager2")
-                .setDescription("File is downloading...")
-                .setDestinationInExternalFilesDir(activity, "Download", "v38-leveranser-av-covid-vaccin-till-och-med-vecka-40.xlsx")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        downLoadId2=downloadManager.enqueue(request);
     }
 
     //******************************* Get cell from file ***************************************//
