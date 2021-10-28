@@ -79,8 +79,9 @@ public class VaccinesAdministeredFragment extends Fragment {
 
         //Lägger till labels
         ArrayList<String> regions = new ArrayList<String>();
-        for(int i=1; i<dosesArray.length; i=i+20){
-            regions.add(dosesArray[i][0]);
+        for(int i=1; i<dosesArray.length; i++){
+            if(!regions.contains(dosesArray[i][0]))
+                regions.add(dosesArray[i][0]);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, regions);
         region_spinner.setAdapter(adapter);

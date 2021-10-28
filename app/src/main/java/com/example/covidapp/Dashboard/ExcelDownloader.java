@@ -36,7 +36,7 @@ import java.util.Locale;
 public class ExcelDownloader implements Serializable {
     //public String[][] buffer = new String [2000][100];
     public String[][] cumulativeUptakeArray = new String[3000][6];
-    public String[][] dosesAdministratedArray = new String[441][5];
+    public String[][] dosesAdministratedArray = new String[485][5];
     public String[][] dosesDistributedArray = new String[30][128];
     public int counter=0;
     private long downLoadId1;
