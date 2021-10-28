@@ -252,13 +252,13 @@ public class BookingFragment extends Fragment {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         DataSnapshot dataSnapshot1= task.getResult();
                         RegClass usergetearlist = dataSnapshot1.getValue(RegClass.class);
-                        if (usergetearlist.getDosOne() != 0){
+                        /*if (usergetearlist.getDosOne() > 1){
                             Log.d("Dos1wasnotnull","Dos1wasnotnull");
-                            Kalender.setMinDate(usergetearlist.getDosOne()+days22);
+                            //Kalender.setMinDate(usergetearlist.getDosOne()+days22);
                             long temp = usergetearlist.getDosOne()+days22;
                             Log.d("Dos1wasnotnull",String.valueOf(temp));
                         }
-                        else Kalender.setMinDate(Kalender.getDate());
+                        else */Kalender.setMinDate(Kalender.getDate());
                     }
                 });
 

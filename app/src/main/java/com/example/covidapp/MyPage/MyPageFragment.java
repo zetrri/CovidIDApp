@@ -256,7 +256,7 @@ public class MyPageFragment extends Fragment {
                 final long dos1 = tempregclass.getDosOne();
 
                 //om dos 1 är tagen
-                if(dos1 > 0 && todayInMillis > dos1){
+                if(dos1 > 1 && todayInMillis > dos1){
                     CardView new_card = new CardView(getActivity());
                     LinearLayout linear_layout1 = new LinearLayout(getActivity());
                     linear_layout1.setOrientation(LinearLayout.VERTICAL);
@@ -273,7 +273,7 @@ public class MyPageFragment extends Fragment {
                     container.addView(new_card);
                 }
                 //om dos 2 är tagen
-                if(dos2 > 0 && todayInMillis > dos2){
+                if(dos2 > 1 && todayInMillis > dos2){
                     CardView new_card = new CardView(getActivity());
                     LinearLayout linear_layout1 = new LinearLayout(getActivity());
                     linear_layout1.setOrientation(LinearLayout.VERTICAL);
