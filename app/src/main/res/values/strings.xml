@@ -84,5 +84,6 @@
     <string name="pick_agegroup">Välj åldersgrupp:</string>
     <string name="current_agegroup">Nuvarande åldersgrupp: %1$d</string>
     <string name="current_agegroup_none">Nuvarande åldersgrupp:</string>
+    <string name="pass_validation">Pass Validering</string>
 
 </resources>

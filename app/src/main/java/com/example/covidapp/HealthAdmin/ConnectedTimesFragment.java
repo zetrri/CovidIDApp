@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EdgeEffect;
@@ -72,7 +73,7 @@ public class ConnectedTimesFragment extends Fragment {
         return fragment;
     }
     Button buttonValidate;
-    TextView textViewNameInput,textViewPersinput,textViewName,textViewPers,textViewComment;
+    TextView textViewNameInput,textViewName,textViewComment;
     ImageView imageViewCheck,imageViewError;
     EditText editTextIDinput;
 
@@ -102,9 +103,7 @@ public class ConnectedTimesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         buttonValidate = binding.buttonValidateID;
         textViewName = binding.textViewValidateName;
-        textViewPers = binding.textViewValidatePersonnummer;
         textViewNameInput = binding.textViewValidateNameinput;
-        textViewPersinput = binding.textViewValidatePersinput;
         editTextIDinput = binding.editTextIDtoVailidate;
         imageViewCheck = binding.imageViewCheckmark;
         imageViewError = binding.imageViewError;
@@ -114,6 +113,8 @@ public class ConnectedTimesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (editTextIDinput.getText().toString().length()>0){
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     FirebaseDatabase database = FirebaseDatabase.getInstance("https://covidid-14222-default-rtdb.europe-west1.firebasedatabase.app/");
                     DatabaseReference ref = database.getReference("User");
                     ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -127,13 +128,10 @@ public class ConnectedTimesFragment extends Fragment {
                                     Log.d("BOOKEDBY",regClass.getFirstname().toString());
                                     imageViewError.setVisibility(View.GONE);
                                     textViewName.setVisibility(View.VISIBLE);
-                                    textViewPers.setVisibility(View.VISIBLE);
                                     textViewNameInput.setVisibility(View.VISIBLE);
                                     textViewNameInput.setText(regClass.getFirstname() + " "+regClass.getLastname());
-                                    textViewPersinput.setText(regClass.getPersnr().toString());
                                     textViewComment.setText("Detta ID är Validerat");
                                     textViewComment.setVisibility(View.VISIBLE);
-                                    textViewPersinput.setVisibility(View.VISIBLE);
                                     imageViewCheck.setVisibility(View.VISIBLE);
                                     return;
 
@@ -143,9 +141,7 @@ public class ConnectedTimesFragment extends Fragment {
                             textViewComment.setText("Detta ID är ej Validerat");
                             textViewComment.setVisibility(View.VISIBLE);
                             textViewName.setVisibility(View.GONE);
-                            textViewPers.setVisibility(View.GONE);
                             textViewNameInput.setVisibility(View.GONE);
-                            textViewPersinput.setVisibility(View.GONE);
                             imageViewCheck.setVisibility(View.GONE);
                             imageViewError.setVisibility(View.VISIBLE);
                             return;

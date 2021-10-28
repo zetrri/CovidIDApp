@@ -88,7 +88,7 @@
     <fragment
         android:id="@+id/ConnectedTimesFragment"
         android:name="com.example.covidapp.HealthAdmin.ConnectedTimesFragment"
-        android:label="@+string/ConnectedTimesFragment"
+        android:label="Pass Validering"
         tools:layout="@layout/fragment_connected_times">
     <action
         android:id="@+id/action_nav_x_to_nav_y"
