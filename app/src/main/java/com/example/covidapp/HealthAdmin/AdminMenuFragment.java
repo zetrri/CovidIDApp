@@ -104,7 +104,6 @@ public class AdminMenuFragment extends Fragment {
         LinearLayout eQuestionnaire = binding.Questionnaire;
         LinearLayout eTimeLine = binding.TimeLine;
         //använd denna leon för pass
-        LinearLayout ePass = binding.verificationPass;
         firebaseAuth = FirebaseAuth.getInstance();
         //making a reference to the child node "User"
         usersRef = FirebaseDatabase.getInstance().getReference().child("User");
@@ -142,12 +141,7 @@ public class AdminMenuFragment extends Fragment {
                 //HÄR SKA TIMELINE VARA
             }
         });
-        ePass.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_admin_menu_to_nav_connected_times);
-//                Navigation.findNavController(view).navigate(R.id.ConnectedTimesFragment);
-            }
-        });
+
 
         //Total registered users
         usersRef.addValueEventListener(new ValueEventListener() {

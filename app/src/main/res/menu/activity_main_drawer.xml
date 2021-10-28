@@ -21,6 +21,10 @@
             android:icon="@drawable/question"
             android:title="@string/menu_faq" />
         <item
+            android:id="@+id/ConnectedTimesFragment"
+            android:icon="@drawable/ic_passport_svgrepo_com__2_"
+            android:title="@string/pass_validation" />
+        <item
             android:id="@+id/nav_login"
             android:icon="@drawable/lock"
             android:title="@string/menu_login" />

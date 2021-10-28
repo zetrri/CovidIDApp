@@ -119,7 +119,7 @@ public class NotificationFragment extends Fragment {
                     binding.notificationCard.setVisibility(View.VISIBLE);
                     binding.notificationTextview.setVisibility(View.INVISIBLE);
                     if(dos1 == 1 || dos2 == 1) {
-                        binding.message.setText("Din bokade tid har blivit nekad av en administratör. Var vänlig boka en ny tid.");
+                        binding.message.setText("Din bokade tid har blivit nekad av en administratör. Var vänlig kontakta en administratör.");
                         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                         SimpleDateFormat sdfclock = new SimpleDateFormat("kk:mm");
                         binding.notificationDate.setText(sdf.format(currentTime) + " " + sdfclock.format(currentTime));

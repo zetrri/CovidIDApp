@@ -65,17 +65,8 @@
 
             </LinearLayout>
 
-
-
-        </LinearLayout>
-        <!-- Top menu2-->
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <LinearLayout
-                android:id="@+id/verification_pass"
+                android:id="@+id/TimeLine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
@@ -84,42 +75,21 @@
                 android:clickable="true">
 
                 <ImageView
-                    android:id="@+id/imageView_verification_pass"
+                    android:id="@+id/imageView_schedule"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_passport_svgrepo_com__2_" />
+                    app:srcCompat="@drawable/ic_kindergarden_children_and_teacher_svgrepo_com" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Pass validering" />
+                    android:textAlignment="center"
+                    android:text="Schema för åldersgrupp" />
             </LinearLayout>
-                 <LinearLayout
-                     android:id="@+id/TimeLine"
-                     android:layout_width="0dp"
-                     android:layout_height="wrap_content"
-                     android:layout_weight="0.33"
-                     android:orientation="vertical"
-                     android:background="?android:attr/selectableItemBackground"
-                     android:clickable="true">
+        </LinearLayout>
 
-                     <ImageView
-                         android:id="@+id/imageView_schedule"
-                         android:layout_width="match_parent"
-                         android:layout_height="0dp"
-                         android:layout_weight="1"
-                         app:srcCompat="@drawable/ic_kindergarden_children_and_teacher_svgrepo_com" />
-
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_gravity="center"
-                         android:text="Schema för åldersgrupp " />
-                 </LinearLayout>
-
-             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -9,17 +9,6 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/textViewValidatePersinput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="16sp"
-        android:paddingTop="16sp"
-        android:text=""
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/textViewValidatePersonnummer"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValidateNameinput" />
-
-    <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,18 +77,6 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonValidateID"></TextView>
 
     <TextView
-        android:id="@+id/textViewValidatePersonnummer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="16sp"
-        android:paddingTop="16sp"
-        android:visibility="gone"
-        android:text="Personnummer: "
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValidateName"></TextView>
-
-    <TextView
         android:id="@+id/textViewValidateNameinput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,7 +86,7 @@
         android:text="gfdsgdfs"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewValidateName"
-        app:layout_constraintStart_toEndOf="@+id/textViewValidatePersonnummer" />
+        app:layout_constraintStart_toEndOf="@+id/textViewValidateName" />
 
     <ImageView
         android:id="@+id/imageViewCheckmark"
@@ -120,7 +97,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValidatePersinput" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidateName" />
 
     <Button
         android:id="@+id/buttonValidateID"
@@ -129,7 +106,7 @@
         android:layout_height="wrap_content"
         android:text="Validera"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextIDtoVailidate" />
 
     <TextView
         android:id="@+id/textviewComment"
@@ -141,7 +118,7 @@
         android:paddingTop="16sp"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValidatePersinput" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewValidateName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
